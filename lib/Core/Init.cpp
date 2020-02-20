@@ -104,7 +104,7 @@ static std::string strip(std::string &in) {
 static llvm::Module *patchArgsToMain(llvm::Module *mainModule) {
   Function *mainFn = mainModule->getFunction("main");
   if(!WithPOSIXRuntime || mainFn->getFunctionType()->getNumParams() != 0)
-    return mainModule;  
+    return mainModule;
   mainFn->setName("__argless_main");
 
   //Create stub with proper parameters
@@ -113,8 +113,8 @@ static llvm::Module *patchArgsToMain(llvm::Module *mainModule) {
   fArgs.push_back(PointerType::getUnqual(PointerType::getUnqual(Type::getInt8Ty(getGlobalContext())))); // argv
   Function *stub = Function::Create(FunctionType::get(Type::getInt32Ty(getGlobalContext()), fArgs, false),
   GlobalVariable::ExternalLinkage, "main", mainModule);
-  
-  BasicBlock *bb = BasicBlock::Create(getGlobalContext(), "entry", stub); 
+
+  BasicBlock *bb = BasicBlock::Create(getGlobalContext(), "entry", stub);
 
   CallInst* call = CallInst::Create(mainFn, ArrayRef<llvm::Value*>(), "", bb);
   ReturnInst::Create(getGlobalContext(), call, bb);
@@ -656,6 +656,7 @@ static llvm::Module *linkWithUclibc(llvm::Module *mainModule) {
   }
 
   mainModule = klee::linkWithLibrary(mainModule, getUclibcPath().append("/lib/libc.a"));
+  mainModule = klee::linkWithLibrary(mainModule, getUclibcPath().append("/lib/libm.a"));
   assert(mainModule && "unable to link with uclibc");
 
   // more sighs, this is horrible but just a temp hack
@@ -714,6 +715,14 @@ static llvm::Module *linkWithUclibc(llvm::Module *mainModule) {
   return mainModule;
 }
 
+static llvm::Module *linkWithMPI(llvm::Module *mainModule) {
+
+        mainModule = klee::linkWithLibrary(mainModule, getlibMPIPath().append("/libazqmpi.a"));
+        assert(mainModule && "unable to link with lib MPI(currently azqmpi)");
+        return mainModule;
+}
+
+
 Module* loadByteCode() {
   std::string ErrorMsg;
   Module *mainModule = 0;
@@ -741,15 +750,19 @@ Module* loadByteCode() {
 Module* prepareModule(Module *module) {
   llvm::sys::Path LibraryDir(getKleeLibraryPath());
 
+  //Herman added.
+  if(WithLibMPI)
+     module = linkWithMPI(module);
+
   module = patchArgsToMain(module);
 
-  if (Libc == UcLibc || WithPOSIXRuntime)
+  if (Libc == UcLibc || WithPOSIXRuntime || WithLibMPI)
     module = linkWithUclibc(module);
 
-  if (WithPOSIXRuntime)
+  if (WithPOSIXRuntime || WithLibMPI)
     module = linkWithPOSIX(module);
 
-  if (WithPOSIXRuntime || InitEnv) {
+  if (WithPOSIXRuntime || InitEnv || WithLibMPI) {
     int r = initEnv(module);
     if (r != 0)
       return NULL;

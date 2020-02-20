@@ -52,7 +52,8 @@ enum LibcType {
 extern std::string InputFile;
 extern LibcType Libc;
 extern bool WithPOSIXRuntime;
-
+extern bool WithLibMPI; // Herman added, for MPI  support
+extern bool checksyncopt;// Herman added, for MPI  support
 extern bool UseGlobalCoverage;
 
 extern std::string LBAddress;
@@ -63,7 +64,8 @@ extern int LocalPort;
 
 extern int RetryConnectTime;
 extern int UpdateTime;
-
+extern bool WithLibMPI;
+extern bool WithWildChoice;
 namespace klee {
   class RNG;
   extern RNG theRNG;

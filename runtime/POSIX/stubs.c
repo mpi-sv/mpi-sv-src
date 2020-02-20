@@ -21,6 +21,7 @@
 #include <sys/times.h>
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/resource.h>
 #include <syslog.h>
 
 #include "klee/Config/config.h"

@@ -33,8 +33,10 @@ namespace {
 cl::opt<bool>
 UseAsmAddresses("use-asm-addresses",
                 cl::init(false));
-
 }
+
+cl::opt<bool> ThreadedAllGlobals("threaded-all-globals", cl::init(false));
+cl::list<std::string> ThreadSpecificGlobalVariable("threaded-global-variables", cl::desc("thread-specific-global-variable"));
 
 namespace klee {
 
@@ -73,7 +75,6 @@ void Executor::initializeGlobalObject(ExecutionState &state, ObjectState *os,
                              offset + i*elementSize);
   } else {
     unsigned StoreBits = targetData->getTypeStoreSizeInBits(c->getType());
-
 //  LOG(INFO) << "ValueID: " << c->getValueID();
 //  LOG(INFO) << "Global object size: " << c->getType()->getScalarSizeInBits() << " (store size: " << StoreBits << ")";
 
@@ -100,6 +101,184 @@ MemoryObject * Executor::addExternalObject(ExecutionState &state,
     os->setReadOnly(true);
   return mo;
 }
+
+    /**
+     * we basically copy initializeGlobals here, but we don't consider function globals (to be checked)
+     * */
+thread_id_t current_thread_it;
+
+void Executor::initializeThreadedGlobals(thread_id_t threadid, ExecutionState &state) {
+  Module *m = kmodule->module;
+  current_thread_it = threadid;
+
+  if (m->getModuleInlineAsm() != "")
+    LOG(WARNING) << "executable has module level assembly (ignoring)";
+
+// comment by zbchen, to be checked
+//  // Disabled, we don't want to promote use of live externals.
+//#ifdef HAVE_CTYPE_EXTERNALS
+//#ifndef WINDOWS
+//#ifndef DARWIN
+//  /* From /usr/include/errno.h: it [errno] is a per-thread variable. */
+//  int *errno_addr = __errno_location();
+//  addExternalObject(state, (void *)errno_addr, sizeof *errno_addr, false);
+//
+//  /* from /usr/include/ctype.h:
+//       These point into arrays of 384, so they can be indexed by any `unsigned
+//       char' value [0,255]; by EOF (-1); or by any `signed char' value
+//       [-128,-1).  ISO C requires that the ctype functions work for `unsigned */
+//  const uint16_t **addr = __ctype_b_loc();
+//  addExternalObject(state, (void *)(*addr-128),
+//                    384 * sizeof **addr, true);
+//  addExternalObject(state, addr, sizeof(*addr), true);
+//
+//  const int32_t **lower_addr = __ctype_tolower_loc();
+//  addExternalObject(state, (void *)(*lower_addr-128),
+//                    384 * sizeof **lower_addr, true);
+//  addExternalObject(state, lower_addr, sizeof(*lower_addr), true);
+//
+//  const int32_t **upper_addr = __ctype_toupper_loc();
+//  addExternalObject(state, (void *)(*upper_addr-128),
+//                    384 * sizeof **upper_addr, true);
+//  addExternalObject(state, upper_addr, sizeof(*upper_addr), true);
+//#endif
+//#endif
+//#endif
+
+  threadedGlobalObjects.insert(std::make_pair(threadid, new std::map<ref<ConstantExpr>, MemoryObject *>));
+  threadedGlobalAddresses.insert(std::make_pair(threadid, new std::map<ref<ConstantExpr>, Cell *>));
+
+  // allocate and initialize globals, done in two passes since we may
+  // need address of a global in order to initialize some other one.
+
+  // allocate memory objects for all globals
+  for (Module::const_global_iterator i = m->global_begin(),
+               e = m->global_end();
+       i != e; ++i) {
+    if (find(threadedAddresses.begin(), threadedAddresses.end(), globalAddresses.find(i)->second) == threadedAddresses.end()) {
+      continue;
+    }
+    if (i->isDeclaration()) {
+      // FIXME: We have no general way of handling unknown external
+      // symbols. If we really cared about making external stuff work
+      // better we could support user definition, or use the EXE style
+      // hack where we check the object file information.
+
+      Type *ty = i->getType()->getElementType();
+      uint64_t size = kmodule->targetData->getTypeStoreSize(ty);
+
+      // XXX - DWD - hardcode some things until we decide how to fix.
+#ifndef WINDOWS
+      if (i->getName() == "_ZTVN10__cxxabiv117__class_type_infoE") {
+        size = 0x2C;
+      } else if (i->getName() == "_ZTVN10__cxxabiv120__si_class_type_infoE") {
+        size = 0x2C;
+      } else if (i->getName() == "_ZTVN10__cxxabiv121__vmi_class_type_infoE") {
+        size = 0x2C;
+      }
+#endif
+
+      if (size == 0) {
+        llvm::errs() << "Unable to find size for global variable: "
+        << i->getName()
+        << " (use will result in out of bounds access)\n";
+      }
+
+      MemoryObject *mo = memory->allocate(&state, size, false, true, i);
+      ObjectState *os = bindObjectInState(state, mo, false);
+
+      assert(globalObjects.find(i) != globalObjects.end());
+      assert(globalAddresses.find(i) != globalAddresses.end());
+
+      threadedGlobalObjects[threadid]->insert(std::make_pair(globalAddresses.find(i)->second, mo));
+      Cell *c = new Cell;
+      c->value = mo->getBaseExpr();
+      threadedGlobalAddresses[threadid]->insert(std::make_pair(globalAddresses.find(i)->second, c));
+
+      // Program already running = object already initialized.  Read
+      // concrete value and write it to our copy.
+      if (size) {
+        void *addr;
+        if (i->getName() == "__dso_handle") {
+          addr = &__dso_handle; // wtf ?
+          LOG(INFO) << "__dso_handle we found is at " << addr;
+        } else {
+          addr = externalDispatcher->resolveSymbol(i->getName());
+        }
+        if (!addr) {
+          LOG(FATAL) << "Unable to load symbol (" <<
+          i->getName().data() << ") while initializing globals.";
+        }
+
+        for (unsigned offset=0; offset<mo->size; offset++)
+          os->write8(offset, ((unsigned char*)addr)[offset]);
+      }
+    } else {
+      Type *ty = i->getType()->getElementType();
+      uint64_t size = kmodule->targetData->getTypeStoreSize(ty);
+      MemoryObject *mo = 0;
+
+      if (UseAsmAddresses && i->getName()[0]=='\01') {
+        char *end;
+        uint64_t address = ::strtoll(i->getName().str().c_str()+1, &end, 0);
+
+        if (end && *end == '\0') {
+          LOG(INFO) << "Allocated global at asm specified address: "
+          << std::hex << std::uppercase << (long long) address
+          << " (" << size << " bytes)";
+          mo = memory->allocateFixed(address, size, &*i);
+          mo->isUserSpecified = true; // XXX hack;
+        }
+      }
+
+      if (!mo)
+        mo = memory->allocate(&state, size, false, true, &*i);
+      if(!mo)
+        LOG(INFO) << "Cannot allocate memory for global " << i->getName().str();
+      assert(mo && "out of memory");
+      ObjectState *os = bindObjectInState(state, mo, false);
+
+      assert(globalObjects.find(i) != globalObjects.end());
+      assert(globalAddresses.find(i) != globalAddresses.end());
+
+      threadedGlobalObjects[threadid]->insert(std::make_pair(globalAddresses.find(i)->second, mo));
+      Cell *c = new Cell;
+      c->value = mo->getBaseExpr();
+      threadedGlobalAddresses[threadid]->insert(std::make_pair(globalAddresses.find(i)->second, c));
+
+      if (!i->hasInitializer())
+        os->initializeToRandom();
+    }
+  }
+
+  // comment first, to be checked (zhenbang)
+//  // link aliases to their definitions (if bound)
+//  for (Module::alias_iterator i = m->alias_begin(), ie = m->alias_end();
+//       i != ie; ++i) {
+//    // Map the alias to its aliasee's address. This works because we have
+//    // addresses for everything, even undefined functions.
+//    globalAddresses.insert(std::make_pair(i, evalConstant(i->getAliasee())));
+//  }
+
+  // once all objects are allocated, do the actual initialization
+  for (Module::const_global_iterator i = m->global_begin(),
+               e = m->global_end();
+       i != e; ++i) {
+    if (find(threadedAddresses.begin(), threadedAddresses.end(), globalAddresses.find(i)->second) == threadedAddresses.end()) {
+      continue;
+    }
+    if (i->hasInitializer()) {
+      MemoryObject *mo = threadedGlobalObjects[threadid]->find(globalAddresses.find(i)->second)->second;
+      const ObjectState *os = state.addressSpace().findObject(mo);
+      assert(os);
+      ObjectState *wos = state.addressSpace().getWriteable(mo, os);
+
+      initializeGlobalObject(state, wos, i->getInitializer(), 0);
+      // if(i->isConstant()) os->setReadOnly(true);
+    }
+  }
+}
+
 
 void Executor::initializeGlobals(ExecutionState &state) {
   Module *m = kmodule->module;
@@ -248,6 +427,15 @@ void Executor::initializeGlobals(ExecutionState &state) {
       if (!i->hasInitializer())
           os->initializeToRandom();
     }
+
+    //added by zhenbang to record the addresses to be thread specific
+    std::vector<std::string>::iterator  it =
+            find(ThreadSpecificGlobalVariable.begin(), ThreadSpecificGlobalVariable.end(), i->getName().str());
+    if (it != ThreadSpecificGlobalVariable.end()) {
+      //LOG(INFO)<< "------------global variable----------------: " << i->getName().str() << "\n";
+      threadedAddresses.push_back(globalAddresses.find(i)->second);
+    }
+
   }
 
   // link aliases to their definitions (if bound)
@@ -427,6 +615,12 @@ void Executor::initRootState(ExecutionState *state,
   }
 
   initializeGlobals(*state);
+
+  // added by zhenbang
+  // create thread specific global objects
+  if (isGlobalVariableThreaded)
+    initializeThreadedGlobals(state->crtThread().getTid(), *state);
+
 
   processTree = new PTree(state);
   state->ptreeNode = processTree->root;

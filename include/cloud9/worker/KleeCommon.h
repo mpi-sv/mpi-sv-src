@@ -43,6 +43,6 @@
 std::string getKleePath();
 std::string getKleeLibraryPath();
 std::string getUclibcPath();
-
+std::string getlibMPIPath();
 
 #endif /* KLEECOMMON_H_ */

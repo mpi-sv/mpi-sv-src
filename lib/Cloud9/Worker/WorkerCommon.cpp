@@ -43,6 +43,9 @@ using namespace llvm;
 std::string InputFile;
 LibcType Libc;
 bool WithPOSIXRuntime;
+bool WithLibMPI; //Herman added for mpi support
+bool WithWildChoice;
+bool MasterSlaveSupport;
 
 bool UseGlobalCoverage;
 
@@ -67,6 +70,15 @@ static cl::opt<LibcType, true> LibcOpt("libc", cl::desc(
 
 static cl::opt<bool, true> WithPOSIXRuntimeOpt("posix-runtime", cl::desc(
     "Link with POSIX runtime"), cl::location(WithPOSIXRuntime), cl::init(false));
+
+static cl::opt<bool, true> WithlibMPIOpt("lib-MPI", cl::desc(
+    "Link with AZEQ MPI lib"), cl::location(WithLibMPI), cl::init(false));
+
+static cl::opt<bool, true> WithWildChoiceOpt("wild-opt", cl::desc(
+    "using CSP model to reduce wildcard receive match choice"), cl::location(WithWildChoice), cl::init(false));
+
+static cl::opt<bool, true> MasterSlaveSupportOpt("ms-support", cl::desc(
+            "support manager-worker, default is false"), cl::location(MasterSlaveSupport), cl::init(false));
 
 static cl::opt<bool, true> UseGlobalCoverageOpt("c9-use-global-cov",
     cl::desc("Use global coverage information in the searcher"),
@@ -96,5 +108,6 @@ static cl::opt<int, true> RetryConnectTimeOpt("c9-lb-connect-retry",
 static cl::opt<int, true> UpdateTimeOpt("c9-lb-update",
     cl::desc("The time in seconds between load balancing updates"),
     cl::location(UpdateTime), cl::init(5));
+
 
 }

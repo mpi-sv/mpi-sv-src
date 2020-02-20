@@ -274,6 +274,21 @@ namespace klee {
     }
   };
 
+  class DirctedDFSSearcher : public Searcher {
+    std::vector<ExecutionState*> states;
+
+  public:
+    ExecutionState &selectState();
+    void update(ExecutionState *current,
+                const std::set<ExecutionState*> &addedStates,
+                const std::set<ExecutionState*> &removedStates);
+    bool empty() { return states.empty(); }
+    void printName(std::ostream &os) {
+      os << "DirctedDFSSearcher(for MPI programs.)\n";
+    }
+
+  };
+
 }
 
 #endif

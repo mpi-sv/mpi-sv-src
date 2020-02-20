@@ -6,7 +6,7 @@
 // License. See LICENSE.TXT for details.
 //
 //===----------------------------------------------------------------------===//
-
+#include <stdio.h>
 #include "klee/klee.h"
 #ifndef _LARGEFILE64_SOURCE
 #define _LARGEFILE64_SOURCE
@@ -148,8 +148,10 @@ void klee_init_env(int argc, char **argv) {
   }
 
   klee_init_processes();
-  klee_init_symfs(&fid);
-  klee_init_fdt();
+  if (argc > 1) {
+    klee_init_symfs(&fid);
+    klee_init_fdt();
+  }
   klee_init_mmap();
   klee_init_network();
   klee_init_netlink();

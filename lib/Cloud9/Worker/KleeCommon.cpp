@@ -79,6 +79,18 @@ std::string getKleeLibraryPath() {
   return libraryPath.str();
 }
 
+std::string getlibMPIPath() {
+  const char *libMPIPathName = std::getenv("KLEE_LIBMPI");
+  if (!libMPIPathName)
+        libMPIPathName = KLEE_LIBMPI;
+
+  SmallString<256> newPath(libMPIPathName);
+
+  sys::fs::make_absolute(newPath);
+  LOG(INFO) << "Using libMPI path " << std::string(newPath.str());
+  return newPath.str();
+}
+
 std::string getUclibcPath() {
   const char *uclibcPathName = std::getenv(KLEE_UCLIBC_ROOT_VAR);
   if (!uclibcPathName)

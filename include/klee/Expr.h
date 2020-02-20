@@ -384,6 +384,8 @@ public:
   }
 
   static bool classof(const Expr *E) {
+//	  if(E==NULL)
+//		  return false;
     return E->getKind() == Expr::Constant;
   }
   static bool classof(const ConstantExpr *) { return true; }

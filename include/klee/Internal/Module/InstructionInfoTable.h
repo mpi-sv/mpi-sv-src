@@ -55,6 +55,7 @@ namespace klee {
   typedef std::map<const std::string*, int, ltstr> StringTable;
 
   class InstructionInfoTable {
+	  friend class CommLogManager;
     struct ltfunc {
       bool operator()(const llvm::Function *f1, const llvm::Function *f2) const;
     };

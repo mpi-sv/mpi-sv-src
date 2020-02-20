@@ -20,9 +20,8 @@
 using namespace klee;
 
 /***/
-
 MemoryManager::~MemoryManager() { 
-  while (!objects.empty()) {
+  while (!objects.empty()&&!Destroyed) {
     MemoryObject *mo = objects.back();
     objects.pop_back();
     delete mo;

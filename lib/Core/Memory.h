@@ -79,6 +79,7 @@ public:
     : id(counter++),
       address(_address),
       size(0),
+      name("unnamed"),
       isFixed(true),
       allocSite(0) {
   }

@@ -23,3 +23,8 @@ LIBS += -lboost_system-mt -lboost_thread-mt -lprotobuf -lglog -lrt -lcrypto++ -l
 ifeq ($(ENABLE_EXT_STP),1)
   LIBS += -lstp
 endif
+
+ifeq ($(ENABLE_LIBMPI),1)
+  LIBS += -lmpisecommon
+  LIBS += -lltl
+endif

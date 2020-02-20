@@ -25,6 +25,8 @@
 #include "klee/AddressPool.h"
 #include "klee/StackTrace.h"
 
+#include "mpise/commlogManager.h"//Added by herman.
+
 #include <map>
 #include <set>
 #include <vector>
@@ -70,7 +72,9 @@ std::ostream &operator<<(std::ostream &os, const MemoryMap &mm);
 
 typedef uint64_t wlist_id_t;
 
+
 class ExecutionState {
+  friend class Executor;
   friend class ObjectState;
 
 public:
@@ -78,7 +82,15 @@ public:
 
   typedef std::map<thread_uid_t, Thread> threads_ty;
   typedef std::map<process_id_t, Process> processes_ty;
-  typedef std::map<wlist_id_t, std::set<thread_uid_t> > wlists_ty;
+  typedef std::map<int,int> MSInfo_ty;
+  bool delayed; //added by yhb to indicate the pruning states, initialized to false.
+  bool wildContained; // added by yhb to indicate whether need to do CSP Model Checking.
+	bool detectedMSPattern; // used to indicate whether we detect Master-Slave pattern, initially false
+	int counterForMS; // used in MS, otherwise -1. it is used to record the order of the recv(*);send(*.source)
+  string fileForLastRecvMaster;// added by yhb, to make sure the location of the first repetitive recv in M-S is recorded!
+	int lineNumberForLastRecvMaster;
+ // typedef std::map<proc_funcid_t,>
+
 
 private:
   // unsupported, use copy constructor
@@ -98,7 +110,6 @@ public:
 
   /// Disables forking, set by user code.
   bool forkDisabled;
-
 
   mutable double queryCost;
   double weight;
@@ -122,12 +133,14 @@ public:
   Instruction *crtSpecialFork;
 
 
+  set<unsigned int> currentLTLStates;
   /// ordered list of symbolics: used to generate test cases. 
   //
   // FIXME: Move to a shared list structure (not critical).
   std::vector< std::pair<const MemoryObject*, const Array*> > symbolics;
 
   ConstraintManager globalConstraints;
+  CommLogManager  globalCommLog;
 
 
   // For a multi threaded ExecutionState
@@ -141,6 +154,9 @@ public:
 
   AddressPool addressPool;
   AddressSpace::cow_domain_t cowDomain;
+
+
+  //*************************************************************end adding
 
   Thread& createThread(thread_id_t tid, KFunction *kf);
   Process& forkProcess(process_id_t pid);
@@ -261,6 +277,8 @@ public:
   StackTrace getStackTrace() const;
 
   bool isExternalCallSafe() const;
+  const InstructionInfo * getCurrentStackCallerInfo();
+  void dumpStack();
 };
 
 }

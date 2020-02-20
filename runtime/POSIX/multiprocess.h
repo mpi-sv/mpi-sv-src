@@ -116,6 +116,11 @@ typedef struct {
   char allocated;
   char terminated;
   char joinable;
+  // Thread-specific data, added by Herman
+  #ifdef HAVE_MPI_SUPPORT
+  void ** p_specific[__PTHREAD_KEY_1STLEVEL_SIZE];
+  #endif
+
 } thread_data_t;
 
 typedef struct {

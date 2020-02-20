@@ -15,7 +15,7 @@ die () {
 }
 test -d autoconf && test -f autoconf/configure.ac && cd autoconf
 test -f configure.ac || die "Can't find 'autoconf' dir; please cd into it first"
-autoconf --version | egrep '2\.60' > /dev/null
+autoconf --version | egrep '2\.68' > /dev/null
 if test $? -ne 0 ; then
   die "Your autoconf was not detected as being 2.60"
 fi

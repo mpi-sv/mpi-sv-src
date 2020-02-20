@@ -8,6 +8,7 @@
 //===----------------------------------------------------------------------===//
 
 #include "klee/ExecutionState.h"
+#include "klee/Executor.h"
 
 #include "klee/Internal/Module/Cell.h"
 #include "klee/Internal/Module/InstructionInfoTable.h"
@@ -16,6 +17,7 @@
 #include "klee/util/ExprPPrinter.h"
 #include "klee/ForkTag.h"
 #include "klee/AddressPool.h"
+#include "cloud9/worker/WorkerCommon.h"
 
 #include "klee/Expr.h"
 
@@ -33,548 +35,577 @@
 #include <sys/time.h>
 #include <sys/mman.h>
 #include <crypto++/sha.h>
+#include <boost/foreach.hpp>
 
 using namespace llvm;
 using namespace klee;
 
-namespace { 
-  cl::opt<bool>
-  DebugLogStateMerge("debug-log-state-merge");
+namespace {
+cl::opt<bool> DebugLogStateMerge("debug-log-state-merge");
 }
 
+extern cl::list<std::string> ThreadSpecificGlobalVariable;
+
+cl::opt<bool> SyncOpt("syncopt",
+		cl::desc("reduce sync checks when load/store, Only applied to -lib-MPI is given."),
+		cl::init(0));
 namespace klee {
 
 /***/
 
-
-
+//extern  cl::opt<bool> SyncOpt;
 /***/
 
-ExecutionState::ExecutionState(Executor *_executor, KFunction *kf)
-  : c9State(NULL),
-    executor(_executor),
-    depth(0),
-    forkDisabled(false),
-    queryCost(0.), 
-    weight(1),
-    instsSinceCovNew(0),
-    coveredNew(false),
-    lastCoveredTime(sys::TimeValue::now()),
-    ptreeNode(0),
-    crtForkReason(KLEE_FORK_DEFAULT),
-    crtSpecialFork(NULL),
-    wlistCounter(1),
-    preemptions(0),
-    totalInstructions(0),
-    totalBranches(0),
-    totalForks(0),
-    totalQueries(0),
-    totalTime(0) {
+ExecutionState::ExecutionState(Executor *_executor, KFunction *kf) :
+		c9State(NULL), executor(_executor), depth(0), forkDisabled(false), queryCost(0.), weight(1), instsSinceCovNew(
+				0), coveredNew(false), lastCoveredTime(sys::TimeValue::now()), ptreeNode(0), crtForkReason(
+				KLEE_FORK_DEFAULT), crtSpecialFork(NULL), wlistCounter(1), preemptions(0), totalInstructions(
+				0), totalBranches(0), totalForks(0), totalQueries(0), totalTime(0), globalCommLog() ,delayed(false),
+				wildContained(false),detectedMSPattern(false),counterForMS(-1),fileForLastRecvMaster(""),lineNumberForLastRecvMaster(-1){
 
-  memset(state_id, 0, sizeof(state_id));
-  memset(parent_id, 0, sizeof(parent_id));
-  memset(fork_id, 0, sizeof(fork_id));
+	memset(state_id, 0, sizeof(state_id));
+	memset(parent_id, 0, sizeof(parent_id));
+	memset(fork_id, 0, sizeof(fork_id));
 
-  setupMain(kf);
-  setupTime();
-  setupAddressPool();
+	setupMain(kf);
+	setupTime();
+	setupAddressPool();
 }
 
-ExecutionState::ExecutionState(Executor *_executor, const std::vector<ref<Expr> > &assumptions)
-  : c9State(NULL),
-    executor(_executor),
-    queryCost(0.),
-    lastCoveredTime(sys::TimeValue::now()),
-    ptreeNode(0),
-    globalConstraints(assumptions),
-    wlistCounter(1),
-    preemptions(0),
-    totalInstructions(0),
-    totalBranches(0),
-    totalForks(0),
-    totalQueries(0),
-    totalTime(0) {
+ExecutionState::ExecutionState(Executor *_executor, const std::vector<ref<Expr> > &assumptions) :
+		c9State(NULL), executor(_executor), queryCost(0.), lastCoveredTime(sys::TimeValue::now()), ptreeNode(
+				0), globalConstraints(assumptions), wlistCounter(1), preemptions(0), totalInstructions(
+				0), totalBranches(0), totalForks(0), totalQueries(0), totalTime(0), globalCommLog() ,delayed(false),wildContained(false)
+,fileForLastRecvMaster(""),lineNumberForLastRecvMaster(-1){
 
-  memset(state_id, 0, sizeof(state_id));
-  memset(parent_id, 0, sizeof(parent_id));
-  memset(fork_id, 0, sizeof(fork_id));
+	memset(state_id, 0, sizeof(state_id));
+	memset(parent_id, 0, sizeof(parent_id));
+	memset(fork_id, 0, sizeof(fork_id));
 
-  setupMain(NULL);
+	setupMain(NULL);
 
 }
 
 void ExecutionState::setupTime() {
-  stateTime = 1284138206L * 1000000L; // Yeah, ugly, but what else? :)
+	stateTime = 1284138206L * 1000000L; // Yeah, ugly, but what else? :)
 }
 
 void ExecutionState::setupAddressPool() {
-  void *startAddress = mmap((void*)addressPool.getStartAddress(), addressPool.getSize(),
-      PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS | MAP_NORESERVE, -1, 0);
-  assert(startAddress != MAP_FAILED);
+	void *startAddress = mmap((void*) addressPool.getStartAddress(), addressPool.getSize(),
+			PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS | MAP_NORESERVE, -1, 0);
+	assert(startAddress != MAP_FAILED);
 
-  VLOG(2) << "Address pool starts at " << startAddress <<
-      " although it was requested at " << addressPool.getStartAddress();
+	VLOG(2) << "Address pool starts at " << startAddress << " although it was requested at "
+						<< addressPool.getStartAddress();
 
-  addressPool = AddressPool((uint64_t)startAddress, addressPool.getSize()); // Correct the address
+	addressPool = AddressPool((uint64_t) startAddress, addressPool.getSize()); // Correct the address
 }
 
 void ExecutionState::setupMain(KFunction *kf) {
-  Process mainProc = Process(2, 1);
-  Thread mainThread = Thread(0, 2, kf);
+	Process mainProc = Process(2, 1);
+	Thread mainThread = Thread(0, 2, kf);
 
-  mainProc.threads.insert(mainThread.tuid);
+	mainProc.threads.insert(mainThread.tuid);
 
-  threads.insert(std::make_pair(mainThread.tuid, mainThread));
-  processes.insert(std::make_pair(mainProc.pid, mainProc));
+	threads.insert(std::make_pair(mainThread.tuid, mainThread));
+	processes.insert(std::make_pair(mainProc.pid, mainProc));
 
-  crtThreadIt = threads.begin();
-  crtProcessIt = processes.find(crtThreadIt->second.getPid());
+	crtThreadIt = threads.begin();
+	crtProcessIt = processes.find(crtThreadIt->second.getPid());
 
-  cowDomain.push_back(&crtProcessIt->second.addressSpace);
+	cowDomain.push_back(&crtProcessIt->second.addressSpace);
 
-  crtProcessIt->second.addressSpace.cowDomain = &cowDomain;
+	crtProcessIt->second.addressSpace.cowDomain = &cowDomain;
 }
 
 Thread& ExecutionState::createThread(thread_id_t tid, KFunction *kf) {
-  Thread newThread = Thread(tid, crtProcess().pid, kf);
-  crtProcess().threads.insert(newThread.tuid);
+	//added by Herman
+	LOG(INFO)<<"create thread:"<<kf->function->getName().str()
+	<<"pid:"<<crtProcess().pid<<","<<"tid:"<<tid<<"\n";
 
-  threads.insert(std::make_pair(newThread.tuid, newThread));
+	Thread newThread = Thread(tid, crtProcess().pid, kf);
+	globalCommLog.chkmap[newThread.tuid]=0;
+	crtProcess().threads.insert(newThread.tuid);
 
-  return threads.find(newThread.tuid)->second;
+	threads.insert(std::make_pair(newThread.tuid, newThread));
+
+	// added by zhenbang
+	// create thread specific global objects
+	if (executor->isGlobalVariableThreaded)
+		executor->initializeThreadedGlobals(newThread.getTid(), (*this));
+
+	return threads.find(newThread.tuid)->second;
 }
 
 Process& ExecutionState::forkProcess(process_id_t pid) {
-  for (processes_ty::iterator it = processes.begin(); it != processes.end(); it++) {
-    it->second.addressSpace.cowKey++;
-  }
+	for (processes_ty::iterator it = processes.begin(); it != processes.end(); it++) {
+		it->second.addressSpace.cowKey++;
+	}
 
-  Process forked = Process(crtProcess());
+	Process forked = Process(crtProcess());
 
-  forked.pid = pid;
-  forked.ppid = crtProcess().pid;
-  forked.threads.clear();
-  forked.children.clear();
+	forked.pid = pid;
+	forked.ppid = crtProcess().pid;
+	forked.threads.clear();
+	forked.children.clear();
 
-  forked.forkPath.push_back(1); // Child
-  crtProcess().forkPath.push_back(0); // Parent
+	forked.forkPath.push_back(1); // Child
+	crtProcess().forkPath.push_back(0); // Parent
 
-  Thread forkedThread = Thread(crtThread());
-  forkedThread.tuid = std::make_pair(0, forked.pid);
+	Thread forkedThread = Thread(crtThread());
+	forkedThread.tuid = std::make_pair(0, forked.pid);
 
-  forked.threads.insert(forkedThread.tuid);
+	forked.threads.insert(forkedThread.tuid);
 
-  crtProcess().children.insert(forked.pid);
+	crtProcess().children.insert(forked.pid);
 
-  threads.insert(std::make_pair(forkedThread.tuid, forkedThread));
-  processes.insert(std::make_pair(forked.pid, forked));
+	threads.insert(std::make_pair(forkedThread.tuid, forkedThread));
+	processes.insert(std::make_pair(forked.pid, forked));
 
-  cowDomain.push_back(&processes.find(forked.pid)->second.addressSpace);
-  processes.find(forked.pid)->second.addressSpace.cowDomain = &cowDomain;
+	cowDomain.push_back(&processes.find(forked.pid)->second.addressSpace);
+	processes.find(forked.pid)->second.addressSpace.cowDomain = &cowDomain;
 
-  return processes.find(forked.pid)->second;
+	return processes.find(forked.pid)->second;
 }
 
 void ExecutionState::terminateThread(threads_ty::iterator thrIt) {
-  VLOG(1) << "Terminating thread...";
+	VLOG(1) << "Terminating thread...";
 
-  Process &proc = processes.find(thrIt->second.getPid())->second;
+	Process &proc = processes.find(thrIt->second.getPid())->second;
 
-  assert(proc.threads.size() > 1);
-  assert(thrIt != crtThreadIt); // We assume the scheduler found a new thread first
-  assert(!thrIt->second.enabled);
-  assert(thrIt->second.waitingList == 0);
+	assert(proc.threads.size() > 1);
+	assert(thrIt != crtThreadIt); // We assume the scheduler found a new thread first
+	assert(!thrIt->second.enabled);
+	assert(thrIt->second.waitingList == 0);
+	proc.threads.erase(thrIt->second.tuid);
 
-  proc.threads.erase(thrIt->second.tuid);
-
-  threads.erase(thrIt);
+	threads.erase(thrIt);
 
 }
 
 void ExecutionState::terminateProcess(processes_ty::iterator procIt) {
-  VLOG(1) << "Terminating process " << procIt->second.pid;
+	VLOG(1) << "Terminating process " << procIt->second.pid;
 
-  assert(processes.size() > 1);
+	assert(processes.size() > 1);
 
-  // Delete all process threads
-  for (std::set<thread_uid_t>::iterator it = procIt->second.threads.begin();
-      it != procIt->second.threads.end(); it++) {
-    threads_ty::iterator thrIt = threads.find(*it);
-    assert(thrIt != crtThreadIt);
-    assert(!thrIt->second.enabled);
-    assert(thrIt->second.waitingList == 0);
+	// Delete all process threads
+	for (std::set<thread_uid_t>::iterator it = procIt->second.threads.begin();
+			it != procIt->second.threads.end(); it++) {
+		threads_ty::iterator thrIt = threads.find(*it);
+		assert(thrIt != crtThreadIt);
+		assert(!thrIt->second.enabled);
+		assert(thrIt->second.waitingList == 0);
 
-    threads.erase(thrIt);
-  }
+		threads.erase(thrIt);
+	}
 
-  // Update the process hierarchy
-  if (procIt->second.ppid != 1) {
-    Process &parent = processes.find(procIt->second.ppid)->second;
+	// Update the process hierarchy
+	if (procIt->second.ppid != 1) {
+		Process &parent = processes.find(procIt->second.ppid)->second;
 
-    parent.children.erase(procIt->second.pid);
-  }
+		parent.children.erase(procIt->second.pid);
+	}
 
-  if (procIt->second.children.size() > 0) {
-    // Reassign the children to process 1
-    for (std::set<process_id_t>::iterator it = procIt->second.children.begin();
-        it != procIt->second.children.end(); it++) {
-      processes.find(*it)->second.ppid = 1;
-    }
-  }
+	if (procIt->second.children.size() > 0) {
+		// Reassign the children to process 1
+		for (std::set<process_id_t>::iterator it = procIt->second.children.begin();
+				it != procIt->second.children.end(); it++) {
+			processes.find(*it)->second.ppid = 1;
+		}
+	}
 
-  // Update the state COW domain
-  AddressSpace::cow_domain_t::iterator it =
-      std::find(cowDomain.begin(), cowDomain.end(), &procIt->second.addressSpace);
-  assert(it != cowDomain.end());
-  cowDomain.erase(it);
+	// Update the state COW domain
+	AddressSpace::cow_domain_t::iterator it = std::find(cowDomain.begin(), cowDomain.end(),
+			&procIt->second.addressSpace);
+	assert(it != cowDomain.end());
+	cowDomain.erase(it);
 
-  assert(procIt != crtProcessIt);
+	assert(procIt != crtProcessIt);
 
-  processes.erase(procIt);
+	processes.erase(procIt);
 }
 
 void ExecutionState::sleepThread(wlist_id_t wlist) {
-  assert(crtThread().enabled);
-  assert(wlist > 0);
+	assert(crtThread().enabled);
+	assert(wlist > 0);
 
-  crtThread().enabled = false;
-  crtThread().waitingList = wlist;
+	crtThread().enabled = false;
+	crtThread().waitingList = wlist;
 
-  std::set<thread_uid_t> &wl = waitingLists[wlist];
+	std::set<thread_uid_t> &wl = waitingLists[wlist];
 
-  wl.insert(crtThread().tuid);
+	wl.insert(crtThread().tuid);
 }
 
 void ExecutionState::notifyOne(wlist_id_t wlist, thread_uid_t tuid) {
-  assert(wlist > 0);
+	assert(wlist > 0);
 
-  std::set<thread_uid_t> &wl = waitingLists[wlist];
+	std::set<thread_uid_t> &wl = waitingLists[wlist];
 
-  if (wl.erase(tuid) != 1) {
-    assert(0 && "thread was not waiting");
-  }
+	if (wl.erase(tuid) != 1) {
+		assert(0 && "thread was not waiting");
+	}
 
-  Thread &thread = threads.find(tuid)->second;
-  assert(!thread.enabled);
-  thread.enabled = true;
-  thread.waitingList = 0;
+	Thread &thread = threads.find(tuid)->second;
+	assert(!thread.enabled);
+	thread.enabled = true;
+	thread.waitingList = 0;
 
-  if (wl.size() == 0)
-    waitingLists.erase(wlist);
+	if (wl.size() == 0)
+		waitingLists.erase(wlist);
 }
 
 void ExecutionState::notifyAll(wlist_id_t wlist) {
-  assert(wlist > 0);
+	assert(wlist > 0);
 
-  std::set<thread_uid_t> &wl = waitingLists[wlist];
+	std::set<thread_uid_t> &wl = waitingLists[wlist];
 
-  if (wl.size() > 0) {
-    for (std::set<thread_uid_t>::iterator it = wl.begin(); it != wl.end(); it++) {
-      Thread &thread = threads.find(*it)->second;
-      thread.enabled = true;
-      thread.waitingList = 0;
-    }
+	if (wl.size() > 0) {
+		for (std::set<thread_uid_t>::iterator it = wl.begin(); it != wl.end(); it++) {
+			Thread &thread = threads.find(*it)->second;
+			thread.enabled = true;
+			thread.waitingList = 0;
+		}
 
-    wl.clear();
-  }
+		wl.clear();
+	}
 
-  waitingLists.erase(wlist);
+	waitingLists.erase(wlist);
 }
 
 ExecutionState::~ExecutionState() {
-  for (threads_ty::iterator it = threads.begin(); it != threads.end(); it++) {
-    Thread &t = it->second;
-    while (!t.stack.empty())
-      popFrame(t);
-  }
+	for (threads_ty::iterator it = threads.begin(); it != threads.end(); it++) {
+		Thread &t = it->second;
+		while (!t.stack.empty())
+			popFrame(t);
+	}
 }
 
 ExecutionState *ExecutionState::branch(bool copy) {
-  if (!copy)
-    depth++;
+	 LOG(INFO)<<depth;
+	if (!copy)
+		depth++;
 
-  for (processes_ty::iterator it = processes.begin(); it != processes.end(); it++) {
-    it->second.addressSpace.cowKey++;
-  }
+	for (processes_ty::iterator it = processes.begin(); it != processes.end(); it++) {
+		it->second.addressSpace.cowKey++;
+	}
+	LOG(INFO) << depth;
+	ExecutionState *falseState = new ExecutionState(*this);
+	falseState->currentLTLStates = this->currentLTLStates;
+	falseState->fileForLastRecvMaster=this->fileForLastRecvMaster;// added by yhb, to make sure the location of the first repetitive recv in M-S is recorded!
+	falseState->lineNumberForLastRecvMaster=this->lineNumberForLastRecvMaster;
+//	falseState->constraints().dumpPC();
+//	LOG(INFO)<<"-------------------------------------------------" << 	&(this->constraints());
+//	LOG(INFO)<<"-------------------------------------------------" << 	&(falseState->constraints());
+	//added by yhb -------------------------------------------------------------------------------------------------------------------------------
+	// in order to handle the case of mandelBrot, the global operations will change, such as [0,7] in path1 is Isend(2), while in path2 will be Isend(1), result from the path condion changed!
+	// if we don't create a new Commlog, for example, [2,3] in path1 and path2 is the same object, in path1 set_match_candidate will include [0,7]/Isend(2), while in path2 [0,7] will change to Isend(2), conflicts!!!
+//	int size=falseState->globalCommLog.mpicommlog.size();
+//	std::map<CommLogItem *,CommLogItem *> updateMap;
+//	//LOG(INFO)<<falseState->globalCommLog.depth;
+//	for(int i=0;i<size;i++)
+//	{
+//		int size2=falseState->globalCommLog.mpicommlog[i].size();
+//		for(int j=0;j<size2;j++){
+//			bool flag=false;
+//		  updateMap.clear();
+//		  CommLogItem *temp=falseState->globalCommLog.mpicommlog[i][j];
+//		  if(  temp->isRecv() &&  (falseState->globalCommLog.logmatchflag[temp] ==UNMATCHED  || flag)  ) {
+//			  CommLogItem *item=new CommLogItem();
+//			  item->rank=temp->rank;
+//			  item->index=temp->index;
+//			  item->LabelOfIrecv=temp->LabelOfIrecv;
+//			  item->NB=temp->NB; item->NA=temp->NA;
+//			  item->mpi_op=temp->mpi_op;
+//			  item->wildcard_rewrite=temp->wildcard_rewrite;
+//			  item->funcname=temp->funcname;
+//			  item->arguments=temp->arguments;
+//			  if(!flag)
+//			  item->ancestors=temp->ancestors;
+//			  else{
+//				  item->ancestors=temp->ancestors;
+//				  for(std::set<CommLogItem*>::iterator iter = item->ancestors.begin(); iter != item->ancestors.end(); ++iter){
+//					  std::map<CommLogItem*,CommLogItem*>::iterator temp_it=updateMap.find(*iter);
+//					  if(temp_it  !=updateMap.end()  ){
+//						  item->ancestors.erase(*iter);
+//						  item->ancestors.insert((*temp_it).second);
+//					  }
+//				  }
+//			  }
+//			  updateMap.insert(map<CommLogItem *,CommLogItem *>:: value_type(temp,item));
+//			  falseState->globalCommLog.mpicommlog[i][j]=item;
+//			  falseState->globalCommLog.logmatchflag.erase(temp);
+//			  falseState->globalCommLog.logmatchflag.insert(map<CommLogItem *,MatchType>:: value_type(item,UNMATCHED));
+//			  flag=true;
+//		  }
+//		}
+//	}
+	//LOG(INFO)<<falseState->globalCommLog.depth;
+   // added end---------------------------------------------------------------------------------------------------------------------------------------------
+	if (!copy) {
+		falseState->coveredNew = false;
+		falseState->coveredLines.clear();
+	}
 
-  ExecutionState *falseState = new ExecutionState(*this);
+	falseState->c9State = NULL;
 
-  if (!copy) {
-    falseState->coveredNew = false;
-    falseState->coveredLines.clear();
-  }
+	falseState->crtThreadIt = falseState->threads.find(crtThreadIt->second.tuid);
+	falseState->crtProcessIt = falseState->processes.find(crtProcessIt->second.pid);
 
-  falseState->c9State = NULL;
+	falseState->cowDomain.clear();
 
-  falseState->crtThreadIt = falseState->threads.find(crtThreadIt->second.tuid);
-  falseState->crtProcessIt = falseState->processes.find(crtProcessIt->second.pid);
+	// Rebuilding the COW domain...
 
-  falseState->cowDomain.clear();
+	for (processes_ty::iterator it = falseState->processes.begin();
+			it != falseState->processes.end(); it++) {
+		falseState->cowDomain.push_back(&it->second.addressSpace);
+	}
 
-  // Rebuilding the COW domain...
+	for (processes_ty::iterator it = falseState->processes.begin();
+			it != falseState->processes.end(); it++) {
+		it->second.addressSpace.cowDomain = &falseState->cowDomain;
+	}
 
-  for (processes_ty::iterator it = falseState->processes.begin();
-      it != falseState->processes.end(); it++) {
-    falseState->cowDomain.push_back(&it->second.addressSpace);
-  }
+	if (!copy) {
+		weight *= .5;
+		falseState->weight -= weight;
 
-  for (processes_ty::iterator it = falseState->processes.begin();
-      it != falseState->processes.end(); it++) {
-    it->second.addressSpace.cowDomain = &falseState->cowDomain;
-  }
+		// Compute IDs
+		CryptoPP::SHA1 sha1compute;
+		unsigned char message[21];
+		::memcpy(message, fork_id, 20);
 
-  if (!copy) {
-    weight *= .5;
-    falseState->weight -= weight;
+		message[20] = 1;
+		sha1compute.CalculateDigest(fork_id, message, 21);
 
-    // Compute IDs
-    CryptoPP::SHA1 sha1compute;
-    unsigned char message[21];
-    ::memcpy(message, fork_id, 20);
+		message[20] = 0;
+		sha1compute.CalculateDigest(falseState->fork_id, message, 21);
 
-    message[20] = 1;
-    sha1compute.CalculateDigest(fork_id, message, 21);
+		::memcpy(falseState->state_id, falseState->fork_id, 20);
+		::memcpy(falseState->parent_id, state_id, 20);
+	}
 
-    message[20] = 0;
-    sha1compute.CalculateDigest(falseState->fork_id, message, 21);
-
-    ::memcpy(falseState->state_id, falseState->fork_id, 20);
-    ::memcpy(falseState->parent_id, state_id, 20);
-  }
-
-  return falseState;
+	return falseState;
 }
 
 ///
 
 std::string ExecutionState::getFnAlias(std::string fn) {
-  std::map < std::string, std::string >::iterator it = fnAliases.find(fn);
-  if (it != fnAliases.end())
-    return it->second;
-  else return "";
+	std::map<std::string, std::string>::iterator it = fnAliases.find(fn);
+	if (it != fnAliases.end())
+		return it->second;
+	else
+		return "";
 }
 
 void ExecutionState::addFnAlias(std::string old_fn, std::string new_fn) {
-  fnAliases[old_fn] = new_fn;
+	fnAliases[old_fn] = new_fn;
 }
 
 void ExecutionState::removeFnAlias(std::string fn) {
-  fnAliases.erase(fn);
+	fnAliases.erase(fn);
 }
 
 /**/
 
 std::ostream &operator<<(std::ostream &os, const MemoryMap &mm) {
-  os << "{";
-  MemoryMap::iterator it = mm.begin();
-  MemoryMap::iterator ie = mm.end();
-  if (it != ie) {
-    os << "MO" << it->first->id << ":" << it->second;
-    for (++it; it != ie; ++it)
-      os << ", MO" << it->first->id << ":" << it->second;
-  }
-  os << "}";
-  return os;
+	os << "{";
+	MemoryMap::iterator it = mm.begin();
+	MemoryMap::iterator ie = mm.end();
+	if (it != ie) {
+		os << "MO" << it->first->id << ":" << it->second;
+		for (++it; it != ie; ++it)
+			os << ", MO" << it->first->id << ":" << it->second;
+	}
+	os << "}";
+	return os;
 }
 
 std::ostream &operator<<(std::ostream &os, const ExecutionState &state) {
-  state.getStackTrace().dumpInline(os);
-  return os;
-  return klee::c9::printStateStack(os, state);
+	state.getStackTrace().dumpInline(os);
+	return os;
+	return klee::c9::printStateStack(os, state);
 }
 
-
-
-
 bool ExecutionState::merge(const ExecutionState &b) {
-  if (DebugLogStateMerge)
-    std::cerr << "-- attempting merge of A:" 
-               << this << " with B:" << &b << "--\n";
-  if (pc() != b.pc())
-    return false;
+	if (DebugLogStateMerge)
+		std::cerr << "-- attempting merge of A:" << this << " with B:" << &b << "--\n";
+	if (pc() != b.pc())
+		return false;
 
-  // XXX is it even possible for these to differ? does it matter? probably
-  // implies difference in object states?
-  if (symbolics!=b.symbolics)
-    return false;
+	// XXX is it even possible for these to differ? does it matter? probably
+	// implies difference in object states?
+	if (symbolics != b.symbolics)
+		return false;
 
-  {
-    std::vector<StackFrame>::const_iterator itA = stack().begin();
-    std::vector<StackFrame>::const_iterator itB = b.stack().begin();
-    while (itA!=stack().end() && itB!=b.stack().end()) {
-      // XXX vaargs?
-      if (itA->caller!=itB->caller || itA->kf!=itB->kf)
-        return false;
-      ++itA;
-      ++itB;
-    }
-    if (itA!=stack().end() || itB!=b.stack().end())
-      return false;
-  }
+	{
+		std::vector<StackFrame>::const_iterator itA = stack().begin();
+		std::vector<StackFrame>::const_iterator itB = b.stack().begin();
+		while (itA != stack().end() && itB != b.stack().end()) {
+			// XXX vaargs?
+			if (itA->caller != itB->caller || itA->kf != itB->kf)
+				return false;
+			++itA;
+			++itB;
+		}
+		if (itA != stack().end() || itB != b.stack().end())
+			return false;
+	}
 
-  std::set< ref<Expr> > aConstraints(constraints().begin(), constraints().end());
-  std::set< ref<Expr> > bConstraints(b.constraints().begin(),
-                                     b.constraints().end());
-  std::set< ref<Expr> > commonConstraints, aSuffix, bSuffix;
-  std::set_intersection(aConstraints.begin(), aConstraints.end(),
-                        bConstraints.begin(), bConstraints.end(),
-                        std::inserter(commonConstraints, commonConstraints.begin()));
-  std::set_difference(aConstraints.begin(), aConstraints.end(),
-                      commonConstraints.begin(), commonConstraints.end(),
-                      std::inserter(aSuffix, aSuffix.end()));
-  std::set_difference(bConstraints.begin(), bConstraints.end(),
-                      commonConstraints.begin(), commonConstraints.end(),
-                      std::inserter(bSuffix, bSuffix.end()));
-  if (DebugLogStateMerge) {
-    std::cerr << "\tconstraint prefix: [";
-    for (std::set< ref<Expr> >::iterator it = commonConstraints.begin(), 
-           ie = commonConstraints.end(); it != ie; ++it)
-      std::cerr << *it << ", ";
-    std::cerr << "]\n";
-    std::cerr << "\tA suffix: [";
-    for (std::set< ref<Expr> >::iterator it = aSuffix.begin(), 
-           ie = aSuffix.end(); it != ie; ++it)
-      std::cerr << *it << ", ";
-    std::cerr << "]\n";
-    std::cerr << "\tB suffix: [";
-    for (std::set< ref<Expr> >::iterator it = bSuffix.begin(), 
-           ie = bSuffix.end(); it != ie; ++it)
-      std::cerr << *it << ", ";
-    std::cerr << "]\n";
-  }
+	std::set<ref<Expr> > aConstraints(constraints().begin(), constraints().end());
+	std::set<ref<Expr> > bConstraints(b.constraints().begin(), b.constraints().end());
+	std::set<ref<Expr> > commonConstraints, aSuffix, bSuffix;
+	std::set_intersection(aConstraints.begin(), aConstraints.end(), bConstraints.begin(),
+			bConstraints.end(), std::inserter(commonConstraints, commonConstraints.begin()));
+	std::set_difference(aConstraints.begin(), aConstraints.end(), commonConstraints.begin(),
+			commonConstraints.end(), std::inserter(aSuffix, aSuffix.end()));
+	std::set_difference(bConstraints.begin(), bConstraints.end(), commonConstraints.begin(),
+			commonConstraints.end(), std::inserter(bSuffix, bSuffix.end()));
+	if (DebugLogStateMerge) {
+		std::cerr << "\tconstraint prefix: [";
+		for (std::set<ref<Expr> >::iterator it = commonConstraints.begin(), ie =
+				commonConstraints.end(); it != ie; ++it)
+			std::cerr << *it << ", ";
+		std::cerr << "]\n";
+		std::cerr << "\tA suffix: [";
+		for (std::set<ref<Expr> >::iterator it = aSuffix.begin(), ie = aSuffix.end(); it != ie;
+				++it)
+			std::cerr << *it << ", ";
+		std::cerr << "]\n";
+		std::cerr << "\tB suffix: [";
+		for (std::set<ref<Expr> >::iterator it = bSuffix.begin(), ie = bSuffix.end(); it != ie;
+				++it)
+			std::cerr << *it << ", ";
+		std::cerr << "]\n";
+	}
 
-  // We cannot merge if addresses would resolve differently in the
-  // states. This means:
-  // 
-  // 1. Any objects created since the branch in either object must
-  // have been free'd.
-  //
-  // 2. We cannot have free'd any pre-existing object in one state
-  // and not the other
+	// We cannot merge if addresses would resolve differently in the
+	// states. This means:
+	//
+	// 1. Any objects created since the branch in either object must
+	// have been free'd.
+	//
+	// 2. We cannot have free'd any pre-existing object in one state
+	// and not the other
 
-  if (DebugLogStateMerge) {
-    std::cerr << "\tchecking object states\n";
-    std::cerr << "A: " << addressSpace().objects << "\n";
-    std::cerr << "B: " << b.addressSpace().objects << "\n";
-  }
-    
-  std::set<const MemoryObject*> mutated;
-  MemoryMap::iterator ai = addressSpace().objects.begin();
-  MemoryMap::iterator bi = b.addressSpace().objects.begin();
-  MemoryMap::iterator ae = addressSpace().objects.end();
-  MemoryMap::iterator be = b.addressSpace().objects.end();
-  for (; ai!=ae && bi!=be; ++ai, ++bi) {
-    if (ai->first != bi->first) {
-      if (DebugLogStateMerge) {
-        if (ai->first < bi->first) {
-          std::cerr << "\t\tB misses binding for: " << ai->first->id << "\n";
-        } else {
-          std::cerr << "\t\tA misses binding for: " << bi->first->id << "\n";
-        }
-      }
-      return false;
-    }
-    if (ai->second != bi->second) {
-      if (DebugLogStateMerge)
-        std::cerr << "\t\tmutated: " << ai->first->id << "\n";
-      mutated.insert(ai->first);
-    }
-  }
-  if (ai!=ae || bi!=be) {
-    if (DebugLogStateMerge)
-      std::cerr << "\t\tmappings differ\n";
-    return false;
-  }
-  
-  // merge stack
+	if (DebugLogStateMerge) {
+		std::cerr << "\tchecking object states\n";
+		std::cerr << "A: " << addressSpace().objects << "\n";
+		std::cerr << "B: " << b.addressSpace().objects << "\n";
+	}
 
-  ref<Expr> inA = ConstantExpr::alloc(1, Expr::Bool);
-  ref<Expr> inB = ConstantExpr::alloc(1, Expr::Bool);
-  for (std::set< ref<Expr> >::iterator it = aSuffix.begin(), 
-         ie = aSuffix.end(); it != ie; ++it)
-    inA = AndExpr::create(inA, *it);
-  for (std::set< ref<Expr> >::iterator it = bSuffix.begin(), 
-         ie = bSuffix.end(); it != ie; ++it)
-    inB = AndExpr::create(inB, *it);
+	std::set<const MemoryObject*> mutated;
+	MemoryMap::iterator ai = addressSpace().objects.begin();
+	MemoryMap::iterator bi = b.addressSpace().objects.begin();
+	MemoryMap::iterator ae = addressSpace().objects.end();
+	MemoryMap::iterator be = b.addressSpace().objects.end();
+	for (; ai != ae && bi != be; ++ai, ++bi) {
+		if (ai->first != bi->first) {
+			if (DebugLogStateMerge) {
+				if (ai->first < bi->first) {
+					std::cerr << "\t\tB misses binding for: " << ai->first->id << "\n";
+				} else {
+					std::cerr << "\t\tA misses binding for: " << bi->first->id << "\n";
+				}
+			}
+			return false;
+		}
+		if (ai->second != bi->second) {
+			if (DebugLogStateMerge)
+				std::cerr << "\t\tmutated: " << ai->first->id << "\n";
+			mutated.insert(ai->first);
+		}
+	}
+	if (ai != ae || bi != be) {
+		if (DebugLogStateMerge)
+			std::cerr << "\t\tmappings differ\n";
+		return false;
+	}
 
-  // XXX should we have a preference as to which predicate to use?
-  // it seems like it can make a difference, even though logically
-  // they must contradict each other and so inA => !inB
+	// merge stack
 
-  std::vector<StackFrame>::iterator itA = stack().begin();
-  std::vector<StackFrame>::const_iterator itB = b.stack().begin();
-  for (; itA!=stack().end(); ++itA, ++itB) {
-    StackFrame &af = *itA;
-    const StackFrame &bf = *itB;
-    for (unsigned i=0; i<af.kf->numRegisters; i++) {
-      ref<Expr> &av = af.locals[i].value;
-      const ref<Expr> &bv = bf.locals[i].value;
-      if (av.isNull() || bv.isNull()) {
-        // if one is null then by implication (we are at same pc)
-        // we cannot reuse this local, so just ignore
-      } else {
-        av = SelectExpr::create(inA, av, bv);
-      }
-    }
-  }
+	ref<Expr> inA = ConstantExpr::alloc(1, Expr::Bool);
+	ref<Expr> inB = ConstantExpr::alloc(1, Expr::Bool);
+	for (std::set<ref<Expr> >::iterator it = aSuffix.begin(), ie = aSuffix.end(); it != ie; ++it)
+		inA = AndExpr::create(inA, *it);
+	for (std::set<ref<Expr> >::iterator it = bSuffix.begin(), ie = bSuffix.end(); it != ie; ++it)
+		inB = AndExpr::create(inB, *it);
 
-  for (std::set<const MemoryObject*>::iterator it = mutated.begin(), 
-         ie = mutated.end(); it != ie; ++it) {
-    const MemoryObject *mo = *it;
-    const ObjectState *os = addressSpace().findObject(mo);
-    const ObjectState *otherOS = b.addressSpace().findObject(mo);
-    assert(os && !os->readOnly && 
-           "objects mutated but not writable in merging state");
-    assert(otherOS);
+	// XXX should we have a preference as to which predicate to use?
+	// it seems like it can make a difference, even though logically
+	// they must contradict each other and so inA => !inB
 
-    ObjectState *wos = addressSpace().getWriteable(mo, os);
-    for (unsigned i=0; i<mo->size; i++) {
-      ref<Expr> av = wos->read8(i);
-      ref<Expr> bv = otherOS->read8(i);
-      wos->write(i, SelectExpr::create(inA, av, bv));
-    }
-  }
+	std::vector<StackFrame>::iterator itA = stack().begin();
+	std::vector<StackFrame>::const_iterator itB = b.stack().begin();
+	for (; itA != stack().end(); ++itA, ++itB) {
+		StackFrame &af = *itA;
+		const StackFrame &bf = *itB;
+		for (unsigned i = 0; i < af.kf->numRegisters; i++) {
+			ref<Expr> &av = af.locals[i].value;
+			const ref<Expr> &bv = bf.locals[i].value;
+			if (av.isNull() || bv.isNull()) {
+				// if one is null then by implication (we are at same pc)
+				// we cannot reuse this local, so just ignore
+			} else {
+				av = SelectExpr::create(inA, av, bv);
+			}
+		}
+	}
 
-  constraints() = ConstraintManager();
-  for (std::set< ref<Expr> >::iterator it = commonConstraints.begin(), 
-         ie = commonConstraints.end(); it != ie; ++it)
-    constraints().addConstraint(*it);
-  constraints().addConstraint(OrExpr::create(inA, inB));
+	for (std::set<const MemoryObject*>::iterator it = mutated.begin(), ie = mutated.end(); it != ie;
+			++it) {
+		const MemoryObject *mo = *it;
+		const ObjectState *os = addressSpace().findObject(mo);
+		const ObjectState *otherOS = b.addressSpace().findObject(mo);
+		assert(os && !os->readOnly && "objects mutated but not writable in merging state");
+		assert(otherOS);
 
-  return true;
+		ObjectState *wos = addressSpace().getWriteable(mo, os);
+		for (unsigned i = 0; i < mo->size; i++) {
+			ref<Expr> av = wos->read8(i);
+			ref<Expr> bv = otherOS->read8(i);
+			wos->write(i, SelectExpr::create(inA, av, bv));
+		}
+	}
+
+	constraints() = ConstraintManager();
+	for (std::set<ref<Expr> >::iterator it = commonConstraints.begin(), ie =
+			commonConstraints.end(); it != ie; ++it)
+		constraints().addConstraint(*it);
+	constraints().addConstraint(OrExpr::create(inA, inB));
+
+	return true;
 }
 
 /***/
 
 StackTrace ExecutionState::getStackTrace() const {
-  StackTrace result;
+	StackTrace result;
 
-  const KInstruction *target = prevPC();
+	const KInstruction *target = prevPC();
 
-  for (ExecutionState::stack_ty::const_reverse_iterator
-         it = stack().rbegin(), ie = stack().rend();
-       it != ie; ++it) {
+	for (ExecutionState::stack_ty::const_reverse_iterator it = stack().rbegin(), ie =
+			stack().rend(); it != ie; ++it) {
 
-    const StackFrame &sf = *it;
+		const StackFrame &sf = *it;
 
-    StackTrace::position_t position = std::make_pair(sf.kf, target);
-    std::vector<ref<Expr> > arguments;
+		StackTrace::position_t position = std::make_pair(sf.kf, target);
+		std::vector<ref<Expr> > arguments;
 
-    Function *f = sf.kf->function;
-    unsigned index = 0;
-    for (Function::arg_iterator ai = f->arg_begin(), ae = f->arg_end();
-         ai != ae; ++ai) {
+		Function *f = sf.kf->function;
+		unsigned index = 0;
+		for (Function::arg_iterator ai = f->arg_begin(), ae = f->arg_end(); ai != ae; ++ai) {
 
-      ref<Expr> value = sf.locals[sf.kf->getArgRegister(index++)].value;
-      arguments.push_back(value);
-    }
+			ref<Expr> value = sf.locals[sf.kf->getArgRegister(index++)].value;
+			arguments.push_back(value);
+		}
 
-    result.contents.push_back(std::make_pair(position, arguments));
+		result.contents.push_back(std::make_pair(position, arguments));
 
-    target = sf.caller;
-  }
+		target = sf.caller;
+	}
 
-  return result;
+	return result;
 }
 
 // XXX: Ugly hack.
@@ -582,18 +613,45 @@ StackTrace ExecutionState::getStackTrace() const {
 // the stack trace of the call, and see if there are any functions whose
 // source code is in our POSIX model.
 bool ExecutionState::isExternalCallSafe() const {
-  StackTrace stack_trace = getStackTrace();
+	StackTrace stack_trace = getStackTrace();
 
-  for (StackTrace::stack_t::iterator it = stack_trace.contents.begin(),
-      ie = stack_trace.contents.end(); it != ie; ++it) {
-    const KInstruction *ki = (*it).first.second;
-    if (ki && ki->info) {
-      if (ki->info->file.find("runtime/POSIX") != std::string::npos)
-        return true;
-    }
-  }
+	for (StackTrace::stack_t::iterator it = stack_trace.contents.begin(), ie =
+			stack_trace.contents.end(); it != ie; ++it) {
+		const KInstruction *ki = (*it).first.second;
+		if (ki && ki->info) {
+			if (ki->info->file.find("runtime/POSIX") != std::string::npos)
+				return true;
+		}
+	}
 
-  return false;
+	return false;
+}
+const InstructionInfo * ExecutionState::getCurrentStackCallerInfo() {
+	return crtThread().stack.back().caller->info;
 }
 
+void ExecutionState::dumpStack(){
+	int depth,i,j;
+	std::map<thread_uid_t, Thread>::iterator it = threads.begin();
+	j=0;
+	while (it != threads.end()) {
+		if(WithLibMPI && j++<=3) {
+			it++;
+			continue;
+		}
+
+		depth= it->second.stack.size() - 1;
+		LOG(ERROR)<< "***********************************************************";
+		for (i = depth; i > 0; i--) {
+			LOG(INFO)<< "Call: " << std::string(depth, ' ') <<it->second.stack[i].kf->function->getName().str()
+			<<"("<<it->second.stack[i].caller->info->file<<","<<it->second.stack[i].caller->info->line <<")";
+			if(i <= depth -15) break;
+		}
+		LOG(ERROR)<< "Call: " << std::string(depth, ' ') <<it->second.stack[0].kf->function->getName().str();
+		LOG(ERROR)<< "***********************************************************";
+		it++;
+	}
 }
+}
+
+

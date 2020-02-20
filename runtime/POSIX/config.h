@@ -37,7 +37,7 @@
 // System Limits
 ////////////////////////////////////////////////////////////////////////////////
 
-#define MAX_THREADS         16
+#define MAX_THREADS         128
 #define MAX_PROCESSES       8
 
 #define MAX_SEMAPHORES      8
@@ -64,6 +64,13 @@
 #define STREAM_BUFFER_SIZE      4096
 #define PIPE_BUFFER_SIZE        4096
 #define SENDFILE_BUFFER_SIZE    256
+// Thread specific support
+#define __PTHREAD_KEYS_MAX                     256 // added by Herman.
+#define __PTHREAD_KEY_2NDLEVEL_SIZE  16
+#define __PTHREAD_KEY_1STLEVEL_SIZE \
+       ((__PTHREAD_KEYS_MAX + __PTHREAD_KEY_2NDLEVEL_SIZE -1)\
+         / __PTHREAD_KEY_2NDLEVEL_SIZE)
+
 
 ////////////////////////////////////////////////////////////////////////////////
 // Enabled Components
@@ -73,6 +80,7 @@
 //#define HAVE_STUBBED_STDIO      1
 //#define HAVE_SYMBOLIC_CTYPE     1
 //#define HAVE_POSIX_SIGNALS  1
+#define  HAVE_MPI_SUPPORT              1   // added by Herman, to support MPI routines
 
 
 #endif /* POSIX_CONFIG_H_ */

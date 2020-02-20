@@ -16,6 +16,7 @@
 #include <string>
 #include <cassert>
 #include <string.h>
+#include <set>
 
 namespace klee {
   class Statistic;
@@ -60,6 +61,11 @@ namespace klee {
   public:
     StatisticManager();
     ~StatisticManager();
+    int iteration; //added by yhb, used to indicate the iteration we found deadlock!
+    std::set <std::string> pcContainer; //added by yhb, used to indicate how many different path conditions.
+    std::vector<int> stats2;
+    int iterationForDeadlock;
+    int iterationForLTLViolation;
 
     void useIndexedStats(unsigned totalIndices);
 

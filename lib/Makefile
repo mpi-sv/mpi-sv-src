@@ -9,6 +9,6 @@
 
 LEVEL=..
 
-PARALLEL_DIRS=Basic Support Expr Solver Module Core Data Cloud9
+PARALLEL_DIRS=Basic Support Expr Solver Module Core Data Cloud9 MPIse LTL
 
 include $(LEVEL)/Makefile.common

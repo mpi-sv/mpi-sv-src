@@ -177,6 +177,62 @@ else
   AC_SUBST(ENABLE_UCLIBC,[[0]])
 fi
 
+
+AC_MSG_CHECKING([uclibc])
+if (test X${with_uclibc} != X); then
+   if test ! -d ${with_uclibc}; then
+       AC_MSG_ERROR([invalid uclibc directory: ${with_uclibc}])
+   fi
+
+   dnl Make the path absolute
+   with_uclibc=`cd $with_uclibc 2> /dev/null; pwd`
+
+   AC_MSG_RESULT([$with_uclibc])
+else
+   AC_MSG_RESULT([no])
+fi
+
+AC_DEFINE_UNQUOTED(KLEE_UCLIBC, "$with_uclibc", [Path to KLEE's uClibc])
+AC_SUBST(KLEE_UCLIBC)         
+
+if test X${with_uclibc} != X ; then
+  AC_SUBST(ENABLE_UCLIBC,[[1]])
+else
+  AC_SUBST(ENABLE_UCLIBC,[[0]])
+fi
+
+dnl *************************************************************************
+
+
+AC_ARG_WITH(libMPI,
+  AS_HELP_STRING([--with-libMPI],
+    [Enable use of the libMPI at the given path]),enableval=default)
+
+dnl Validate libMPI if given.
+
+AC_MSG_CHECKING([libMPI])
+if (test X${with_libMPI} != X); then
+   if test ! -d ${with_libMPI}; then
+       AC_MSG_ERROR([invalid libMPI directory: ${with_libMPI}])
+   fi
+
+   dnl Make the path absolute
+   with_libMPI=`cd $with_libMPI 2> /dev/null; pwd`
+
+   AC_MSG_RESULT([$with_libMPI])
+else
+   AC_MSG_RESULT([no])
+fi        
+
+AC_DEFINE_UNQUOTED(KLEE_LIBMPI, "$with_libMPI", [Path to LIBMPI])
+AC_SUBST(KLEE_LIBMPI)  
+
+if test X${with_libMPI} != X ; then
+  AC_SUBST(ENABLE_LIBMPI,[[1]])
+else
+  AC_SUBST(ENABLE_LIBMPI,[[0]])
+fi
+
 dnl **************************************************************************
 dnl User option to enable the POSIX runtime
 
@@ -221,7 +277,7 @@ AC_ARG_WITH(runtime,
     withval=default)
 
 if test X"${withval}" = Xdefault; then
-   with_runtime=Release
+   with_runtime=Release+Asserts
 fi
 
 AC_MSG_CHECKING([runtime configuration])
@@ -231,6 +287,12 @@ if test X${with_runtime} = XRelease; then
 elif test X${with_runtime} = XDebug; then
    AC_MSG_RESULT([Debug])
    AC_SUBST(RUNTIME_ENABLE_OPTIMIZED,[[0]])
+elif test X${with_runtime} = XRelease+Asserts; then
+    AC_MSG_RESULT([Release+Asserts])
+    AC_SUBST(RUNTIME_ENABLE_OPTIMIZED,[[1]])
+elif test X${with_runtime} = XDebug+Asserts; then
+    AC_MSG_RESULT([Debug+Asserts])
+    AC_SUBST(RUNTIME_ENABLE_OPTIMIZED,[[0]])
 else
    AC_MSG_ERROR([invalid configuration: ${with_runtime}])
 fi

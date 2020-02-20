@@ -52,6 +52,7 @@
 #include "llvm/Support/Path.h"
 
 #include <glog/logging.h>
+#include "klee/Statistics.h"
 
 using namespace llvm;
 
@@ -285,7 +286,6 @@ void KleeHandler::processTestCase(const ExecutionState &state,
         LOG(WARNING) << "Unable to write output test case";
       }
     }
-
     if (errorMessage || WritePCs) {
       std::string constraints;
       m_interpreter->getConstraintLog(state, constraints);

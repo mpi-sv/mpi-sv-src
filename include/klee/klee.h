@@ -24,7 +24,6 @@ extern "C" {
      (obviously) not correctly interact with external function
      calls. */
   void klee_define_fixed_object(void *addr, size_t nbytes);
-
   /// klee_make_symbolic - Make the contents of the object pointer to by \arg
   /// addr symbolic. 
   ///
@@ -188,6 +187,9 @@ extern "C" {
   // Because of limited support for calling external variadic functions,
   // klee_debug accepts either a set of 32-bit integers, or a single 64-bit value (char*).
   void klee_debug(const char *format, ...);
+
+  // To deal with mpi communication, added by Herman
+  int klee_mpi_comm(int src, int dest, int type);
 
 #ifdef __cplusplus
 }

@@ -25,6 +25,7 @@
 #include "llvm/Module.h"
 #include "llvm/Support/CallSite.h"
 #include "llvm/Support/raw_ostream.h"
+#include "llvm/Support/CommandLine.h"
 #include "llvm/Target/TargetData.h"
 
 #include <glog/logging.h>
@@ -35,6 +36,8 @@
 
 using namespace klee;
 using namespace llvm;
+
+extern cl::list<std::string> ThreadSpecificGlobalVariable;
 
 namespace klee {
 
@@ -199,6 +202,8 @@ ref<ConstantExpr> Executor::evalConstantExpr(const llvm::ConstantExpr *ce) {
   }
 }
 
+extern thread_id_t current_thread_it;
+
 ref<klee::ConstantExpr> Executor::evalConstant(const Constant *c) {
   if (getWidthForLLVMType(c->getType()) == 0) {
     std::string conststr;
@@ -226,7 +231,19 @@ ref<klee::ConstantExpr> Executor::evalConstant(const Constant *c) {
     } else if (const ConstantFP *cf = dyn_cast<ConstantFP>(c)) {
       return ConstantExpr::alloc(cf->getValueAPF().bitcastToAPInt());
     } else if (const GlobalValue *gv = dyn_cast<GlobalValue>(c)) {
-      return globalAddresses.find(gv)->second;
+      //return threaded address
+      if (!isGlobalVariableThreaded)
+        return globalAddresses.find(gv)->second;
+      ref<ConstantExpr> address = globalAddresses.find(gv)->second;
+      vector<ref<ConstantExpr> >::const_iterator it =
+              find(threadedAddresses.begin(), threadedAddresses.end(), (ConstantExpr *)address.get());
+      if (it != threadedAddresses.end() && this->activeState != NULL){
+        thread_id_t tid = current_thread_it;
+        Cell *c = this->threadedGlobalAddresses.find(tid)->second->find((ConstantExpr *) address.get())->second;
+        return (ConstantExpr *)c->value.get();
+      } else {
+        return address;
+      }
     } else if (isa<ConstantPointerNull>(c)) {
       return Expr::createPointer(0);
     } else if (isa<UndefValue>(c) || isa<ConstantAggregateZero>(c)) {
@@ -273,6 +290,7 @@ const Cell& Executor::eval(KInstruction *ki, unsigned index,
       << " Index: " << index
       << " Num. op.: " << ki->inst->getNumOperands();
 
+
   assert(index < ki->inst->getNumOperands());
   int vnumber = ki->operands[index];
 
@@ -282,7 +300,26 @@ const Cell& Executor::eval(KInstruction *ki, unsigned index,
   // Determine if this is a constant or not.
   if (vnumber < 0) {
     unsigned index = -vnumber - 2;
-    return kmodule->constantTable[index];
+    if (!isGlobalVariableThreaded)
+     return kmodule->constantTable[index]; // original return
+    // we need to retrive the thread specific address (added by zhenbang)
+    Cell t = kmodule->constantTable[index];
+    ref<Expr> address = t.value;
+    // check whether address is the address of a global object
+    if (isa<ConstantExpr>(address)){
+      vector<ref<ConstantExpr> >::const_iterator it =
+              find(threadedAddresses.begin(), threadedAddresses.end(), (ConstantExpr *)address.get());
+      if (it != threadedAddresses.end()){
+        //LOG(INFO) << "\n---------------------------loading a global address--------------------------\n";
+        thread_id_t tid = state.crtThread().getTid();
+        Cell *c = this->threadedGlobalAddresses.find(tid)->second->find((ConstantExpr *) address.get())->second;
+        return *c;
+      } else {
+        return kmodule->constantTable[index];
+      }
+    } else {
+      return kmodule->constantTable[index];
+    }
   } else {
     unsigned index = vnumber;
     StackFrame &sf = state.stack().back();

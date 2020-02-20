@@ -89,7 +89,7 @@ class GCovParser(object):
         logging.info("  *NO COVERABLE LINES*")
       else:
         logging.info("  Coverage: %.2f%% [%d/%d]"
-                     % (100.0*covered_lines/coverable_lines,
+                     % (100.0 * covered_lines / coverable_lines,
                         covered_lines,
                         coverable_lines))
 

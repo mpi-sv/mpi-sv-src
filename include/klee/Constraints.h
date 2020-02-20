@@ -9,13 +9,14 @@
 
 #ifndef KLEE_CONSTRAINTS_H
 #define KLEE_CONSTRAINTS_H
-
+#include <stdio.h>
 #include "klee/util/Ref.h"
 #include "klee/Expr.h"
 
 #include <vector>
 #include <queue>
-
+#include <algorithm>
+#include <glog/logging.h>
 // FIXME: Currently we use ConstraintManager for two things: to pass
 // sets of constraints around, and to optimize constraints. We should
 // move the first usage into a separate data structure
@@ -49,6 +50,34 @@ public:
   ref<Expr> simplifyExpr(ref<Expr> e) const;
 
   void addConstraint(ref<Expr> e);
+
+  /*
+   * added yhb
+   * used to indicate whether a path condition is contained in the current path condition*/
+  bool containsCM(ConstraintManager cs){
+	  std::vector< ref<Expr> > ::iterator it=cs.constraints.begin();
+	  while(it!=cs.constraints.end()){
+		  if(find(constraints.begin(), constraints.end(), *it)!=constraints.end()){
+			  it++;
+		  }
+		  else{
+			  return false;
+		  }
+	  }
+	  return true;
+  }
+
+  /*
+   * added yhb
+   * used to dump the PC*/
+  bool dumpPC(){
+	  std::vector< ref<Expr> > ::iterator it=constraints.begin();
+	  while(it!=constraints.end()){
+		    //     LOG(INFO)<<"con is:"<<*it;
+	     it++;
+	  }
+	  return true;
+  }
 
   bool empty() const {
     return constraints.empty();

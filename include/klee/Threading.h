@@ -88,6 +88,7 @@ class Thread {
   friend class Executor;
   friend class ExecutionState;
   friend class Process;
+  friend class CommLogManager;
 private:
 
   KInstIterator pc, prevPC;
@@ -104,6 +105,9 @@ public:
 
   thread_id_t getTid() const { return tuid.first; }
   process_id_t getPid() const { return tuid.second; }
+  thread_uid_t getTuid() const { return tuid;}
+  bool getEnabled() const { return enabled;}
+  void dumpStack(std::ostream &out);
 };
 
 }

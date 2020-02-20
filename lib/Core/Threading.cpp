@@ -28,73 +28,86 @@
  *
  * All contributors are listed in CLOUD9-AUTHORS file.
  *
-*/
+ */
 
 #include "klee/Threading.h"
 #include "klee/ExecutionState.h"
 #include "klee/Internal/Module/KModule.h"
 #include "klee/Internal/Module/Cell.h"
-
+#include "klee/Internal/Module/KInstruction.h"
 namespace klee {
 
 /* StackFrame Methods */
 
-StackFrame::StackFrame(KInstIterator _caller, KFunction *_kf)
-  : caller(_caller), kf(_kf), callPathNode(0),
-    minDistToUncoveredOnReturn(0), varargs(0) {
-  locals = new Cell[kf->numRegisters];
+StackFrame::StackFrame(KInstIterator _caller, KFunction *_kf) :
+		caller(_caller), kf(_kf), callPathNode(0), minDistToUncoveredOnReturn(0), varargs(0) {
+	locals = new Cell[kf->numRegisters];
 }
 
-StackFrame::StackFrame(const StackFrame &s)
-  : caller(s.caller),
-    kf(s.kf),
-    callPathNode(s.callPathNode),
-    allocas(s.allocas),
-    minDistToUncoveredOnReturn(s.minDistToUncoveredOnReturn),
-    varargs(s.varargs) {
-  locals = new Cell[s.kf->numRegisters];
-  for (unsigned i=0; i<s.kf->numRegisters; i++)
-    locals[i] = s.locals[i];
+StackFrame::StackFrame(const StackFrame &s) :
+		caller(s.caller), kf(s.kf), callPathNode(s.callPathNode), allocas(s.allocas), minDistToUncoveredOnReturn(
+				s.minDistToUncoveredOnReturn), varargs(s.varargs) {
+	locals = new Cell[s.kf->numRegisters];
+	for (unsigned i = 0; i < s.kf->numRegisters; i++)
+		locals[i] = s.locals[i];
 }
 
 StackFrame& StackFrame::operator=(const StackFrame &s) {
-  if (this != &s) {
-    caller = s.caller;
-    kf = s.kf;
-    callPathNode = s.callPathNode;
-    allocas = s.allocas;
-    minDistToUncoveredOnReturn = s.minDistToUncoveredOnReturn;
-    varargs = s.varargs;
+	if (this != &s) {
+		caller = s.caller;
+		kf = s.kf;
+		callPathNode = s.callPathNode;
+		allocas = s.allocas;
+		minDistToUncoveredOnReturn = s.minDistToUncoveredOnReturn;
+		varargs = s.varargs;
 
-    if (locals)
-      delete []locals;
+		if (locals)
+			delete[] locals;
 
-    locals = new Cell[s.kf->numRegisters];
-    for (unsigned i=0; i<s.kf->numRegisters; i++)
-        locals[i] = s.locals[i];
-  }
+		locals = new Cell[s.kf->numRegisters];
+		for (unsigned i = 0; i < s.kf->numRegisters; i++)
+			locals[i] = s.locals[i];
+	}
 
-  return *this;
+	return *this;
 }
 
 StackFrame::~StackFrame() {
-  delete[] locals;
+	delete[] locals;
 }
 
 /* Thread class methods */
 
 Thread::Thread(thread_id_t tid, process_id_t pid, KFunction * kf) :
-  enabled(true), waitingList(0) {
+		enabled(true), waitingList(0) {
 
-  tuid = std::make_pair(tid, pid);
+	tuid = std::make_pair(tid, pid);
 
-  if (kf) {
-    stack.push_back(StackFrame(0, kf));
+	if (kf) {
+		stack.push_back(StackFrame(0, kf));
 
-    pc = kf->instructions;
-    prevPC = pc;
-  }
+		pc = kf->instructions;
+		prevPC = pc;
+	}
 
+}
+
+void Thread::dumpStack(std::ostream &out) {
+	int j;
+	int depth = stack.size() - 1;
+	for (j = depth; j > 0; j--) {
+		if (stack[j].caller->info->file != "") {
+			out << "Call: " << std::string(depth, ' ') << stack[j].kf->function->getName().str()
+					<< "(" << stack[j].caller->info->file << "," << stack[j].caller->info->line
+					<< ")\n";
+		} else
+			out << "Call: " << std::string(depth, ' ') << stack[j].kf->function->getName().str()<<"\n";
+		if (j <= depth - 10)
+			break;
+	}
+	out << "Call: " << std::string(depth, ' ')<< stack[0].kf->function->getName().str()<<"\n";
+	out << "***********************************************************\n";
 }
 
 }
+

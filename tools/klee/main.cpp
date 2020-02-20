@@ -85,11 +85,17 @@ namespace {
   Watchdog("watchdog",
            cl::desc("Use a watchdog process to enforce --max-time."),
            cl::init(0));
+
+
+
+  //===---------------------
 }
-
 extern cl::opt<double> MaxTime;
-
-//===----------------------------------------------------------------------===//
+extern cl::opt<bool> SyncOpt;
+extern cl::opt<bool> BlockSend;
+extern cl::opt<bool> ThreadedAllGlobals;
+extern cl::list<std::string> ThreadSpecificGlobalVariable;
+//-------------------------------------------------===//
 // main Driver function
 //
 #if ENABLE_STPLOG == 1
@@ -209,6 +215,7 @@ static char *format_tdiff(char *buf, long seconds)
   return buf;
 }
 
+
 int main(int argc, char **argv, char **envp) {  
 #if ENABLE_STPLOG == 1
   STPLOG_init("stplog.c");
@@ -222,6 +229,9 @@ int main(int argc, char **argv, char **envp) {
 
   parseArguments(argc, argv);
   sys::PrintStackTraceOnErrorSignal();
+  if(SyncOpt){
+	  LOG(INFO)<<"with syncopt enabled.";
+  }
 
   if (Watchdog) {
     if (MaxTime==0) {
@@ -287,7 +297,25 @@ int main(int argc, char **argv, char **envp) {
 
   sys::SetInterruptFunction(interrupt_handle);
 
+  /*YU: load the llvm bitecode of the program*/
   Module *mainModule = loadByteCode();
+
+
+  //add by zhenbang
+  //make all global variables thread specific
+  if (ThreadedAllGlobals) {
+    for (Module::const_global_iterator it = mainModule->global_begin(); it != mainModule->global_end(); it++){
+      GlobalVariable *v = (GlobalVariable *)&(*it);
+      string name = v->getName().str();
+      // acutally, these checks may cause problems, but still ....
+      if (name.find('.') == string::npos && name.find("key_self") == string::npos &&
+          name.find("stdout") == string::npos && name.find("stderr") == string::npos &&
+          name .find("BasicDTypeTable") == string::npos) {
+        ThreadSpecificGlobalVariable.push_back(name);
+      }
+    }
+  }
+
   mainModule = prepareModule(mainModule);
 
   // Get the desired main function.  klee_main initializes uClibc
@@ -333,6 +361,7 @@ int main(int argc, char **argv, char **envp) {
   time_t t[2];
   t[0] = time(NULL);
   strftime(buf, sizeof(buf), "Started: %Y-%m-%d %H:%M:%S\n", localtime(&t[0]));
+  LOG(INFO)<<buf;
   infoFile << buf;
   infoFile.flush();
 
@@ -343,6 +372,7 @@ int main(int argc, char **argv, char **envp) {
       LOG(FATAL) << "Unable to change directory to: " << RunInDir.c_str();
     }
   }
+  /*YU: do the main work of SE, actually invoke Executor->runFunctionAsMain*/
   interpreter->runFunctionAsMain(mainFn, pArgc, pArgv, pEnvp);
       
   t[1] = time(NULL);
@@ -370,8 +400,8 @@ int main(int argc, char **argv, char **envp) {
   uint64_t forks = 
     *theStatisticManager->getStatisticByName("Forks");
 
-  handler->getInfoStream() 
-    << "KLEE: done: explored paths = " << 1 + forks << "\n";
+//  handler->getInfoStream()
+//    << "KLEE: done: explored paths = " << 1 + forks << "\n";
 
   // Write some extra information in the info file which users won't
   // necessarily care about or understand.
@@ -387,12 +417,25 @@ int main(int argc, char **argv, char **envp) {
 
   std::stringstream stats;
   stats << "\n";
-  stats << "KLEE: done: total instructions = " 
-        << instructions << "\n";
-  stats << "KLEE: done: completed paths = " 
-        << handler->getNumPathsExplored() << "\n";
-  stats << "KLEE: done: generated tests = " 
-        << handler->getNumTestCases() << "\n";
+//  stats << "KLEE: done: total instructions = "
+//        << instructions << "\n";
+//  stats << "KLEE: done: completed paths = "
+//        << handler->getNumPathsExplored() << "\n";
+//  stats << "KLEE: done: generated tests = "
+//        << handler->getNumTestCases() << "\n";
+  stats << "MPI-SV: totally "
+        << theStatisticManager->iteration<< " iterations\n";
+  if (theStatisticManager->iterationForDeadlock>=0){
+	  stats << "MPI-SV: find a violation in the "
+	          << theStatisticManager->iteration<< " iterations\n";
+  } else if (theStatisticManager->iterationForLTLViolation >=0){
+    stats << "MPI-SV: find a violation in the "
+          << theStatisticManager->iteration<< " iterations\n";
+  } else stats << "No Violation detected by MPI-SV\n";
+
+  //stats << "Result: "<<((theStatisticManager->iterationForDeadlock>=0)?0:1)<<"-"<<theStatisticManager->iteration<<"-"<<handler->getNumPathsExplored()<< "\n";
+
+  stats << "Different Pcs: "<<(theStatisticManager->pcContainer).size()<<"\n";
   std::cerr << stats.str();
   handler->getInfoStream() << stats.str();
 

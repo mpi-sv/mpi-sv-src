@@ -103,7 +103,7 @@ def main():
         logging.info("  *NO COVERABLE LINES*")
       else:
         logging.info("  Coverage: %.2f%% [%d/%d]"
-                     % (100.0*len(file_covered_lines)/len(file_coverable_lines),
+                     % (100.0 * len(file_covered_lines) / len(file_coverable_lines),
                         len(file_covered_lines),
                         len(file_coverable_lines)))
 
@@ -118,7 +118,7 @@ def main():
             else:
               line_info = "-"
 
-            print >>gcov_file, "%9s:%5d:%s" % (line_info,
+            print >> gcov_file, "%9s:%5d:%s" % (line_info,
                                                line_counter,
                                                source_line),
             line_counter += 1

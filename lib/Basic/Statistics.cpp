@@ -20,7 +20,8 @@ StatisticManager::StatisticManager()
     indexedStats(0),
     changedIdxStats(0),
     contextStats(0),
-    index(0) {
+    index(0) ,
+    iteration(0),iterationForDeadlock(-1),iterationForLTLViolation(-1){ // added the last element by yhb, used to indicate the iteration we found deadlock
 }
 
 StatisticManager::~StatisticManager() {

@@ -23,14 +23,20 @@
 #include "klee/Internal/Module/Cell.h"
 #include "klee/Internal/Module/KInstruction.h"
 #include "klee/Internal/Module/KModule.h"
+#include "klee/Executor.h"
 #include "llvm/Support/CallSite.h"
+#include "llvm/Support/CommandLine.h"
 #include "cloud9/worker/SymbolicEngine.h"
+#include "mpise/commlogManager.h"
 #include <vector>
 #include <string>
 #include <map>
 #include <set>
+#include "ltl/Property.h"
 
 struct KTest;
+
+extern cl::opt<std::string> LTLFile;
 
 namespace llvm {
   class BasicBlock;
@@ -83,6 +89,8 @@ class Executor : public Interpreter, public ::cloud9::worker::SymbolicEngine {
   friend class SpecialFunctionHandler;
   friend class StatsTracker;
   friend class ObjectState;
+  friend class CommLogManager;
+  friend class ExecutionState;
 
 public:
   class Timer {
@@ -95,6 +103,17 @@ public:
   };
 
   typedef std::pair<ExecutionState*,ExecutionState*> StatePair;
+  typedef std::map<std::string, klee::ExecutionState*> location2state_ty;
+  location2state_ty location2state;
+  ExecutionState* mpiseDeadlockstate;
+  string wildmatchesmark;
+  bool deadlockHappened; // used to stop SE if deadlock happened;
+  string lastFile; // used to indicate the file of the newest encountering method invocation
+	int lastLineNumber; // used to indicate the line number of invocation in the file
+	//int counter; //used to finding the real invocation of MPI communications since they are rewritten in hook.c/  counter: 2->1->0->2 ....
+  ConstraintManager pcPATused;//added by yhb,used to indicate the last finished path condition which called PAT
+
+  LTL_Property *property;
 
 private:
   class TimerInfo;
@@ -133,6 +152,14 @@ private:
   /// globals that have no representative object (i.e. functions).
   std::map<const llvm::GlobalValue*, ref<ConstantExpr> > globalAddresses;
 
+  std::vector<ref<ConstantExpr> > threadedAddresses;
+
+  // added by zhenbang
+  /// support thread specific global varaiables
+  std::map<thread_id_t, std::map<ref<ConstantExpr>, MemoryObject*> *>  threadedGlobalObjects;
+
+  std::map<thread_id_t, std::map<ref<ConstantExpr>, Cell*> *>  threadedGlobalAddresses;
+
   /// The set of legal function addresses, used to validate function
   /// pointers. We use the actual Function* address as the function address.
   std::set<uint64_t> legalFunctions;
@@ -156,6 +183,8 @@ private:
   double stpTimeout;
   double instrTime;
 
+  bool isGlobalVariableThreaded;
+
   llvm::Function* getCalledFunction(llvm::CallSite &cs, ExecutionState &state);
   
   void executeInstruction(ExecutionState &state, KInstruction *ki);
@@ -173,6 +202,7 @@ private:
             const llvm::Constant *c,
             unsigned offset);
   void initializeGlobals(ExecutionState &state);
+  void initializeThreadedGlobals(thread_id_t threadid, ExecutionState &state);
 
   void stepInstruction(ExecutionState &state);
   void updateStates(ExecutionState *current);
@@ -415,6 +445,13 @@ private:
 
   void executeFork(ExecutionState &state, KInstruction *ki, uint64_t reason);
 
+  //Herman added
+  void threadexecutecall(ExecutionState &state, Thread & thread, mpi_rank_t rank, Function *f,
+  		std::vector<ref<Expr> > &arguments, bool isfirstone);
+  void preprocessAddedstates(ExecutionState &state,string wildmatches);
+  void insertLoctoState(Executor::location2state_ty::value_type p);
+  const llvm::Instruction * getInsofFunction(ExecutionState &state, Thread & thread, Function *f);
+  bool checkGlobalAllDelayed(); /// added by zhenbang
 public:
   Executor(const InterpreterOptions &opts, InterpreterHandler *ie);
   virtual ~Executor();
@@ -494,7 +531,7 @@ public:
   //Hack for dynamic cast in CoreStrategies, TODO Solve it as soon as possible
   static bool classof(const SymbolicEngine* engine){ return true; }
 };
-  
+
 } // End klee namespace
 
 #endif

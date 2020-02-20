@@ -103,7 +103,7 @@ def main():
       covered_lines[file_source] = source_covered
       
   coverage_annotator = coverage.CoverageAnnotator(
-      coverage_data=covered_lines, ground_coverage_data=coverable_lines, 
+      coverage_data=covered_lines, ground_coverage_data=coverable_lines,
       source_filter=source_filter)
 
   annotation_data = coverage_annotator.AnnotateDirectory(args.code_root)

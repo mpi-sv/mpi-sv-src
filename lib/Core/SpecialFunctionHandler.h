@@ -132,6 +132,18 @@ namespace klee {
     HANDLER(handleValloc);
     HANDLER(handleWarning);
     HANDLER(handleWarningOnce);
+    HANDLER(handleMPIcomm);
+    HANDLER(handleGetAnysrcCandi);
+    HANDLER(handleMPInonblock);
+    HANDLER(handleDisableSyncChk);
+    HANDLER(handleEnableSyncChk);
+    HANDLER(handleFireMPI7para);
+    HANDLER(handleFireMPI1para);
+    HANDLER(handleFireMPI2para);
+    HANDLER(handleFireMPI0para);
+    HANDLER(handleFireMPISlave); //added by yhb
+    HANDLER(handleSetNodeCount);
+    HANDLER(handleKeepBlock);
 #undef HANDLER
   };
 } // End klee namespace

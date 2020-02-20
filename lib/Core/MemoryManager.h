@@ -26,9 +26,9 @@ namespace klee {
     objects_ty objects;
 
   public:
-    MemoryManager() {}
+    MemoryManager() {Destroyed=false;}
     ~MemoryManager();
-
+    bool Destroyed;
     MemoryObject *allocate(ExecutionState *state, uint64_t size, bool isLocal, bool isGlobal,
                            const llvm::Value *allocSite);
     MemoryObject *allocateFixed(uint64_t address, uint64_t size,

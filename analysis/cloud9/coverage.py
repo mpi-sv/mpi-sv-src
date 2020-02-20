@@ -198,7 +198,7 @@ class CoverageAnnotator(object):
     self._total_covered_count += len(covered_lines)
 
     source_stats = SourceFileStatistics(
-        file_name, 100.0*len(covered_lines)/len(coverable_lines)
+        file_name, 100.0 * len(covered_lines) / len(coverable_lines)
         if coverable_lines else 0.0,
         len(covered_lines),
         len(coverable_lines))

@@ -35,207 +35,186 @@ using namespace llvm;
 
 namespace {
 
-cl::opt<bool>
-DumpStatesOnHalt("dump-states-on-halt",
-                 cl::init(false));
+cl::opt<bool> DumpStatesOnHalt("dump-states-on-halt", cl::init(false));
 
-cl::opt<bool>
-EmitAllErrors("emit-all-errors",
-              cl::init(false),
-              cl::desc("Generate tests cases for all errors "
-                       "(default=one per (error,instruction) pair)"));
+cl::opt<bool> EmitAllErrors("emit-all-errors", cl::init(false),
+		cl::desc("Generate tests cases for all errors "
+				"(default=one per (error,instruction) pair)"));
 
-cl::opt<unsigned>
-MaxForks("max-forks",
-         cl::desc("Only fork this many times (-1=off)"),
-         cl::init(~0u));
+cl::opt<unsigned> MaxForks("max-forks", cl::desc("Only fork this many times (-1=off)"),
+		cl::init(~0u));
 
-cl::opt<unsigned>
-MaxMemory("max-memory",
-          cl::desc("Refuse to fork when more above this about of memory (in MB, 0=off)"),
-          cl::init(0));
+cl::opt<unsigned> MaxMemory("max-memory",
+		cl::desc("Refuse to fork when more above this about of memory (in MB, 0=off)"),
+		cl::init(0));
 
-cl::opt<bool>
-MaxMemoryInhibit("max-memory-inhibit",
-          cl::desc("Inhibit forking at memory cap (vs. random terminate)"),
-          cl::init(true));
+cl::opt<bool> MaxMemoryInhibit("max-memory-inhibit",
+		cl::desc("Inhibit forking at memory cap (vs. random terminate)"), cl::init(true));
 
-cl::opt<double>
-MaxStaticForkPct("max-static-fork-pct", cl::init(1.));
-cl::opt<double>
-MaxStaticSolvePct("max-static-solve-pct", cl::init(1.));
-cl::opt<double>
-MaxStaticCPForkPct("max-static-cpfork-pct", cl::init(1.));
-cl::opt<double>
-MaxStaticCPSolvePct("max-static-cpsolve-pct", cl::init(1.));
+cl::opt<double> MaxStaticForkPct("max-static-fork-pct", cl::init(1.));
+cl::opt<double> MaxStaticSolvePct("max-static-solve-pct", cl::init(1.));
+cl::opt<double> MaxStaticCPForkPct("max-static-cpfork-pct", cl::init(1.));
+cl::opt<double> MaxStaticCPSolvePct("max-static-cpsolve-pct", cl::init(1.));
 
-cl::opt<bool>
-OnlyOutputStatesCoveringNew("only-output-states-covering-new",
-                            cl::init(false));
+cl::opt<bool> OnlyOutputStatesCoveringNew("only-output-states-covering-new", cl::init(false));
 
 void *theMMap = 0;
 unsigned theMMapSize = 0;
 
 }
-
+extern bool WithLibMPI;
 namespace klee {
 
 RNG theRNG;
 
-void Executor::branch(ExecutionState &state,
-                      ref<Expr> condition,
-                      const std::vector< std::pair< BasicBlock*, ref<Expr> > > &options,
-                      std::vector< std::pair<BasicBlock*, ExecutionState*> > &branches,
-                      int reason) {
-  std::vector<std::pair<BasicBlock*, ref<Expr> > > targets;
+void Executor::branch(ExecutionState &state, ref<Expr> condition,
+		const std::vector<std::pair<BasicBlock*, ref<Expr> > > &options,
+		std::vector<std::pair<BasicBlock*, ExecutionState*> > &branches, int reason) {
+	std::vector<std::pair<BasicBlock*, ref<Expr> > > targets;
 
-  ref<Expr> isDefault = options[0].second;
+	ref<Expr> isDefault = options[0].second;
 
-  bool success;
-  bool result;
+	bool success;
+	bool result;
 
-  for (unsigned i = 1; i < options.size(); ++i) {
-    success = false;
+	for (unsigned i = 1; i < options.size(); ++i) {
+		success = false;
 
-    ref<Expr> match = EqExpr::create(condition, options[i].second);
-    isDefault = AndExpr::create(isDefault, Expr::createIsZero(match));
+		ref<Expr> match = EqExpr::create(condition, options[i].second);
+		isDefault = AndExpr::create(isDefault, Expr::createIsZero(match));
 
-    // Check the feasibility of this option
+		// Check the feasibility of this option
 		success = solver->mayBeTrue(data::SWITCH_FEASIBILITY, state, match, result);
 
-    assert(success && "FIXME: Unhandled solver failure");
+		assert(success && "FIXME: Unhandled solver failure");
 
-    if (result) {
-      // Merge same destinations
-      unsigned k;
-      for (k = 0; k < targets.size(); k++) {
-        if (targets[k].first == options[i].first) {
-          targets[k].second = OrExpr::create(match, targets[k].second);
-          break;
-        }
-      }
+		if (result) {
+			// Merge same destinations
+			unsigned k;
+			for (k = 0; k < targets.size(); k++) {
+				if (targets[k].first == options[i].first) {
+					targets[k].second = OrExpr::create(match, targets[k].second);
+					break;
+				}
+			}
 
-      if (k == targets.size()) {
-        targets.push_back(std::make_pair(options[i].first, match));
-      }
-    }
-  }
+			if (k == targets.size()) {
+				targets.push_back(std::make_pair(options[i].first, match));
+			}
+		}
+	}
 
-  // Check the feasibility of the default option
-  success = false;
+	// Check the feasibility of the default option
+	success = false;
 
 	success = solver->mayBeTrue(data::SWITCH_FEASIBILITY, state, isDefault, result);
 
-  assert(success && "FIXME: Unhandled solver failure");
+	assert(success && "FIXME: Unhandled solver failure");
 
-  if (result) {
-    unsigned k;
-    for (k = 0; k < targets.size(); k++) {
-      if (targets[k].first == options[0].first) {
-        targets[k].second = OrExpr::create(isDefault, targets[k].second);
-        break;
-      }
-    }
+	if (result) {
+		unsigned k;
+		for (k = 0; k < targets.size(); k++) {
+			if (targets[k].first == options[0].first) {
+				targets[k].second = OrExpr::create(isDefault, targets[k].second);
+				break;
+			}
+		}
 
-    if (k == targets.size()) {
-      targets.push_back(std::make_pair(options[0].first, isDefault));
-    }
-  }
+		if (k == targets.size()) {
+			targets.push_back(std::make_pair(options[0].first, isDefault));
+		}
+	}
 
-  TimerStatIncrementer timer(stats::forkTime);
-  assert(!targets.empty());
+	TimerStatIncrementer timer(stats::forkTime);
+	assert(!targets.empty());
 
-  stats::forks += targets.size()-1;
-  state.totalForks += targets.size()-1;
+	stats::forks += targets.size() - 1;
+	state.totalForks += targets.size() - 1;
 
-  ForkTag tag = getForkTag(state, reason);
+	ForkTag tag = getForkTag(state, reason);
 
-  // XXX do proper balance or keep random?
-  for (unsigned i = 0; i < targets.size(); ++i) {
-    ExecutionState *es = &state;
-    ExecutionState *ns = es;
-    if (i > 0) {
-      ns = es->branch();
+	// XXX do proper balance or keep random?
+	for (unsigned i = 0; i < targets.size(); ++i) {
+		ExecutionState *es = &state;
+		ExecutionState *ns = es;
+		if (i > 0) {
+			ns = es->branch();
 
-      addedStates.insert(ns);
+			addedStates.insert(ns);
 
-      if (es->ptreeNode) {
-        es->ptreeNode->data = 0;
-        std::pair<PTree::Node*,PTree::Node*> res =
-          processTree->split(es->ptreeNode, ns, es, tag);
-        ns->ptreeNode = res.first;
-        es->ptreeNode = res.second;
-      }
+			if (es->ptreeNode) {
+				es->ptreeNode->data = 0;
+				std::pair<PTree::Node*, PTree::Node*> res = processTree->split(es->ptreeNode, ns,
+						es, tag);
+				ns->ptreeNode = res.first;
+				es->ptreeNode = res.second;
+			}
 
-      fireStateBranched(ns, es, 0, tag);
-    }
+			fireStateBranched(ns, es, 0, tag);
+		}
 
-    branches.push_back(std::make_pair(targets[i].first, ns));
-  }
+		branches.push_back(std::make_pair(targets[i].first, ns));
+	}
 
-  // Add constraints at the end, in order to keep the parent state unaltered
+	// Add constraints at the end, in order to keep the parent state unaltered
 
-  for (unsigned i = 0; i < targets.size(); ++i) {
+	for (unsigned i = 0; i < targets.size(); ++i) {
 		addConstraint(*branches[i].second, targets[i].second);
-  }
+	}
 }
 
-Executor::StatePair
-Executor::fork(ExecutionState &current, ref<Expr> condition, bool isInternal,
-    int reason) {
-  ForkTag tag = getForkTag(current, reason);
+Executor::StatePair Executor::fork(ExecutionState &current, ref<Expr> condition, bool isInternal,
+		int reason) {
+	ForkTag tag = getForkTag(current, reason);
 
-  // TODO(bucur): Understand this, or wipe it altogether
-  if (!isa<ConstantExpr>(condition) &&
-      (MaxStaticForkPct!=1. || MaxStaticSolvePct != 1. ||
-       MaxStaticCPForkPct!=1. || MaxStaticCPSolvePct != 1.) &&
-      statsTracker->elapsed() > 60.) {
-    StatisticManager &sm = *theStatisticManager;
-    CallPathNode *cpn = current.stack().back().callPathNode;
-    if ((MaxStaticForkPct<1. &&
-         sm.getIndexedValue(stats::forks, sm.getIndex()) >
-         stats::forks*MaxStaticForkPct) ||
-        (MaxStaticCPForkPct<1. &&
-         cpn && (cpn->statistics.getValue(stats::forks) >
-                 stats::forks*MaxStaticCPForkPct)) ||
-        (MaxStaticSolvePct<1 &&
-         sm.getIndexedValue(stats::solverTime, sm.getIndex()) >
-         stats::solverTime*MaxStaticSolvePct) ||
-        (MaxStaticCPForkPct<1. &&
-         cpn && (cpn->statistics.getValue(stats::solverTime) >
-                 stats::solverTime*MaxStaticCPSolvePct))) {
-      ref<ConstantExpr> value;
-      bool success = solver->getValue(data::BRANCH_CONDITION_CONCRETIZATION, current, condition, value);
-      assert(success && "FIXME: Unhandled solver failure");
-      (void) success;
-      LOG(INFO) << "NONDETERMINISM! New constraint added!";
-      addConstraint(current, EqExpr::create(value, condition));
-      condition = value;
-    }
-  }
+	// TODO(bucur): Understand this, or wipe it altogether
+	if (!isa<ConstantExpr>(condition)
+			&& (MaxStaticForkPct != 1. || MaxStaticSolvePct != 1. || MaxStaticCPForkPct != 1.
+					|| MaxStaticCPSolvePct != 1.) && statsTracker->elapsed() > 60.) {
+		StatisticManager &sm = *theStatisticManager;
+		CallPathNode *cpn = current.stack().back().callPathNode;
+		if ((MaxStaticForkPct < 1.
+				&& sm.getIndexedValue(stats::forks, sm.getIndex()) > stats::forks * MaxStaticForkPct)
+				|| (MaxStaticCPForkPct < 1. && cpn
+						&& (cpn->statistics.getValue(stats::forks)
+								> stats::forks * MaxStaticCPForkPct))
+				|| (MaxStaticSolvePct < 1
+						&& sm.getIndexedValue(stats::solverTime, sm.getIndex())
+								> stats::solverTime * MaxStaticSolvePct)
+				|| (MaxStaticCPForkPct < 1. && cpn
+						&& (cpn->statistics.getValue(stats::solverTime)
+								> stats::solverTime * MaxStaticCPSolvePct))) {
+			ref<ConstantExpr> value;
+			bool success = solver->getValue(data::BRANCH_CONDITION_CONCRETIZATION, current,
+					condition, value);
+			assert(success && "FIXME: Unhandled solver failure");
+			(void) success;
+			LOG(INFO)<< "NONDETERMINISM! New constraint added!";
+			addConstraint(current, EqExpr::create(value, condition));
+			condition = value;
+		}
+	}
 
-  Solver::PartialValidity partial_validity;
-  Solver::Validity validity;
-  bool success = false;
+	Solver::PartialValidity partial_validity;
+	Solver::Validity validity;
+	bool success = false;
 
-  if (ConstantExpr *CE = dyn_cast<ConstantExpr>(condition)) {
-    success = true;
-    validity = CE->isFalse() ? Solver::False : Solver::True;
-  } else {
+	if (ConstantExpr *CE = dyn_cast<ConstantExpr>(condition)) {
+		success = true;
+		validity = CE->isFalse() ? Solver::False : Solver::True;
+	} else {
 		solver->setTimeout(stpTimeout);
-		success = solver->evaluate(data::BRANCH_FEASIBILITY, current, condition,
-															 validity);
+		success = solver->evaluate(data::BRANCH_FEASIBILITY, current, condition, validity);
 		solver->setTimeout(0);
 
 		if (!success) {
 			current.pc() = current.prevPC();
 			terminateStateEarly(current, "query timed out");
-			return StatePair((klee::ExecutionState*)NULL, (klee::ExecutionState*)NULL);
+			return StatePair((klee::ExecutionState*) NULL, (klee::ExecutionState*) NULL);
 		}
-  }
+	}
 
-  assert(success && "FIXME: Solver failure");
-
+	assert(success && "FIXME: Solver failure");
 
 	switch (validity) {
 	case Solver::True:
@@ -249,452 +228,534 @@ Executor::fork(ExecutionState &current, ref<Expr> condition, bool isInternal,
 		break;
 	}
 
+	if (partial_validity == Solver::TrueOrFalse) {
+		if ((MaxMemoryInhibit && atMemoryLimit) || current.forkDisabled || inhibitForking
+				|| (MaxForks != ~0u && stats::forks >= MaxForks)) {
 
-  if (partial_validity==Solver::TrueOrFalse) {
-    if ((MaxMemoryInhibit && atMemoryLimit) ||
-        current.forkDisabled ||
-        inhibitForking ||
-        (MaxForks!=~0u && stats::forks >= MaxForks)) {
+			if (MaxMemoryInhibit && atMemoryLimit)
+				LOG_EVERY_N(WARNING, 1) << "skipping fork (memory cap exceeded)";
+			else if (current.forkDisabled)
+				LOG_EVERY_N(WARNING, 1) << "skipping fork (fork disabled on current path)";
+			else if (inhibitForking)
+				LOG_EVERY_N(WARNING, 1) << "skipping fork (fork disabled globally)";
+			else
+				LOG_EVERY_N(WARNING, 1) << "skipping fork (max-forks reached)";
 
-      if (MaxMemoryInhibit && atMemoryLimit)
-        LOG_EVERY_N(WARNING, 1) << "skipping fork (memory cap exceeded)";
-      else if (current.forkDisabled)
-        LOG_EVERY_N(WARNING, 1) << "skipping fork (fork disabled on current path)";
-      else if (inhibitForking)
-        LOG_EVERY_N(WARNING, 1) << "skipping fork (fork disabled globally)";
-      else
-        LOG_EVERY_N(WARNING, 1) << "skipping fork (max-forks reached)";
+			TimerStatIncrementer timer(stats::forkTime);
+			if (theRNG.getBool()) {
+				addConstraint(current, condition);
+				partial_validity = Solver::MustBeTrue;
+			} else {
+				addConstraint(current, Expr::createIsZero(condition));
+				partial_validity = Solver::MustBeFalse;
+			}
+		}
+	}
 
-      TimerStatIncrementer timer(stats::forkTime);
-      if (theRNG.getBool()) {
-        addConstraint(current, condition);
-        partial_validity = Solver::MustBeTrue;
-      } else {
-        addConstraint(current, Expr::createIsZero(condition));
-        partial_validity = Solver::MustBeFalse;
-      }
-    }
-  }
+	// XXX - even if the constraint is provable one way or the other we
+	// can probably benefit by adding this constraint and allowing it to
+	// reduce the other constraints. For example, if we do a binary
+	// search on a particular value, and then see a comparison against
+	// the value it has been fixed at, we should take this as a nice
+	// hint to just use the single constraint instead of all the binary
+	// search ones. If that makes sense.
 
-  // XXX - even if the constraint is provable one way or the other we
-  // can probably benefit by adding this constraint and allowing it to
-  // reduce the other constraints. For example, if we do a binary
-  // search on a particular value, and then see a comparison against
-  // the value it has been fixed at, we should take this as a nice
-  // hint to just use the single constraint instead of all the binary
-  // search ones. If that makes sense.
+	switch (partial_validity) {
+	case Solver::MustBeTrue:
+		if (!isInternal) {
+			if (pathWriter) {
+				current.pathOS << "1";
+			}
+		}
 
-  switch (partial_validity) {
-  case Solver::MustBeTrue:
-    if (!isInternal) {
-      if (pathWriter) {
-        current.pathOS << "1";
-      }
-    }
+		return StatePair(&current, (klee::ExecutionState*) NULL);
 
-    return StatePair(&current, (klee::ExecutionState*)NULL);
+	case Solver::MustBeFalse:
+		if (!isInternal) {
+			if (pathWriter) {
+				current.pathOS << "0";
+			}
+		}
 
-  case Solver::MustBeFalse:
-    if (!isInternal) {
-      if (pathWriter) {
-        current.pathOS << "0";
-      }
-    }
+		return StatePair((klee::ExecutionState*) NULL, &current);
 
-    return StatePair((klee::ExecutionState*)NULL, &current);
+	case Solver::TrueOrFalse:
+	case Solver::MayBeTrue:
+	case Solver::MayBeFalse:
+	case Solver::None: {
+		TimerStatIncrementer timer(stats::forkTime);
+		ExecutionState *falseState, *trueState = &current;
 
-  case Solver::TrueOrFalse:
-  case Solver::MayBeTrue:
-  case Solver::MayBeFalse:
-  case Solver::None:
-  {
-    TimerStatIncrementer timer(stats::forkTime);
-    ExecutionState *falseState, *trueState = &current;
+		++stats::forks;
+		++current.totalForks;
 
-    ++stats::forks;
-    ++current.totalForks;
+		falseState = trueState->branch();
+		addedStates.insert(falseState);
 
-    falseState = trueState->branch();
-    addedStates.insert(falseState);
+		if (current.ptreeNode) {
+			current.ptreeNode->data = 0;
+			std::pair<PTree::Node*, PTree::Node*> res = processTree->split(current.ptreeNode,
+					falseState, trueState, tag);
+			falseState->ptreeNode = res.first;
+			trueState->ptreeNode = res.second;
+		}
 
-    if (current.ptreeNode) {
-      current.ptreeNode->data = 0;
-      std::pair<PTree::Node*, PTree::Node*> res =
-        processTree->split(current.ptreeNode, falseState, trueState, tag);
-      falseState->ptreeNode = res.first;
-      trueState->ptreeNode = res.second;
-    }
+		if (&current == falseState)
+			fireStateBranched(trueState, falseState, 1, tag);
+		else
+			fireStateBranched(falseState, trueState, 0, tag);
 
-    if (&current == falseState)
-      fireStateBranched(trueState, falseState, 1, tag);
-    else
-      fireStateBranched(falseState, trueState, 0, tag);
-
-    if (!isInternal) {
-      if (pathWriter) {
-        falseState->pathOS = pathWriter->open(current.pathOS);
-        trueState->pathOS << "1";
-        falseState->pathOS << "0";
-      }
-      if (symPathWriter) {
-        falseState->symPathOS = symPathWriter->open(current.symPathOS);
-        trueState->symPathOS << "1";
-        falseState->symPathOS << "0";
-      }
-    }
+		if (!isInternal) {
+			if (pathWriter) {
+				falseState->pathOS = pathWriter->open(current.pathOS);
+				trueState->pathOS << "1";
+				falseState->pathOS << "0";
+			}
+			if (symPathWriter) {
+				falseState->symPathOS = symPathWriter->open(current.symPathOS);
+				trueState->symPathOS << "1";
+				falseState->symPathOS << "0";
+			}
+		}
 
 		addConstraint(*trueState, condition);
 		addConstraint(*falseState, Expr::createIsZero(condition));
 
-    return StatePair(trueState, falseState);
-  }
-  }
+		return StatePair(trueState, falseState);
+	}
+	}
 }
 
-Executor::StatePair
-Executor::fork(ExecutionState &current, int reason) {
-  ExecutionState *lastState = &current;
-  ForkTag tag = getForkTag(current, reason);
+Executor::StatePair Executor::fork(ExecutionState &current, int reason) {
+	ExecutionState *lastState = &current;
+	ForkTag tag = getForkTag(current, reason);
 
-  ExecutionState *newState = lastState->branch();
+	ExecutionState *newState = lastState->branch();
 
-  addedStates.insert(newState);
+	addedStates.insert(newState);
 
-  if (lastState->ptreeNode) {
-    lastState->ptreeNode->data = 0;
-    std::pair<PTree::Node*,PTree::Node*> res =
-     processTree->split(lastState->ptreeNode, newState, lastState, tag);
-    newState->ptreeNode = res.first;
-    lastState->ptreeNode = res.second;
-  }
+	if (lastState->ptreeNode) {
+		lastState->ptreeNode->data = 0;
+		std::pair<PTree::Node*, PTree::Node*> res = processTree->split(lastState->ptreeNode,
+				newState, lastState, tag);
+		newState->ptreeNode = res.first;
+		lastState->ptreeNode = res.second;
+	}
 
-  fireStateBranched(newState, lastState, 0, tag);
-  return StatePair(newState, lastState);
+	fireStateBranched(newState, lastState, 0, tag);
+	return StatePair(newState, lastState);
 }
 
 ForkTag Executor::getForkTag(ExecutionState &current, int forkClass) {
-  ForkTag tag((ForkClass)forkClass);
+	ForkTag tag((ForkClass) forkClass);
 
-  if (current.crtThreadIt == current.threads.end())
-    return tag;
+	if (current.crtThreadIt == current.threads.end())
+		return tag;
 
-  tag.functionName = current.stack().back().kf->function->getName();
-  tag.instrID = current.prevPC()->info->id;
+	tag.functionName = current.stack().back().kf->function->getName();
+	tag.instrID = current.prevPC()->info->id;
 
-  if (tag.forkClass == KLEE_FORK_FAULTINJ) {
-    tag.fiVulnerable = false;
-    // Check to see whether we are in a vulnerable call
+	if (tag.forkClass == KLEE_FORK_FAULTINJ) {
+		tag.fiVulnerable = false;
+		// Check to see whether we are in a vulnerable call
 
-    for (ExecutionState::stack_ty::iterator it = current.stack().begin();
-        it != current.stack().end(); it++) {
-      if (!it->caller)
-        continue;
+		for (ExecutionState::stack_ty::iterator it = current.stack().begin();
+				it != current.stack().end(); it++) {
+			if (!it->caller)
+				continue;
 
-      KCallInstruction *callInst = dyn_cast<KCallInstruction>((KInstruction*)it->caller);
-      assert(callInst);
+			KCallInstruction *callInst = dyn_cast<KCallInstruction>((KInstruction*) it->caller);
+			assert(callInst);
 
-      if (callInst->vulnerable) {
-        tag.fiVulnerable = true;
-        break;
-      }
-    }
-  }
+			if (callInst->vulnerable) {
+				tag.fiVulnerable = true;
+				break;
+			}
+		}
+	}
 
-  return tag;
+	return tag;
 }
 
 void Executor::finalizeRemovedStates() {
-  // TODO(bucur): Memory management here is quite cumbersome. Consider
-  // switching to smart pointers everywhere...
+	// TODO(bucur): Memory management here is quite cumbersome. Consider
+	// switching to smart pointers everywhere...
 
-  for (std::set<ExecutionState*>::iterator
-         it = removedStates.begin(), ie = removedStates.end();
-       it != ie; ++it) {
-    ExecutionState *es = *it;
+	for (std::set<ExecutionState*>::iterator it = removedStates.begin(), ie = removedStates.end();
+			it != ie; ++it) {
+		ExecutionState *es = *it;
 
-    std::set<ExecutionState*>::iterator it2 = states.find(es);
-    assert(it2!=states.end());
-    states.erase(it2);
+		std::set<ExecutionState*>::iterator it2 = states.find(es);
+		assert(it2 != states.end());
+		states.erase(it2);
 
-    if (es->ptreeNode)
-      processTree->remove(es->ptreeNode);
+		if (es->ptreeNode)
+			processTree->remove(es->ptreeNode);
 
-    delete es;
-  }
-  removedStates.clear();
+		delete es;
+	}
+	removedStates.clear();
 }
 
 void Executor::updateStates(ExecutionState *current) {
-  if (searcher) {
-    searcher->update(current, addedStates, removedStates);
-  }
-  if (statsTracker) {
-    statsTracker->updateStates(current, addedStates, removedStates);
-  }
+	if (searcher) {
+		searcher->update(current, addedStates, removedStates);
+	}
+	if (statsTracker) {
+		statsTracker->updateStates(current, addedStates, removedStates);
+	}
 
-  for (std::set<ExecutionState*>::iterator it = removedStates.begin(),
-      ie = removedStates.end(); it != ie; ++it) {
-    fireStateDestroy(*it, false);
-  }
+	for (std::set<ExecutionState*>::iterator it = removedStates.begin(), ie = removedStates.end();
+			it != ie; ++it) {
+		fireStateDestroy(*it, false);
+	}
 
-  states.insert(addedStates.begin(), addedStates.end());
-  addedStates.clear();
+	states.insert(addedStates.begin(), addedStates.end());
+	addedStates.clear();
 
-  finalizeRemovedStates();
+	finalizeRemovedStates();
 }
 
 bool Executor::terminateState(ExecutionState &state, bool silenced) {
-  interpreterHandler->incPathsExplored();
+	interpreterHandler->incPathsExplored();
+	//fxj added  ***************************
+	LOG(INFO)<<"state "<<&state <<" terminated.";
+	location2state_ty::iterator ite = location2state.begin();
+	/*for (; ite != location2state.end(); ite++) {
+	 LOG(INFO)<<"before erase: state, "<<ite->second;
+	 }*/
+	bool flag = false;
+	for (ite = location2state.begin(); ite != location2state.end();) {
+		if (ite->second == &state) {
+			flag = true;
+			LOG(INFO)<<"matchings of terminated :"<<ite->first;
+			location2state.erase(ite++);
+		} else
+			ite++;
+	}
+	if (flag)
+		LOG(INFO)<<"state "<<&state <<" terminated, we erase it from location2state";
+		/*for (ite = location2state.begin(); ite != location2state.end(); ite++) {
+		 LOG(INFO)<<"after erase: state, "<<ite->second;
+		 }*/
+		//end adding ***************************
+	std::set<ExecutionState*>::iterator it = addedStates.find(&state);
+	if (it == addedStates.end()) {
+		state.pc() = state.prevPC();
+		removedStates.insert(&state);
+	} else {
+		fireStateDestroy(&state, silenced);
+		// never reached searcher, just delete immediately
+		addedStates.erase(it);
 
-  std::set<ExecutionState*>::iterator it = addedStates.find(&state);
-  if (it == addedStates.end()) {
-    state.pc() = state.prevPC();
+		if (state.ptreeNode)
+			processTree->remove(state.ptreeNode);
 
-    removedStates.insert(&state);
-  } else {
-    fireStateDestroy(&state, silenced);
-    // never reached searcher, just delete immediately
-    addedStates.erase(it);
+		delete &state;
+	}
 
-    if (state.ptreeNode)
-      processTree->remove(state.ptreeNode);
-
-    delete &state;
-  }
-
-  return true;
+	return true;
 }
 
-void Executor::terminateStateEarly(ExecutionState &state,
-                                   const Twine &message) {
-  if (!OnlyOutputStatesCoveringNew || state.coveredNew) {
-    interpreterHandler->processTestCase(state, (message + "\n").str().c_str(),
-                                        "early");
-    terminateState(state, false);
-  } else {
-    terminateState(state, true);
-  }
-}
+void Executor::terminateStateEarly(ExecutionState &state, const Twine &message) {
+	//Herman
+	if (WithLibMPI) {
+		state.globalCommLog.dump(state, LOG(INFO));
+		state.dumpStack();
+		LOG(INFO)<<"wildcard matches "<<state.globalCommLog.getWildcardMatches();
+	}
+	//end adding
+				if (!OnlyOutputStatesCoveringNew || state.coveredNew) {
+					interpreterHandler->processTestCase(state, (message + "\n").str().c_str(), "early");
+					terminateState(state, false);
+				} else {
+					terminateState(state, true);
+				}
+			}
 
 void Executor::terminateStateOnExit(ExecutionState &state) {
-  if (!OnlyOutputStatesCoveringNew || state.coveredNew) {
-    interpreterHandler->processTestCase(state, 0, 0);
-    terminateState(state, false);
-  } else {
-    terminateState(state, true);
-  }
-}
+	//Herman
+	/*std::map<thread_uid_t, Thread>::iterator it = state.threads.begin();
+	 it = state.threads.begin();
+	 long total=0;
+	 while(it!=state.threads.end()) {
+	 total+=state.chkmap[it->first];
+	 LOG(ERROR) << it->second.stack.front().kf->function->getName().str();
+	 if(it->second.stack.size() >= 2)
+	 LOG(ERROR) <<" " <<it->second.stack[1].kf->function->getName().str();
+	 LOG(ERROR) <<" mem access "<<state.chkmap[it->first]<<"times";
+	 LOG(ERROR) << "***********************************************************";
+	 it++;
+	 }
+	 LOG(ERROR) << "total mem access "<<total<<" times";*/
+	//Herman
+	if (WithLibMPI) {
+		state.globalCommLog.dump(state, LOG(INFO));
+		state.dumpStack();
+		LOG(INFO)<<"wildcard matches "<<state.globalCommLog.getWildcardMatches();
+	}
 
-void Executor::terminateStateOnError(ExecutionState &state,
-                                     const llvm::Twine &messaget,
-                                     const char *suffix,
-                                     const llvm::Twine &info) {
-  std::string message = messaget.str();
-  static std::set< std::pair<Instruction*, std::string> > emittedErrors;
+	//end adding
 
-  assert(state.crtThreadIt != state.threads.end());
+				if (!OnlyOutputStatesCoveringNew || state.coveredNew) {
+					interpreterHandler->processTestCase(state, 0, 0);
+					terminateState(state, false);
+				} else {
+					terminateState(state, true);
+				}
+			}
 
-  const InstructionInfo &ii = *state.prevPC()->info;
+void Executor::terminateStateOnError(ExecutionState &state, const llvm::Twine &messaget,
+		const char *suffix, const llvm::Twine &info) {
+	std::string message = messaget.str();
+	static std::set<std::pair<Instruction*, std::string> > emittedErrors;
+	long long total = 0;
+	assert(state.crtThreadIt != state.threads.end());
 
-  if (EmitAllErrors ||
-      emittedErrors.insert(std::make_pair(state.prevPC()->inst, message)).second) {
-    if (ii.file != "") {
-      LOG(ERROR) << ii.file.c_str() << ":" << ii.line << ": " << message.c_str();
-    } else {
-      LOG(ERROR) << message.c_str();
-    }
-    if (!EmitAllErrors)
-      LOG(INFO) << "Now ignoring this error at this location";
+	const InstructionInfo &ii = *state.prevPC()->info;
 
-    std::ostringstream msg;
-    msg << "Error: " << message << "\n";
-    if (ii.file != "") {
-      msg << "File: " << ii.file << "\n";
-      msg << "Line: " << ii.line << "\n";
-    }
-    msg << "Stack: \n";
-    state.getStackTrace().dump(msg);
+	std::map<thread_uid_t, Thread>::iterator it = state.threads.begin();
+	if (EmitAllErrors
+			|| emittedErrors.insert(std::make_pair(state.prevPC()->inst, message)).second) {
 
-    std::string info_str = info.str();
-    if (info_str != "")
-      msg << "Info: \n" << info_str;
-    interpreterHandler->processTestCase(state, msg.str().c_str(), suffix);
-    terminateState(state, false);
-  } else {
-    terminateState(state, true);
-  }
+		if (ii.file != "") {
+			//state.crtThread().dumpStack(LOG(INFO));
+			LOG(ERROR)<< ii.file.c_str() << ":" << ii.line <<"(asmline): "<< ii.assemblyLine<< ": " << message.c_str();
+			//added by Herman
+			/*unsigned int depth;
+
+			 while(it!=state.threads.end()) {
+			 depth = it->second.stack.size() -1;
+			 for(int i=depth;i>0;i--) {
+			 LOG(ERROR) << "Call: " << std::string(depth, ' ') <<it->second.stack[i].kf->function->getName().str()
+			 <<"("<<it->second.stack[i].caller->info->file<<","<<it->second.stack[i].caller->info->line <<")";
+			 if(i <= depth -10) break;
+			 }
+			 LOG(ERROR) << "Call: " << std::string(depth, ' ') <<it->second.stack[0].kf->function->getName().str();
+
+			 LOG(ERROR) << "mem access "<<state.chkmap[it->first]<<"times";
+			 LOG(ERROR) << "***********************************************************";
+
+			 it++;
+			 }  //end add*/
+
+		} else {
+			LOG(ERROR) << message.c_str();
+		}
+		if (!EmitAllErrors)
+		LOG(INFO) << "Now ignoring this error at this location";
+		//Herman
+		/*it = state.threads.begin();
+		 while(it!=state.threads.end()) {
+		 int depth = it->second.stack.size() -1;
+		 for(int i=depth;i>0;i--) {
+		 LOG(ERROR) << "Call: " << std::string(depth, ' ') <<it->second.stack[i].kf->function->getName().str()
+		 <<"("<<it->second.stack[i].caller->info->file<<","<<it->second.stack[i].caller->info->line <<")";
+		 if(i <= depth -10) break;
+		 }
+		 LOG(ERROR) << "Call: " << std::string(depth, ' ') <<it->second.stack[0].kf->function->getName().str();
+		 LOG(ERROR) << "***********************************************************";
+		 it++;
+		 }*/
+		state.dumpStack();
+		//LOG(ERROR) << "total mem access "<<total<<" times";
+		std::ostringstream msg;
+		msg << "Error: " << message << "\n";
+		if (ii.file != "") {
+			msg << "File: " << ii.file << "\n";
+			msg << "Line: " << ii.line << "\n";
+		}
+		msg << "Stack: \n";
+		state.getStackTrace().dump(msg);
+
+		std::string info_str = info.str();
+		if (info_str != "")
+		msg << "Info: \n" << info_str;
+		//Herman
+		if (WithLibMPI) {
+			state.globalCommLog.dump(state, LOG(INFO));
+			state.dumpStack();
+			LOG(INFO)<<"wildcard matches "<<state.globalCommLog.getWildcardMatches();
+		}
+		//end adding
+		interpreterHandler->processTestCase(state, msg.str().c_str(), suffix);
+		terminateState(state, false);
+	} else {
+		terminateState(state, true);
+	}
 }
 
 void Executor::destroyStates() {
-  if (DumpStatesOnHalt && !states.empty()) {
-    std::cerr << "KLEE: halting execution, dumping remaining states\n";
-    for (std::set<ExecutionState*>::iterator it = states.begin(), ie =
-        states.end(); it != ie; ++it) {
-      ExecutionState &state = **it;
-      stepInstruction(state); // keep stats rolling
-      terminateStateEarly(state, "execution halting");
-    }
-    updateStates(0);
-  }
+	if (DumpStatesOnHalt && !states.empty()) {
+		std::cerr << "KLEE: halting execution, dumping remaining states\n";
+		for (std::set<ExecutionState*>::iterator it = states.begin(), ie = states.end(); it != ie;
+				++it) {
+			ExecutionState &state = **it;
+			stepInstruction(state); // keep stats rolling
+			terminateStateEarly(state, "execution halting");
+		}
+		updateStates(0);
+	}
 
-  delete processTree;
-  processTree = 0;
+	delete processTree;
+	processTree = 0;
 
-  // hack to clear memory objects
-  delete memory;
-  memory = new MemoryManager();
+	// hack to clear memory objects
+	delete memory;
+	memory = new MemoryManager();
 
-  globalObjects.clear();
-  globalAddresses.clear();
+	globalObjects.clear();
+	globalAddresses.clear();
 
-  if (statsTracker)
-    statsTracker->done();
+	if (statsTracker)
+		statsTracker->done();
 
-  if (theMMap) {
-    munmap(theMMap, theMMapSize);
-    theMMap = 0;
-  }
+	if (theMMap) {
+		munmap(theMMap, theMMapSize);
+		theMMap = 0;
+	}
 }
 
 void Executor::destroyState(ExecutionState *state) {
-  terminateStateEarly(*state, "cancelled");
+	terminateStateEarly(*state, "cancelled");
 }
 
 void Executor::addConstraint(ExecutionState &state, ref<Expr> condition) {
-  if (ConstantExpr *CE = dyn_cast<ConstantExpr>(condition)) {
-    assert(CE->isTrue() && "attempt to add invalid constraint");
-    return;
-  }
+	if (ConstantExpr *CE = dyn_cast<ConstantExpr>(condition)) {
+		assert(CE->isTrue() && "attempt to add invalid constraint");
+		return;
+	}
 
-  state.addConstraint(condition);
-  if (ivcEnabled)
-    doImpliedValueConcretization(state, condition,
-                                 ConstantExpr::alloc(1, Expr::Bool));
+	state.addConstraint(condition);
+	if (ivcEnabled)
+		doImpliedValueConcretization(state, condition, ConstantExpr::alloc(1, Expr::Bool));
 }
 
-void Executor::executeEvent(ExecutionState &state, unsigned int type,
-    long int value) {
-  if (type == KLEE_EVENT_BREAKPOINT && value == KLEE_BRK_START_TRACING) {
-    fireControlFlowEvent(&state, ::cloud9::worker::CHANGE_SHADOW_STATE);
-  }
+void Executor::executeEvent(ExecutionState &state, unsigned int type, long int value) {
+	if (type == KLEE_EVENT_BREAKPOINT && value == KLEE_BRK_START_TRACING) {
+		fireControlFlowEvent(&state, ::cloud9::worker::CHANGE_SHADOW_STATE);
+	}
 
-  fireEvent(&state, type, value);
+	fireEvent(&state, type, value);
 }
 
 void Executor::executeFork(ExecutionState &state, KInstruction *ki, uint64_t reason) {
-  int forkClass = reason & 0xFF;
-  bool canFork = false;
-  // Check to see if we really should fork
-  if (forkClass == KLEE_FORK_DEFAULT ||
-      fireStateBranching(&state, getForkTag(state, forkClass))) {
-    canFork = true;
-  }
+	int forkClass = reason & 0xFF;
+	bool canFork = false;
+	// Check to see if we really should fork
+	if (forkClass == KLEE_FORK_DEFAULT
+			|| fireStateBranching(&state, getForkTag(state, forkClass))) {
+		canFork = true;
+	}
 
-  if (canFork) {
-    StatePair sp = fork(state, reason);
+	if (canFork) {
+		StatePair sp = fork(state, reason);
 
-    // Return 0 in the original
-    bindLocal(ki, *sp.second, ConstantExpr::create(0,
-        getWidthForLLVMType(ki->inst->getType())));
+		// Return 0 in the original
+		bindLocal(ki, *sp.second,
+				ConstantExpr::create(0, getWidthForLLVMType(ki->inst->getType())));
 
-    // Return 1 otherwise
-    bindLocal(ki, *sp.first, ConstantExpr::create(1,
-        getWidthForLLVMType(ki->inst->getType())));
-  } else {
-    bindLocal(ki, state, ConstantExpr::create(0,
-        getWidthForLLVMType(ki->inst->getType())));
-  }
+		// Return 1 otherwise
+		bindLocal(ki, *sp.first, ConstantExpr::create(1, getWidthForLLVMType(ki->inst->getType())));
+	} else {
+		bindLocal(ki, state, ConstantExpr::create(0, getWidthForLLVMType(ki->inst->getType())));
+	}
 }
 
 void Executor::stepInState(ExecutionState *state) {
-  activeState = state;
+	activeState = state;
 
-  fireControlFlowEvent(state, ::cloud9::worker::STEP);
+	fireControlFlowEvent(state, ::cloud9::worker::STEP);
 
-  VLOG(5) << "Executing instruction: " << state->pc()->info->assemblyLine
-      << " through state " << state << " Src: " << state->pc()->info->file
-      << " Line: " << state->pc()->info->line;
-
-  resetTimers();
+	VLOG(5) << "Executing instruction: " << state->pc()->info->assemblyLine << " through state "
+						<< state << " Src: " << state->pc()->info->file << " Line: "
+						<< state->pc()->info->line;
+//   LOG(INFO)<<"Executing instruction: " << state->pc()->info->assemblyLine << " through state "
+//			<< state << " Src: " << state->pc()->info->file << " Line: "
+//			<< state->pc()->info->line;
+	resetTimers();
 
 	KInstruction *ki = state->pc();
 
 	stepInstruction(*state);
+	  /*YU: really execute the instruction and fork states*/
 	executeInstruction(*state, ki);
 	state->stateTime++; // Each instruction takes one unit of time
 
-  processTimers(state);
+	processTimers(state);
 
-  if (MaxMemory) {
-    if ((stats::instructions & 0xFFFF) == 0) {
-      // We need to avoid calling GetMallocUsage() often because it
-      // is O(elts on freelist). This is really bad since we start
-      // to pummel the freelist once we hit the memory cap.
-      unsigned mbs = sys::Process::GetTotalMemoryUsage() >> 20;
+	if (MaxMemory) {
+		if ((stats::instructions & 0xFFFF) == 0) {
+			// We need to avoid calling GetMallocUsage() often because it
+			// is O(elts on freelist). This is really bad since we start
+			// to pummel the freelist once we hit the memory cap.
+			unsigned mbs = sys::Process::GetTotalMemoryUsage() >> 20;
 
-      if (mbs > MaxMemory) {
-        if (mbs > MaxMemory + 100) {
-          // just guess at how many to kill
-          unsigned numStates = states.size();
-          unsigned toKill = std::max(1U, numStates - numStates
-              * MaxMemory / mbs);
+			if (mbs > MaxMemory) {
+				if (mbs > MaxMemory + 100) {
+					// just guess at how many to kill
+					unsigned numStates = states.size();
+					unsigned toKill = std::max(1U, numStates - numStates * MaxMemory / mbs);
 
-          if (MaxMemoryInhibit)
-            LOG(WARNING) << "Killing " << toKill << " states (over memory cap)";
+					if (MaxMemoryInhibit)
+						LOG(WARNING)<< "Killing " << toKill << " states (over memory cap)";
 
-          std::vector<ExecutionState*> arr(states.begin(),
-              states.end());
-          for (unsigned i = 0, N = arr.size(); N && i < toKill; ++i, --N) {
-            unsigned idx = rand() % N;
+					std::vector<ExecutionState*> arr(states.begin(), states.end());
+					for (unsigned i = 0, N = arr.size(); N && i < toKill; ++i, --N) {
+						unsigned idx = rand() % N;
 
-            // Make two pulls to try and not hit a state that
-            // covered new code.
-            if (arr[idx]->coveredNew)
-              idx = rand() % N;
+						// Make two pulls to try and not hit a state that
+						// covered new code.
+						if (arr[idx]->coveredNew)
+							idx = rand() % N;
 
-            std::swap(arr[idx], arr[N - 1]);
+						std::swap(arr[idx], arr[N - 1]);
 
-            fireOutOfResources(arr[N-1]);
-            terminateStateEarly(*arr[N - 1], "memory limit");
-          }
-        }
-        atMemoryLimit = true;
-      } else {
-        atMemoryLimit = false;
-      }
-    }
-  }
+						fireOutOfResources(arr[N - 1]);
+						terminateStateEarly(*arr[N - 1], "memory limit");
+					}
+				}
+				atMemoryLimit = true;
+			} else {
+				atMemoryLimit = false;
+			}
+		}
+	}
 
-  updateStates(state);
+	updateStates(state);
 
-  activeState = NULL;
+	activeState = NULL;
 }
 
 void Executor::run(ExecutionState &initialState) {
-  searcher = initSearcher(NULL);
+	searcher = initSearcher(NULL);
 
-  searcher->update(0, states, std::set<ExecutionState*>());
+	searcher->update(0, states, std::set<ExecutionState*>());
 
-  while (!states.empty() && !haltExecution) {
-    ExecutionState &state = searcher->selectState();
+	while (!states.empty() && !haltExecution) {
+		if(deadlockHappened){
+			break;
+		}
+		ExecutionState &state = searcher->selectState();
+		if(state.delayed){
+			break;
+		}
+		stepInState(&state);
+	}
 
-    stepInState(&state);
-  }
+	delete searcher;
+	searcher = 0;
 
-  delete searcher;
-  searcher = 0;
-
-  if (DumpStatesOnHalt && !states.empty()) {
-    std::cerr << "KLEE: halting execution, dumping remaining states\n";
-    for (std::set<ExecutionState*>::iterator
-           it = states.begin(), ie = states.end();
-         it != ie; ++it) {
-      ExecutionState &state = **it;
-      stepInstruction(state); // keep stats rolling
-      terminateStateEarly(state, "execution halting");
-    }
-    updateStates(0);
-  }
+	if (DumpStatesOnHalt && !states.empty()) {
+		std::cerr << "KLEE: halting execution, dumping remaining states\n";
+		for (std::set<ExecutionState*>::iterator it = states.begin(), ie = states.end(); it != ie;
+				++it) {
+			ExecutionState &state = **it;
+			stepInstruction(state); // keep stats rolling
+			terminateStateEarly(state, "execution halting");
+		}
+		updateStates(0);
+	}
 }
 
 }

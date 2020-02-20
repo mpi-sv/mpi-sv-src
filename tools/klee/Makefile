@@ -20,6 +20,10 @@ USEDLIBS = kleeCore.a kleeData.a kleaverSolver.a kleeModule.a kleaverExpr.a \
 ifeq ($(ENABLE_EXT_STP),0)
   USEDLIBS += $(STP_LIBS)
 endif
+ifeq ($(ENABLE_LIBMPI),1)
+  USEDLIBS += mpisecommon.a
+  USEDLIBS += ltl.a
+endif
 
 LINK_COMPONENTS = jit bitreader bitwriter ipo linker engine
 
@@ -30,3 +34,5 @@ LIBS += -lboost_thread-mt -lboost_system-mt -lglog -lprotobuf -lrt -lcrypto++ -l
 ifeq ($(ENABLE_EXT_STP),1)
   LIBS += -lstp
 endif
+
+

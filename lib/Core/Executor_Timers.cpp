@@ -213,6 +213,10 @@ void Executor::processTimers(ExecutionState *current) {
         TimerInfo *ti = *it;
 
         if (time >= ti->nextFireTime) {
+        	//added by fxj
+        	//current->dumpStack();
+          LOG(INFO) << "current file line: "<< current->pc()->info->file <<": "
+        		  <<current->pc()->info->line<<"/"<<current->pc()->info->assemblyLine;
           ti->timer->run();
           ti->nextFireTime = time + ti->rate;
         }
