@@ -1,18 +1,8 @@
-<center> 
-	<font color=black size=5>
-	**MPI-SV: A Symbolic Verifier for MPI Programs**
-	</font> 
-</center>
-
-****
+# MPI-SV: A Symbolic Verifier for MPI Programs
 
 **MPI-SV** is an **automatic** symbolic verifier for verifying MPI **C** programs. **MPI-SV** supports the verification of **non-blocking** MPI programs. The technique combines **symbolic execution** and **model checking** in a synergistic manner to enlarge the scope of verifiable properties and improve the scalability of verification.
 
-For more details, please see our paper:
-
-- Hengbiao Yu, Zhenbang Chen, Xianjin Fu, Ji Wang, Zhendong Su, Jun Sun, Chun Huang, Wei Dong. Symbolic Verification of Message Passing Interface Programs, in 42nd IEEE/ACM International Conference on Software Engineering (ICSE 2020).
-
-and the webpage in https://mpi-sv.github.io
+For more details, please visit https://mpi-sv.github.io
 
 ****
 
@@ -20,11 +10,7 @@ and the webpage in https://mpi-sv.github.io
 
 ****
 
-<center> 
-	<font color=black size=5>
-	**Installation Guide**
-	</font> 
-</center>
+# Source Installation Guide
 
 First, we need to prepare an installation directory and build MPI-SV under this directory.
 
