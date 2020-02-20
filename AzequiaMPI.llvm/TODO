@@ -1,0 +1,7 @@
+- PMI esta ahora hardcoded. En un futuro se podra elegir. Por ahora se deja asi.
+- Faltan Añadir -npersocket al mpiexec (pero no tengo forma de averiguar cuantos sockets hay).
+- Arreglar la forma en que se compilan los tests de mpi.
+- Evitar usar hooks en lo posible (sobre todo con bin) y usar makefiles.am.
+- He visto que lib_SOURCES se meten tb los headers internos.
+- Incorporar OSI como parametro configurable por el usuario (conflicto con pthread.h en hwloc).
+- La version de AZQMPI cogerla como hace mpich2.

@@ -1,0 +1,1463 @@
+I1212 22:30:07.960799  7613 KleeCommon.cpp:68] Using Klee path /home/mpiklee/cloud9root/src/cloud9
+I1212 22:30:07.961032  7613 KleeCommon.cpp:90] Using libMPI path /home/mpiklee/workspace/libmumpi/AzequiaMPI.llvm/lib
+I1212 22:30:07.961050  7613 ModuleUtil.cpp:39] Linking library: /home/mpiklee/workspace/libmumpi/AzequiaMPI.llvm/lib/libazqmpi.a
+I1212 22:30:11.919925  7613 KleeCommon.cpp:102] Using uClibc path /home/mpiklee/cloud9root/src/klee-uclibc
+I1212 22:30:11.919980  7613 ModuleUtil.cpp:39] Linking library: /home/mpiklee/cloud9root/src/klee-uclibc/lib/libc.a
+I1212 22:30:17.900729  7613 KleeCommon.cpp:68] Using Klee path /home/mpiklee/cloud9root/src/cloud9
+I1212 22:30:17.900804  7613 Init.cpp:484] Using model: /home/mpiklee/cloud9root/src/cloud9/Debug+Asserts/lib/libkleeRuntimePOSIX.a
+I1212 22:30:17.900813  7613 ModuleUtil.cpp:39] Linking library: /home/mpiklee/cloud9root/src/cloud9/Debug+Asserts/lib/libkleeRuntimePOSIX.a
+I1212 22:30:20.555462  7613 KleeCommon.cpp:68] Using Klee path /home/mpiklee/cloud9root/src/cloud9
+I1212 22:30:20.555843  7613 KleeHandler.cpp:119] Output directory = "klee-out-31"
+I1212 22:30:20.646955  7613 ThrowCleaner.cpp:65] No exceptions thrown in the code.
+WARNING: While resolving call to function 'AZQ_clnt' arguments were dropped!
+I1212 22:30:22.038152  7613 ModuleUtil.cpp:39] Linking library: /home/mpiklee/cloud9root/src/cloud9/Debug+Asserts/lib/libkleeRuntimeIntrinsic.a
+I1212 22:30:32.156725  7613 StatsTracker.cpp:960] Processed 51447 instructions in static analysis
+I1212 22:30:32.223594  7613 Init.cpp:407] function mmx_memcpy has inline asm
+I1212 22:30:32.228200  7613 Init.cpp:441] Undefined reference to function: __ctype_b_loc
+I1212 22:30:32.228219  7613 Init.cpp:441] Undefined reference to function: __fgetc_unlocked
+I1212 22:30:32.228229  7613 Init.cpp:441] Undefined reference to function: __fputc_unlocked
+I1212 22:30:32.228235  7613 Init.cpp:441] Undefined reference to function: __libc_fcntl
+I1212 22:30:32.228245  7613 Init.cpp:441] Undefined reference to function: endutent
+I1212 22:30:32.228261  7613 Init.cpp:441] Undefined reference to function: gethostbyname
+I1212 22:30:32.228271  7613 Init.cpp:441] Undefined reference to function: getutent
+I1212 22:30:32.228282  7613 Init.cpp:441] Undefined reference to function: klee_disable_sync_chk
+I1212 22:30:32.228289  7613 Init.cpp:441] Undefined reference to function: klee_enable_sync_chk
+I1212 22:30:32.228296  7613 Init.cpp:441] Undefined reference to function: klee_fire_mpi0para
+I1212 22:30:32.228303  7613 Init.cpp:441] Undefined reference to function: klee_fire_mpi1para
+I1212 22:30:32.228309  7613 Init.cpp:441] Undefined reference to function: klee_fire_mpi2para
+I1212 22:30:32.228317  7613 Init.cpp:441] Undefined reference to function: klee_fire_mpi7para
+I1212 22:30:32.228327  7613 Init.cpp:441] Undefined reference to function: klee_keep_block
+I1212 22:30:32.228337  7613 Init.cpp:441] Undefined reference to function: klee_mpi_nonblock
+I1212 22:30:32.228345  7613 Init.cpp:441] Undefined reference to function: klee_set_mpi_ndcnt
+I1212 22:30:32.228365  7613 Init.cpp:441] Undefined reference to function: realpath
+I1212 22:30:32.228373  7613 Init.cpp:441] Undefined reference to function: setutent
+I1212 22:30:32.228380  7613 Init.cpp:441] Undefined reference to function: strcat
+I1212 22:30:32.228386  7613 Init.cpp:441] Undefined reference to function: strncpy
+I1212 22:30:32.228394  7613 Init.cpp:441] Undefined reference to function: syscall
+I1212 22:30:32.228400  7613 Init.cpp:441] Undefined reference to function: utmpname
+W1212 22:30:32.228410  7613 Init.cpp:452] Undefined reference to function: kill (UNSAFE)!
+I1212 22:30:32.228492  7613 main.cpp:343] Started: 2014-12-12 22:30:32
+I1212 22:30:32.429119  7613 Executor_Timers.cpp:218] current file line: /home/mpiklee/cloud9root/src/cloud9/runtime/POSIX/multiprocess_init.c: 86/65536
+W1212 22:30:33.204780  7613 SpecialFunctionHandler.cpp:502] _ioctl_file: operation not supported on symbolic files
+W1212 22:30:33.215109  7613 Executor_Calls.cpp:142] Calling __user_main with extra arguments.
+W1212 22:30:33.435209  7613 SpecialFunctionHandler.cpp:502] pthread_attr_init: pthread_attr_init does nothing
+I1212 22:30:33.439236  7613 ExecutionState.cpp:118] create thread:wrapperpid:2,tid:1
+W1212 22:30:33.441956  7613 Executor_Calls.cpp:142] Calling PMP_service_loop with extra arguments.
+W1212 22:30:33.481379  7613 SpecialFunctionHandler.cpp:502] pthread_attr_init: pthread_attr_init does nothing
+I1212 22:30:33.491329  7613 ExecutionState.cpp:118] create thread:wrapperpid:2,tid:2
+W1212 22:30:33.493711  7613 Executor_Calls.cpp:142] Calling GRP_service_loop with extra arguments.
+I1212 22:30:33.504086  7613 ExecutionState.cpp:118] create thread:azqClntBodypid:2,tid:3
+I1212 22:30:33.529109  7613 Executor_Timers.cpp:218] current file line: /home/mpiklee/workspace/libmumpi/AzequiaMPI.llvm/idsp/blk/impl/grp.c: 1275/13658
+W1212 22:30:33.533339  7613 SpecialFunctionHandler.cpp:502] pthread_attr_init: pthread_attr_init does nothing
+W1212 22:30:33.781164  7613 SpecialFunctionHandler.cpp:502] pthread_attr_init: pthread_attr_init does nothing
+W1212 22:30:33.897384  7613 SpecialFunctionHandler.cpp:502] pthread_attr_init: pthread_attr_init does nothing
+W1212 22:30:34.013152  7613 SpecialFunctionHandler.cpp:502] pthread_attr_init: pthread_attr_init does nothing
+W1212 22:30:34.129020  7613 SpecialFunctionHandler.cpp:502] pthread_attr_init: pthread_attr_init does nothing
+I1212 22:30:34.255518  7613 ExecutionState.cpp:118] create thread:wrapperpid:2,tid:4
+I1212 22:30:34.258266  7613 ExecutionState.cpp:118] create thread:wrapperpid:2,tid:5
+I1212 22:30:34.261054  7613 ExecutionState.cpp:118] create thread:wrapperpid:2,tid:6
+I1212 22:30:34.263991  7613 ExecutionState.cpp:118] create thread:wrapperpid:2,tid:7
+I1212 22:30:34.529115  7613 Executor_Timers.cpp:218] current file line: /home/mpiklee/workspace/libmumpi/AzequiaMPI.llvm/idsp/blk/impl/dlq.c: 99/11993
+I1212 22:30:34.714519  7613 SpecialFunctionHandler.cpp:1605] rank 3 pid,tid: 2,7
+(3) is alive on 0
+I1212 22:30:34.869309  7613 SpecialFunctionHandler.cpp:1500] 2 /7 args 139805293904960 stack back: MPI_Barrier args 139805293904960
+I1212 22:30:34.971904  7613 SpecialFunctionHandler.cpp:1605] rank 0 pid,tid: 2,4
+(0) is alive on 0
+I1212 22:30:35.116955  7613 SpecialFunctionHandler.cpp:1500] 2 /4 args 139805293483200 stack back: MPI_Barrier args 139805293483200
+I1212 22:30:35.150533  7613 SpecialFunctionHandler.cpp:1605] rank 1 pid,tid: 2,5
+(1) is alive on 0
+I1212 22:30:35.294934  7613 SpecialFunctionHandler.cpp:1500] 2 /5 args 139805293621184 stack back: MPI_Barrier args 139805293621184
+I1212 22:30:35.328743  7613 SpecialFunctionHandler.cpp:1605] rank 2 pid,tid: 2,6
+(2) is alive on 0
+I1212 22:30:35.473001  7613 SpecialFunctionHandler.cpp:1500] 2 /6 args 139805293758464 stack back: MPI_Barrier args 139805293758464
+I1212 22:30:35.473109  7613 commlogManager.cpp:85] state: 0x80b4b70  rank 0 commlog begin**********
+I1212 22:30:35.473140  7613 commlogManager.cpp:87] [0,0] :PMPI_Barrier
+I1212 22:30:35.473148  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:35.473155  7613 commlogManager.cpp:85] state: 0x80b4b70  rank 1 commlog begin**********
+I1212 22:30:35.473160  7613 commlogManager.cpp:87] [1,0] :PMPI_Barrier
+I1212 22:30:35.473165  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:35.473170  7613 commlogManager.cpp:85] state: 0x80b4b70  rank 2 commlog begin**********
+I1212 22:30:35.473176  7613 commlogManager.cpp:87] [2,0] :PMPI_Barrier
+I1212 22:30:35.473182  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:35.473186  7613 commlogManager.cpp:85] state: 0x80b4b70  rank 3 commlog begin**********
+I1212 22:30:35.473192  7613 commlogManager.cpp:87] [3,0] :PMPI_Barrier
+I1212 22:30:35.473198  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:35.473337  7613 commlogManager.cpp:507] state 0x80b4b70 CHECK begin,depth/subdepth: 0/0 with enabled:
+I1212 22:30:35.473359  7613 commlogManager.cpp:509] rank 0 enabled:1
+I1212 22:30:35.473366  7613 commlogManager.cpp:513] [0,0] :PMPI_Barrier
+I1212 22:30:35.473372  7613 commlogManager.cpp:509] rank 1 enabled:1
+I1212 22:30:35.473378  7613 commlogManager.cpp:513] [1,0] :PMPI_Barrier
+I1212 22:30:35.473384  7613 commlogManager.cpp:509] rank 2 enabled:1
+I1212 22:30:35.473390  7613 commlogManager.cpp:513] [2,0] :PMPI_Barrier
+I1212 22:30:35.473395  7613 commlogManager.cpp:509] rank 3 enabled:1
+I1212 22:30:35.473402  7613 commlogManager.cpp:513] [3,0] :PMPI_Barrier
+I1212 22:30:35.473407  7613 commlogManager.cpp:516] enabled END*********************************
+I1212 22:30:35.473438  7613 commlogManager.cpp:541] MATCH pairs:
+I1212 22:30:35.473445  7613 commlogManager.cpp:544] [0,0]PMPI_Barrier
+I1212 22:30:35.473451  7613 commlogManager.cpp:544] [1,0]PMPI_Barrier
+I1212 22:30:35.473456  7613 commlogManager.cpp:544] [2,0]PMPI_Barrier
+I1212 22:30:35.473461  7613 commlogManager.cpp:544] [3,0]PMPI_Barrier
+I1212 22:30:35.473466  7613 commlogManager.cpp:547] MATCH END*********************************
+I1212 22:30:35.473501  7613 commlogManager.cpp:378] [0,0] :PMPI_Barrier PMPI_Barrier fired.
+I1212 22:30:35.473516  7613 commlogManager.cpp:378] [1,0] :PMPI_Barrier PMPI_Barrier fired.
+I1212 22:30:35.473527  7613 commlogManager.cpp:378] [2,0] :PMPI_Barrier PMPI_Barrier fired.
+I1212 22:30:35.473539  7613 commlogManager.cpp:378] [3,0] :PMPI_Barrier PMPI_Barrier fired.
+I1212 22:30:35.473557  7613 commlogManager.cpp:590] push functions into stack of rank 0 :
+I1212 22:30:35.473568  7613 commlogManager.cpp:600] function PMPI_Barrier(15)
+I1212 22:30:35.473599  7613 commlogManager.cpp:621] push END*********&& wake up thread 0x832d650 in 32***********
+I1212 22:30:35.473610  7613 commlogManager.cpp:624] Wake up rank 0 for func push.
+I1212 22:30:35.473621  7613 commlogManager.cpp:590] push functions into stack of rank 1 :
+I1212 22:30:35.473628  7613 commlogManager.cpp:600] function PMPI_Barrier(15)
+I1212 22:30:35.473649  7613 commlogManager.cpp:621] push END*********&& wake up thread 0x832f4b0 in 33***********
+I1212 22:30:35.473657  7613 commlogManager.cpp:624] Wake up rank 1 for func push.
+I1212 22:30:35.473666  7613 commlogManager.cpp:590] push functions into stack of rank 2 :
+I1212 22:30:35.473673  7613 commlogManager.cpp:600] function PMPI_Barrier(15)
+I1212 22:30:35.473693  7613 commlogManager.cpp:621] push END*********&& wake up thread 0x8330070 in 34***********
+I1212 22:30:35.473701  7613 commlogManager.cpp:624] Wake up rank 2 for func push.
+I1212 22:30:35.473711  7613 commlogManager.cpp:590] push functions into stack of rank 3 :
+I1212 22:30:35.473717  7613 commlogManager.cpp:600] function PMPI_Barrier(15)
+I1212 22:30:35.473737  7613 commlogManager.cpp:621] push END*********&& wake up thread 0x8330cd0 in 31***********
+I1212 22:30:35.473745  7613 commlogManager.cpp:624] Wake up rank 3 for func push.
+MPI_Barrier (start)	Process: I1212 22:30:35.529119  7613 Executor_Timers.cpp:218] current file line: /home/mpiklee/cloud9root/src/klee-uclibc/libc/stdio/fwrite.c: 23/46332
+2
+MPI_Barrier (start)	Process: 3
+MPI_Barrier (start)	Process: 0
+MPI_Barrier (start)	Process: 1
+MPI_Barrier (end)  	Process:1
+I1212 22:30:35.943933  7613 SpecialFunctionHandler.cpp:1635] ****************Rank 1 MPI ops:******************
+I1212 22:30:35.943954  7613 SpecialFunctionHandler.cpp:1638] PMPI_Barrier
+I1212 22:30:35.943961  7613 SpecialFunctionHandler.cpp:1638] PMPI_Isend
+I1212 22:30:35.943966  7613 SpecialFunctionHandler.cpp:1638] PMPI_Finalize
+I1212 22:30:35.943971  7613 SpecialFunctionHandler.cpp:1641] **************************************************
+MPI_Barrier (end)  	Process:2
+I1212 22:30:36.061501  7613 SpecialFunctionHandler.cpp:1635] ****************Rank 2 MPI ops:******************
+I1212 22:30:36.061522  7613 SpecialFunctionHandler.cpp:1638] PMPI_Barrier
+I1212 22:30:36.061527  7613 SpecialFunctionHandler.cpp:1638] PMPI_Isend
+I1212 22:30:36.061533  7613 SpecialFunctionHandler.cpp:1638] PMPI_Finalize
+I1212 22:30:36.061537  7613 SpecialFunctionHandler.cpp:1641] **************************************************
+MPI_Barrier (end)  	Process:3
+MPI_Barrier (end)  	Process:0
+I1212 22:30:36.240890  7613 commlogManager.cpp:85] state: 0x8a118f0  rank 0 commlog begin**********
+I1212 22:30:36.240912  7613 commlogManager.cpp:87] [0,0] :PMPI_Barrier
+I1212 22:30:36.240919  7613 commlogManager.cpp:87] [0,1] :PMPI_Irecv(-1)
+I1212 22:30:36.240926  7613 commlogManager.cpp:87] [0,2] :PMPI_Recv(3)
+I1212 22:30:36.240933  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:36.240938  7613 commlogManager.cpp:85] state: 0x8a118f0  rank 1 commlog begin**********
+I1212 22:30:36.240944  7613 commlogManager.cpp:87] [1,0] :PMPI_Barrier
+I1212 22:30:36.240950  7613 commlogManager.cpp:87] [1,1] :PMPI_Isend(0)
+I1212 22:30:36.240957  7613 commlogManager.cpp:87] [1,2] :PMPI_Finalize
+I1212 22:30:36.240962  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:36.240967  7613 commlogManager.cpp:85] state: 0x8a118f0  rank 2 commlog begin**********
+I1212 22:30:36.240973  7613 commlogManager.cpp:87] [2,0] :PMPI_Barrier
+I1212 22:30:36.240979  7613 commlogManager.cpp:87] [2,1] :PMPI_Isend(0)
+I1212 22:30:36.240985  7613 commlogManager.cpp:87] [2,2] :PMPI_Finalize
+I1212 22:30:36.240991  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:36.240996  7613 commlogManager.cpp:85] state: 0x8a118f0  rank 3 commlog begin**********
+I1212 22:30:36.241003  7613 commlogManager.cpp:87] [3,0] :PMPI_Barrier
+I1212 22:30:36.241008  7613 commlogManager.cpp:87] [3,1] :PMPI_Isend(0)
+I1212 22:30:36.241014  7613 commlogManager.cpp:87] [3,2] :PMPI_Recv(0)
+I1212 22:30:36.241020  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:36.241072  7613 commlogManager.cpp:507] state 0x8a118f0 CHECK begin,depth/subdepth: 1/0 with enabled:
+I1212 22:30:36.241081  7613 commlogManager.cpp:509] rank 0 enabled:1
+I1212 22:30:36.241087  7613 commlogManager.cpp:513] [0,1] :PMPI_Irecv(-1)
+I1212 22:30:36.241094  7613 commlogManager.cpp:509] rank 1 enabled:2
+I1212 22:30:36.241101  7613 commlogManager.cpp:513] [1,1] :PMPI_Isend(0)
+I1212 22:30:36.241107  7613 commlogManager.cpp:513] [1,2] :PMPI_Finalize
+I1212 22:30:36.241113  7613 commlogManager.cpp:509] rank 2 enabled:2
+I1212 22:30:36.241119  7613 commlogManager.cpp:513] [2,1] :PMPI_Isend(0)
+I1212 22:30:36.241127  7613 commlogManager.cpp:513] [2,2] :PMPI_Finalize
+I1212 22:30:36.241132  7613 commlogManager.cpp:509] rank 3 enabled:2
+I1212 22:30:36.241137  7613 commlogManager.cpp:513] [3,1] :PMPI_Isend(0)
+I1212 22:30:36.241144  7613 commlogManager.cpp:513] [3,2] :PMPI_Recv(0)
+I1212 22:30:36.241152  7613 commlogManager.cpp:516] enabled END*********************************
+I1212 22:30:36.241202  7613 commlogManager.cpp:247] match set begin:
+I1212 22:30:36.241211  7613 commlogManager.cpp:251] [1,1] :PMPI_Isend(0)
+I1212 22:30:36.241219  7613 commlogManager.cpp:251] [0,1] :PMPI_Irecv(-1)
+I1212 22:30:36.241225  7613 commlogManager.cpp:253] *************
+I1212 22:30:36.241230  7613 commlogManager.cpp:247] match set begin:
+I1212 22:30:36.241235  7613 commlogManager.cpp:251] [2,1] :PMPI_Isend(0)
+I1212 22:30:36.241241  7613 commlogManager.cpp:251] [0,1] :PMPI_Irecv(-1)
+I1212 22:30:36.241247  7613 commlogManager.cpp:253] *************
+I1212 22:30:36.241252  7613 commlogManager.cpp:247] match set begin:
+I1212 22:30:36.241257  7613 commlogManager.cpp:251] [3,1] :PMPI_Isend(0)
+I1212 22:30:36.241263  7613 commlogManager.cpp:251] [0,1] :PMPI_Irecv(-1)
+I1212 22:30:36.241269  7613 commlogManager.cpp:253] *************
+I1212 22:30:36.241274  7613 commlogManager.cpp:541] MATCH pairs:
+I1212 22:30:36.241279  7613 commlogManager.cpp:544] [1,1]PMPI_Isend
+I1212 22:30:36.241284  7613 commlogManager.cpp:544] [0,1]PMPI_Irecv
+I1212 22:30:36.241291  7613 commlogManager.cpp:544] [2,1]PMPI_Isend
+I1212 22:30:36.241296  7613 commlogManager.cpp:544] [0,1]PMPI_Irecv
+I1212 22:30:36.241300  7613 commlogManager.cpp:544] [3,1]PMPI_Isend
+I1212 22:30:36.241305  7613 commlogManager.cpp:544] [0,1]PMPI_Irecv
+I1212 22:30:36.241310  7613 commlogManager.cpp:547] MATCH END*********************************
+I1212 22:30:36.241323  7613 commlogManager.cpp:418] [1,1]isend
+I1212 22:30:36.241338  7613 commlogManager.cpp:418] [0,1]irecv
+I1212 22:30:36.241569  7613 commlogManager.cpp:436] state: 0x8a2e9f0
+I1212 22:30:36.241695  7613 commlogManager.cpp:846] getWildcardMatches:0,1,1,1;
+W1212 22:30:36.241706  7613 commlogManager.cpp:439] Wildcard [0,1] :PMPI_Irecv(1) matches with [1,1] :PMPI_Isend(0) args:1
+I1212 22:30:36.241745  7613 commlogManager.cpp:340] [1,1] :PMPI_Isend(0) and [0,1] :PMPI_Irecv(1)  fired.
+I1212 22:30:36.241780  7613 commlogManager.cpp:507] state 0x8a2e9f0 CHECK begin,depth/subdepth: 1/1 with enabled:
+I1212 22:30:36.241787  7613 commlogManager.cpp:509] rank 0 enabled:1
+I1212 22:30:36.241793  7613 commlogManager.cpp:513] [0,2] :PMPI_Recv(3)
+I1212 22:30:36.241801  7613 commlogManager.cpp:509] rank 1 enabled:1
+I1212 22:30:36.241806  7613 commlogManager.cpp:513] [1,2] :PMPI_Finalize
+I1212 22:30:36.241811  7613 commlogManager.cpp:509] rank 2 enabled:2
+I1212 22:30:36.241817  7613 commlogManager.cpp:513] [2,1] :PMPI_Isend(0)
+I1212 22:30:36.241823  7613 commlogManager.cpp:513] [2,2] :PMPI_Finalize
+I1212 22:30:36.241829  7613 commlogManager.cpp:509] rank 3 enabled:2
+I1212 22:30:36.241835  7613 commlogManager.cpp:513] [3,1] :PMPI_Isend(0)
+I1212 22:30:36.241842  7613 commlogManager.cpp:513] [3,2] :PMPI_Recv(0)
+I1212 22:30:36.241848  7613 commlogManager.cpp:516] enabled END*********************************
+I1212 22:30:36.241880  7613 commlogManager.cpp:247] match set begin:
+I1212 22:30:36.241888  7613 commlogManager.cpp:251] [3,1] :PMPI_Isend(0)
+I1212 22:30:36.241894  7613 commlogManager.cpp:251] [0,2] :PMPI_Recv(3)
+I1212 22:30:36.241900  7613 commlogManager.cpp:253] *************
+I1212 22:30:36.241905  7613 commlogManager.cpp:541] MATCH pairs:
+I1212 22:30:36.241910  7613 commlogManager.cpp:544] [3,1]PMPI_Isend
+I1212 22:30:36.241915  7613 commlogManager.cpp:544] [0,2]PMPI_Recv
+I1212 22:30:36.241920  7613 commlogManager.cpp:547] MATCH END*********************************
+I1212 22:30:36.241940  7613 commlogManager.cpp:340] [3,1] :PMPI_Isend(0) and [0,2] :PMPI_Recv(3)  fired.
+I1212 22:30:36.241966  7613 commlogManager.cpp:507] state 0x8a2e9f0 CHECK begin,depth/subdepth: 1/2 with enabled:
+I1212 22:30:36.241972  7613 commlogManager.cpp:509] rank 0 enabled:0
+I1212 22:30:36.241979  7613 commlogManager.cpp:509] rank 1 enabled:1
+I1212 22:30:36.241986  7613 commlogManager.cpp:513] [1,2] :PMPI_Finalize
+I1212 22:30:36.241991  7613 commlogManager.cpp:509] rank 2 enabled:2
+I1212 22:30:36.241997  7613 commlogManager.cpp:513] [2,1] :PMPI_Isend(0)
+I1212 22:30:36.242003  7613 commlogManager.cpp:513] [2,2] :PMPI_Finalize
+I1212 22:30:36.242009  7613 commlogManager.cpp:509] rank 3 enabled:1
+I1212 22:30:36.242015  7613 commlogManager.cpp:513] [3,2] :PMPI_Recv(0)
+I1212 22:30:36.242022  7613 commlogManager.cpp:516] enabled END*********************************
+I1212 22:30:36.242053  7613 commlogManager.cpp:590] push functions into stack of rank 0 :
+I1212 22:30:36.242063  7613 commlogManager.cpp:600] function PMPI_Recv(3)
+I1212 22:30:36.242122  7613 commlogManager.cpp:600] function PMPI_Irecv(1)
+I1212 22:30:36.242149  7613 Executor_Calls.cpp:351] marking state/thread 0x8a2e9f0 0x8a19630 sf of function PMPI_Irecv as dirty
+I1212 22:30:36.242169  7613 commlogManager.cpp:621] push END*********&& wake up thread 0x8a19630 in 32***********
+I1212 22:30:36.242177  7613 commlogManager.cpp:624] Wake up rank 0 for func push.
+I1212 22:30:36.242188  7613 commlogManager.cpp:590] push functions into stack of rank 1 :
+I1212 22:30:36.242195  7613 commlogManager.cpp:600] function PMPI_Isend(0)
+I1212 22:30:36.242249  7613 commlogManager.cpp:621] push END*********&& wake up thread 0x8a0b9b0 in 33***********
+I1212 22:30:36.242259  7613 commlogManager.cpp:624] Wake up rank 1 for func push.
+I1212 22:30:36.242269  7613 commlogManager.cpp:590] push functions into stack of rank 3 :
+I1212 22:30:36.242276  7613 commlogManager.cpp:600] function PMPI_Isend(0)
+I1212 22:30:36.242331  7613 commlogManager.cpp:621] push END*********&& wake up thread 0x8a13c00 in 31***********
+I1212 22:30:36.242339  7613 commlogManager.cpp:624] Wake up rank 3 for func push.
+I1212 22:30:36.242386  7613 commlogManager.cpp:418] [2,1]isend
+I1212 22:30:36.242398  7613 commlogManager.cpp:418] [0,1]irecv
+I1212 22:30:36.242641  7613 commlogManager.cpp:436] state: 0x8a21960
+I1212 22:30:36.242665  7613 commlogManager.cpp:846] getWildcardMatches:0,1,2,1;
+W1212 22:30:36.242673  7613 commlogManager.cpp:439] Wildcard [0,1] :PMPI_Irecv(2) matches with [2,1] :PMPI_Isend(0) args:2
+I1212 22:30:36.242708  7613 commlogManager.cpp:340] [2,1] :PMPI_Isend(0) and [0,1] :PMPI_Irecv(2)  fired.
+I1212 22:30:36.242738  7613 commlogManager.cpp:507] state 0x8a21960 CHECK begin,depth/subdepth: 1/1 with enabled:
+I1212 22:30:36.242745  7613 commlogManager.cpp:509] rank 0 enabled:1
+I1212 22:30:36.242751  7613 commlogManager.cpp:513] [0,2] :PMPI_Recv(3)
+I1212 22:30:36.242758  7613 commlogManager.cpp:509] rank 1 enabled:2
+I1212 22:30:36.242764  7613 commlogManager.cpp:513] [1,1] :PMPI_Isend(0)
+I1212 22:30:36.242770  7613 commlogManager.cpp:513] [1,2] :PMPI_Finalize
+I1212 22:30:36.242776  7613 commlogManager.cpp:509] rank 2 enabled:1
+I1212 22:30:36.242782  7613 commlogManager.cpp:513] [2,2] :PMPI_Finalize
+I1212 22:30:36.242789  7613 commlogManager.cpp:509] rank 3 enabled:2
+I1212 22:30:36.242794  7613 commlogManager.cpp:513] [3,1] :PMPI_Isend(0)
+I1212 22:30:36.242800  7613 commlogManager.cpp:513] [3,2] :PMPI_Recv(0)
+I1212 22:30:36.242807  7613 commlogManager.cpp:516] enabled END*********************************
+I1212 22:30:36.242838  7613 commlogManager.cpp:247] match set begin:
+I1212 22:30:36.242846  7613 commlogManager.cpp:251] [3,1] :PMPI_Isend(0)
+I1212 22:30:36.242852  7613 commlogManager.cpp:251] [0,2] :PMPI_Recv(3)
+I1212 22:30:36.242858  7613 commlogManager.cpp:253] *************
+I1212 22:30:36.242863  7613 commlogManager.cpp:541] MATCH pairs:
+I1212 22:30:36.242868  7613 commlogManager.cpp:544] [3,1]PMPI_Isend
+I1212 22:30:36.242873  7613 commlogManager.cpp:544] [0,2]PMPI_Recv
+I1212 22:30:36.242878  7613 commlogManager.cpp:547] MATCH END*********************************
+I1212 22:30:36.242897  7613 commlogManager.cpp:340] [3,1] :PMPI_Isend(0) and [0,2] :PMPI_Recv(3)  fired.
+I1212 22:30:36.242923  7613 commlogManager.cpp:507] state 0x8a21960 CHECK begin,depth/subdepth: 1/2 with enabled:
+I1212 22:30:36.242929  7613 commlogManager.cpp:509] rank 0 enabled:0
+I1212 22:30:36.242936  7613 commlogManager.cpp:509] rank 1 enabled:2
+I1212 22:30:36.242943  7613 commlogManager.cpp:513] [1,1] :PMPI_Isend(0)
+I1212 22:30:36.242949  7613 commlogManager.cpp:513] [1,2] :PMPI_Finalize
+I1212 22:30:36.242955  7613 commlogManager.cpp:509] rank 2 enabled:1
+I1212 22:30:36.242961  7613 commlogManager.cpp:513] [2,2] :PMPI_Finalize
+I1212 22:30:36.242966  7613 commlogManager.cpp:509] rank 3 enabled:1
+I1212 22:30:36.242972  7613 commlogManager.cpp:513] [3,2] :PMPI_Recv(0)
+I1212 22:30:36.242980  7613 commlogManager.cpp:516] enabled END*********************************
+I1212 22:30:36.243011  7613 commlogManager.cpp:590] push functions into stack of rank 0 :
+I1212 22:30:36.243021  7613 commlogManager.cpp:600] function PMPI_Recv(3)
+I1212 22:30:36.243077  7613 commlogManager.cpp:600] function PMPI_Irecv(2)
+I1212 22:30:36.243103  7613 Executor_Calls.cpp:351] marking state/thread 0x8a21960 0x8a24f50 sf of function PMPI_Irecv as dirty
+I1212 22:30:36.243120  7613 commlogManager.cpp:621] push END*********&& wake up thread 0x8a24f50 in 32***********
+I1212 22:30:36.243127  7613 commlogManager.cpp:624] Wake up rank 0 for func push.
+I1212 22:30:36.243139  7613 commlogManager.cpp:590] push functions into stack of rank 2 :
+I1212 22:30:36.243146  7613 commlogManager.cpp:600] function PMPI_Isend(0)
+I1212 22:30:36.243199  7613 commlogManager.cpp:621] push END*********&& wake up thread 0x8a1a8b0 in 34***********
+I1212 22:30:36.243207  7613 commlogManager.cpp:624] Wake up rank 2 for func push.
+I1212 22:30:36.243217  7613 commlogManager.cpp:590] push functions into stack of rank 3 :
+I1212 22:30:36.243226  7613 commlogManager.cpp:600] function PMPI_Isend(0)
+I1212 22:30:36.243278  7613 commlogManager.cpp:621] push END*********&& wake up thread 0x8a244a0 in 31***********
+I1212 22:30:36.243286  7613 commlogManager.cpp:624] Wake up rank 3 for func push.
+I1212 22:30:36.243332  7613 commlogManager.cpp:418] [3,1]isend
+I1212 22:30:36.243343  7613 commlogManager.cpp:418] [0,1]irecv
+I1212 22:30:36.243367  7613 commlogManager.cpp:340] [3,1] :PMPI_Isend(0) and [0,1] :PMPI_Irecv(3)  fired.
+I1212 22:30:36.243377  7613 commlogManager.cpp:450] state: 0x8a118f0
+I1212 22:30:36.243389  7613 commlogManager.cpp:846] getWildcardMatches:0,1,3,1;
+W1212 22:30:36.243396  7613 commlogManager.cpp:452] Wildcard [0,1] :PMPI_Irecv(3) matches with [3,1] :PMPI_Isend(0) args:3
+I1212 22:30:36.243415  7613 commlogManager.cpp:570] check break early for pure wildcard goes one(others should not be explored.)
+I1212 22:30:36.243423  7613 commlogManager.cpp:590] push functions into stack of rank 0 :
+I1212 22:30:36.243432  7613 commlogManager.cpp:600] function PMPI_Irecv(3)
+I1212 22:30:36.243469  7613 commlogManager.cpp:621] push END*********&& wake up thread 0x8a35130 in 32***********
+I1212 22:30:36.243477  7613 commlogManager.cpp:624] Wake up rank 0 for func push.
+I1212 22:30:36.243489  7613 commlogManager.cpp:590] push functions into stack of rank 3 :
+I1212 22:30:36.243496  7613 commlogManager.cpp:600] function PMPI_Isend(0)
+I1212 22:30:36.243549  7613 commlogManager.cpp:621] push END*********&& wake up thread 0x8a34640 in 31***********
+I1212 22:30:36.243558  7613 commlogManager.cpp:624] Wake up rank 3 for func push.
+MPI_Irecv(0). tag 0. src 1 BEGIN
+MPI_Irecv (end)  	Process: 0
+
+MPI_Recv(0). tag I1212 22:30:36.529140  7613 Executor_Timers.cpp:218] current file line: /home/mpiklee/cloud9root/src/cloud9/runtime/POSIX/fd.c: 369/60130
+0. source 3 BEGIN
+
+MPI_Isend(1). tag 0. dest 0 BEGIN
+MPI_Isend (end)  	Process: 1
+I1212 22:30:36.813915  7613 SpecialFunctionHandler.cpp:1703] blocking rank 1 for state: 0x8a2e9f0 op: [1,2] :PMPI_Finalize
+
+MPI_Isend(3). tag 0. dest 0 BEGIN
+MPI_Isend (end)  	Process: 3
+I1212 22:30:37.043165  7613 SpecialFunctionHandler.cpp:1703] blocking rank 3 for state: 0x8a2e9f0 op: [3,2] :PMPI_Recv(0)
+MPI_Recv (end)  	Process: 0
+wait get persist req: 0xf4d9eb20 -> 0xI1212 22:30:37.229132  7613 Executor_Timers.cpp:218] current file line: /home/mpiklee/cloud9root/src/klee-uclibc/libc/stdio/_uintmaxtostr.c: 35/44599
+I1212 22:30:37.229152  7613 StatsTracker.cpp:1243] [STATS] StateCount: 5 InstructionCount: 747329 QueryCount: 4
+I1212 22:30:37.229161  7613 StatsTracker.cpp:1247] [GLOBAL COVERAGE] Source: 0% (0/9732) Instructions: 0% (0/51442)
+I1212 22:30:37.229228  7613 StatsTracker.cpp:1252] [FOCUSED COVERAGE] Source: - (0/0) Instructions: - (0/0)
+abababab
+I1212 22:30:37.247129  7613 commlogManager.cpp:85] state: 0x8a2e9f0  rank 0 commlog begin**********
+I1212 22:30:37.247150  7613 commlogManager.cpp:87] [0,0] :PMPI_Barrier
+I1212 22:30:37.247159  7613 commlogManager.cpp:87] [0,1] :PMPI_Irecv(3)
+I1212 22:30:37.247165  7613 commlogManager.cpp:87] [0,2] :PMPI_Recv(3)
+I1212 22:30:37.247171  7613 commlogManager.cpp:87] [0,3] :PMPI_Isend(3)
+I1212 22:30:37.247177  7613 commlogManager.cpp:87] [0,4] :PMPI_Wait
+I1212 22:30:37.247182  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:37.247187  7613 commlogManager.cpp:85] state: 0x8a2e9f0  rank 1 commlog begin**********
+I1212 22:30:37.247194  7613 commlogManager.cpp:87] [1,0] :PMPI_Barrier
+I1212 22:30:37.247198  7613 commlogManager.cpp:87] [1,1] :PMPI_Isend(0)
+I1212 22:30:37.247205  7613 commlogManager.cpp:87] [1,2] :PMPI_Finalize
+I1212 22:30:37.247210  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:37.247215  7613 commlogManager.cpp:85] state: 0x8a2e9f0  rank 2 commlog begin**********
+I1212 22:30:37.247220  7613 commlogManager.cpp:87] [2,0] :PMPI_Barrier
+I1212 22:30:37.247226  7613 commlogManager.cpp:87] [2,1] :PMPI_Isend(0)
+I1212 22:30:37.247232  7613 commlogManager.cpp:87] [2,2] :PMPI_Finalize
+I1212 22:30:37.247238  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:37.247242  7613 commlogManager.cpp:85] state: 0x8a2e9f0  rank 3 commlog begin**********
+I1212 22:30:37.247248  7613 commlogManager.cpp:87] [3,0] :PMPI_Barrier
+I1212 22:30:37.247253  7613 commlogManager.cpp:87] [3,1] :PMPI_Isend(0)
+I1212 22:30:37.247259  7613 commlogManager.cpp:87] [3,2] :PMPI_Recv(0)
+I1212 22:30:37.247266  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:37.247330  7613 commlogManager.cpp:507] state 0x8a2e9f0 CHECK begin,depth/subdepth: 2/0 with enabled:
+I1212 22:30:37.247339  7613 commlogManager.cpp:509] rank 0 enabled:2
+I1212 22:30:37.247345  7613 commlogManager.cpp:513] [0,3] :PMPI_Isend(3)
+I1212 22:30:37.247352  7613 commlogManager.cpp:513] [0,4] :PMPI_Wait
+I1212 22:30:37.247359  7613 commlogManager.cpp:509] rank 1 enabled:1
+I1212 22:30:37.247364  7613 commlogManager.cpp:513] [1,2] :PMPI_Finalize
+I1212 22:30:37.247370  7613 commlogManager.cpp:509] rank 2 enabled:2
+I1212 22:30:37.247375  7613 commlogManager.cpp:513] [2,1] :PMPI_Isend(0)
+I1212 22:30:37.247381  7613 commlogManager.cpp:513] [2,2] :PMPI_Finalize
+I1212 22:30:37.247386  7613 commlogManager.cpp:509] rank 3 enabled:1
+I1212 22:30:37.247392  7613 commlogManager.cpp:513] [3,2] :PMPI_Recv(0)
+I1212 22:30:37.247398  7613 commlogManager.cpp:516] enabled END*********************************
+I1212 22:30:37.247436  7613 commlogManager.cpp:247] match set begin:
+I1212 22:30:37.247442  7613 commlogManager.cpp:251] [0,3] :PMPI_Isend(3)
+I1212 22:30:37.247449  7613 commlogManager.cpp:251] [3,2] :PMPI_Recv(0)
+I1212 22:30:37.247455  7613 commlogManager.cpp:253] *************
+I1212 22:30:37.247460  7613 commlogManager.cpp:541] MATCH pairs:
+I1212 22:30:37.247465  7613 commlogManager.cpp:544] [0,3]PMPI_Isend
+I1212 22:30:37.247472  7613 commlogManager.cpp:544] [3,2]PMPI_Recv
+I1212 22:30:37.247477  7613 commlogManager.cpp:547] MATCH END*********************************
+I1212 22:30:37.247509  7613 commlogManager.cpp:340] [0,3] :PMPI_Isend(3) and [3,2] :PMPI_Recv(0)  fired.
+I1212 22:30:37.247537  7613 commlogManager.cpp:507] state 0x8a2e9f0 CHECK begin,depth/subdepth: 2/1 with enabled:
+I1212 22:30:37.247545  7613 commlogManager.cpp:509] rank 0 enabled:1
+I1212 22:30:37.247550  7613 commlogManager.cpp:513] [0,4] :PMPI_Wait
+I1212 22:30:37.247556  7613 commlogManager.cpp:509] rank 1 enabled:1
+I1212 22:30:37.247562  7613 commlogManager.cpp:513] [1,2] :PMPI_Finalize
+I1212 22:30:37.247567  7613 commlogManager.cpp:509] rank 2 enabled:2
+I1212 22:30:37.247573  7613 commlogManager.cpp:513] [2,1] :PMPI_Isend(0)
+I1212 22:30:37.247580  7613 commlogManager.cpp:513] [2,2] :PMPI_Finalize
+I1212 22:30:37.247586  7613 commlogManager.cpp:516] enabled END*********************************
+I1212 22:30:37.247612  7613 commlogManager.cpp:541] MATCH pairs:
+I1212 22:30:37.247618  7613 commlogManager.cpp:544] [0,4]PMPI_Wait
+I1212 22:30:37.247624  7613 commlogManager.cpp:547] MATCH END*********************************
+I1212 22:30:37.247637  7613 commlogManager.cpp:400] [0,4] :PMPI_Wait PMPI_Wait fired.
+I1212 22:30:37.247658  7613 commlogManager.cpp:507] state 0x8a2e9f0 CHECK begin,depth/subdepth: 2/2 with enabled:
+I1212 22:30:37.247664  7613 commlogManager.cpp:509] rank 0 enabled:0
+I1212 22:30:37.247671  7613 commlogManager.cpp:509] rank 1 enabled:1
+I1212 22:30:37.247678  7613 commlogManager.cpp:513] [1,2] :PMPI_Finalize
+I1212 22:30:37.247683  7613 commlogManager.cpp:509] rank 2 enabled:2
+I1212 22:30:37.247689  7613 commlogManager.cpp:513] [2,1] :PMPI_Isend(0)
+I1212 22:30:37.247694  7613 commlogManager.cpp:513] [2,2] :PMPI_Finalize
+I1212 22:30:37.247700  7613 commlogManager.cpp:516] enabled END*********************************
+I1212 22:30:37.247731  7613 commlogManager.cpp:590] push functions into stack of rank 0 :
+I1212 22:30:37.247741  7613 commlogManager.cpp:600] function PMPI_Wait(15)
+I1212 22:30:37.247779  7613 commlogManager.cpp:600] function PMPI_Isend(3)
+I1212 22:30:37.247805  7613 Executor_Calls.cpp:351] marking state/thread 0x8a2e9f0 0x8a19630 sf of function PMPI_Isend as dirty
+I1212 22:30:37.247823  7613 commlogManager.cpp:621] push END*********&& wake up thread 0x8a19630 in 32***********
+I1212 22:30:37.247831  7613 commlogManager.cpp:624] Wake up rank 0 for func push.
+I1212 22:30:37.247841  7613 commlogManager.cpp:590] push functions into stack of rank 3 :
+I1212 22:30:37.247849  7613 commlogManager.cpp:600] function PMPI_Recv(0)
+I1212 22:30:37.247881  7613 commlogManager.cpp:621] push END*********&& wake up thread 0x8a13c00 in 31***********
+I1212 22:30:37.247889  7613 commlogManager.cpp:624] Wake up rank 3 for func push.
+
+MPI_Isend(0). tag 0. dest 3 BEGIN
+MPI_Isend (end)  	Process: 0
+MPI_Wait (start)	 Rank: 0
+MPI_Wait (end)  	Process:0
+I1212 22:30:37.629123  7613 Executor_Timers.cpp:218] current file line: /home/mpiklee/cloud9root/src/klee-uclibc/libc/stdio/_vfprintf.c: 552/42955
+wait get persist req: 0xf4d9eb60 -> 0xabababab
+
+MPI_Recv(3). tag 0. source 0 BEGIN
+MPI_Recv (end)  	Process: 3
+wait get persist req: 0xf4e06f60 -> 0xabababab
+I1212 22:30:38.025861  7613 commlogManager.cpp:85] state: 0x8a2e9f0  rank 0 commlog begin**********
+I1212 22:30:38.025882  7613 commlogManager.cpp:87] [0,0] :PMPI_Barrier
+I1212 22:30:38.025889  7613 commlogManager.cpp:87] [0,1] :PMPI_Irecv(3)
+I1212 22:30:38.025897  7613 commlogManager.cpp:87] [0,2] :PMPI_Recv(3)
+I1212 22:30:38.025903  7613 commlogManager.cpp:87] [0,3] :PMPI_Isend(3)
+I1212 22:30:38.025909  7613 commlogManager.cpp:87] [0,4] :PMPI_Wait
+I1212 22:30:38.025914  7613 commlogManager.cpp:87] [0,5] :PMPI_Wait
+I1212 22:30:38.025920  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:38.025925  7613 commlogManager.cpp:85] state: 0x8a2e9f0  rank 1 commlog begin**********
+I1212 22:30:38.025931  7613 commlogManager.cpp:87] [1,0] :PMPI_Barrier
+I1212 22:30:38.025936  7613 commlogManager.cpp:87] [1,1] :PMPI_Isend(0)
+I1212 22:30:38.025943  7613 commlogManager.cpp:87] [1,2] :PMPI_Finalize
+I1212 22:30:38.025949  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:38.025954  7613 commlogManager.cpp:85] state: 0x8a2e9f0  rank 2 commlog begin**********
+I1212 22:30:38.025959  7613 commlogManager.cpp:87] [2,0] :PMPI_Barrier
+I1212 22:30:38.025964  7613 commlogManager.cpp:87] [2,1] :PMPI_Isend(0)
+I1212 22:30:38.025971  7613 commlogManager.cpp:87] [2,2] :PMPI_Finalize
+I1212 22:30:38.025976  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:38.025981  7613 commlogManager.cpp:85] state: 0x8a2e9f0  rank 3 commlog begin**********
+I1212 22:30:38.025987  7613 commlogManager.cpp:87] [3,0] :PMPI_Barrier
+I1212 22:30:38.025992  7613 commlogManager.cpp:87] [3,1] :PMPI_Isend(0)
+I1212 22:30:38.026000  7613 commlogManager.cpp:87] [3,2] :PMPI_Recv(0)
+I1212 22:30:38.026005  7613 commlogManager.cpp:87] [3,3] :PMPI_Wait
+I1212 22:30:38.026010  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:38.026072  7613 commlogManager.cpp:507] state 0x8a2e9f0 CHECK begin,depth/subdepth: 3/0 with enabled:
+I1212 22:30:38.026079  7613 commlogManager.cpp:509] rank 0 enabled:1
+I1212 22:30:38.026085  7613 commlogManager.cpp:513] [0,5] :PMPI_Wait
+I1212 22:30:38.026092  7613 commlogManager.cpp:509] rank 1 enabled:1
+I1212 22:30:38.026098  7613 commlogManager.cpp:513] [1,2] :PMPI_Finalize
+I1212 22:30:38.026103  7613 commlogManager.cpp:509] rank 2 enabled:2
+I1212 22:30:38.026108  7613 commlogManager.cpp:513] [2,1] :PMPI_Isend(0)
+I1212 22:30:38.026114  7613 commlogManager.cpp:513] [2,2] :PMPI_Finalize
+I1212 22:30:38.026120  7613 commlogManager.cpp:509] rank 3 enabled:1
+I1212 22:30:38.026126  7613 commlogManager.cpp:513] [3,3] :PMPI_Wait
+I1212 22:30:38.026132  7613 commlogManager.cpp:516] enabled END*********************************
+I1212 22:30:38.026165  7613 commlogManager.cpp:541] MATCH pairs:
+I1212 22:30:38.026170  7613 commlogManager.cpp:544] [0,5]PMPI_Wait
+I1212 22:30:38.026176  7613 commlogManager.cpp:544] [3,3]PMPI_Wait
+I1212 22:30:38.026181  7613 commlogManager.cpp:547] MATCH END*********************************
+I1212 22:30:38.026201  7613 commlogManager.cpp:400] [0,5] :PMPI_Wait PMPI_Wait fired.
+I1212 22:30:38.026213  7613 commlogManager.cpp:400] [3,3] :PMPI_Wait PMPI_Wait fired.
+I1212 22:30:38.026237  7613 commlogManager.cpp:507] state 0x8a2e9f0 CHECK begin,depth/subdepth: 3/1 with enabled:
+I1212 22:30:38.026244  7613 commlogManager.cpp:509] rank 0 enabled:0
+I1212 22:30:38.026252  7613 commlogManager.cpp:509] rank 1 enabled:1
+I1212 22:30:38.026257  7613 commlogManager.cpp:513] [1,2] :PMPI_Finalize
+I1212 22:30:38.026262  7613 commlogManager.cpp:509] rank 2 enabled:2
+I1212 22:30:38.026268  7613 commlogManager.cpp:513] [2,1] :PMPI_Isend(0)
+I1212 22:30:38.026274  7613 commlogManager.cpp:513] [2,2] :PMPI_Finalize
+I1212 22:30:38.026280  7613 commlogManager.cpp:516] enabled END*********************************
+I1212 22:30:38.026312  7613 commlogManager.cpp:590] push functions into stack of rank 0 :
+I1212 22:30:38.026320  7613 commlogManager.cpp:600] function PMPI_Wait(15)
+I1212 22:30:38.026360  7613 commlogManager.cpp:621] push END*********&& wake up thread 0x8a19630 in 32***********
+I1212 22:30:38.026368  7613 commlogManager.cpp:624] Wake up rank 0 for func push.
+I1212 22:30:38.026379  7613 commlogManager.cpp:590] push functions into stack of rank 3 :
+I1212 22:30:38.026386  7613 commlogManager.cpp:600] function PMPI_Wait(15)
+I1212 22:30:38.026427  7613 commlogManager.cpp:621] push END*********&& wake up thread 0x8a13c00 in 31***********
+I1212 22:30:38.026437  7613 commlogManager.cpp:624] Wake up rank 3 for func push.
+MPI_Wait (start)	 Rank: 3
+MPI_Wait (end)  	Process:3
+I1212 22:30:38.169936  7613 SpecialFunctionHandler.cpp:1635] ****************Rank 3 MPI ops:******************
+I1212 22:30:38.169955  7613 SpecialFunctionHandler.cpp:1638] PMPI_Barrier
+I1212 22:30:38.169961  7613 SpecialFunctionHandler.cpp:1638] PMPI_Isend
+I1212 22:30:38.169966  7613 SpecialFunctionHandler.cpp:1638] PMPI_Recv
+I1212 22:30:38.169971  7613 SpecialFunctionHandler.cpp:1638] PMPI_Wait
+I1212 22:30:38.169976  7613 SpecialFunctionHandler.cpp:1638] PMPI_Finalize
+I1212 22:30:38.169981  7613 SpecialFunctionHandler.cpp:1641] **************************************************
+MPI_Wait (start)	 Rank: 0
+MPI_Wait (end)  	Process:0
+I1212 22:30:38.313238  7613 SpecialFunctionHandler.cpp:1635] ****************Rank 0 MPI ops:******************
+I1212 22:30:38.313257  7613 SpecialFunctionHandler.cpp:1638] PMPI_Barrier
+I1212 22:30:38.313263  7613 SpecialFunctionHandler.cpp:1638] PMPI_Irecv
+I1212 22:30:38.313268  7613 SpecialFunctionHandler.cpp:1638] PMPI_Recv
+I1212 22:30:38.313273  7613 SpecialFunctionHandler.cpp:1638] PMPI_Isend
+I1212 22:30:38.313278  7613 SpecialFunctionHandler.cpp:1638] PMPI_Wait
+I1212 22:30:38.313282  7613 SpecialFunctionHandler.cpp:1638] PMPI_Wait
+I1212 22:30:38.313287  7613 SpecialFunctionHandler.cpp:1638] PMPI_Finalize
+I1212 22:30:38.313292  7613 SpecialFunctionHandler.cpp:1641] **************************************************
+I1212 22:30:38.313302  7613 SpecialFunctionHandler.cpp:1668] All ranks finished normally.
+I1212 22:30:38.313308  7613 commlogManager.cpp:85] state: 0x8a2e9f0  rank 0 commlog begin**********
+I1212 22:30:38.313315  7613 commlogManager.cpp:87] [0,0] :PMPI_Barrier
+I1212 22:30:38.313321  7613 commlogManager.cpp:87] [0,1] :PMPI_Irecv(3)
+I1212 22:30:38.313328  7613 commlogManager.cpp:87] [0,2] :PMPI_Recv(3)
+I1212 22:30:38.313334  7613 commlogManager.cpp:87] [0,3] :PMPI_Isend(3)
+I1212 22:30:38.313340  7613 commlogManager.cpp:87] [0,4] :PMPI_Wait
+I1212 22:30:38.313345  7613 commlogManager.cpp:87] [0,5] :PMPI_Wait
+I1212 22:30:38.313351  7613 commlogManager.cpp:87] [0,6] :PMPI_Finalize
+I1212 22:30:38.313356  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:38.313361  7613 commlogManager.cpp:85] state: 0x8a2e9f0  rank 1 commlog begin**********
+I1212 22:30:38.313367  7613 commlogManager.cpp:87] [1,0] :PMPI_Barrier
+I1212 22:30:38.313374  7613 commlogManager.cpp:87] [1,1] :PMPI_Isend(0)
+I1212 22:30:38.313380  7613 commlogManager.cpp:87] [1,2] :PMPI_Finalize
+I1212 22:30:38.313385  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:38.313390  7613 commlogManager.cpp:85] state: 0x8a2e9f0  rank 2 commlog begin**********
+I1212 22:30:38.313395  7613 commlogManager.cpp:87] [2,0] :PMPI_Barrier
+I1212 22:30:38.313400  7613 commlogManager.cpp:87] [2,1] :PMPI_Isend(0)
+I1212 22:30:38.313407  7613 commlogManager.cpp:87] [2,2] :PMPI_Finalize
+I1212 22:30:38.313412  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:38.313417  7613 commlogManager.cpp:85] state: 0x8a2e9f0  rank 3 commlog begin**********
+I1212 22:30:38.313423  7613 commlogManager.cpp:87] [3,0] :PMPI_Barrier
+I1212 22:30:38.313428  7613 commlogManager.cpp:87] [3,1] :PMPI_Isend(0)
+I1212 22:30:38.313434  7613 commlogManager.cpp:87] [3,2] :PMPI_Recv(0)
+I1212 22:30:38.313441  7613 commlogManager.cpp:87] [3,3] :PMPI_Wait
+I1212 22:30:38.313446  7613 commlogManager.cpp:87] [3,4] :PMPI_Finalize
+I1212 22:30:38.313452  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:38.313505  7613 commlogManager.cpp:507] state 0x8a2e9f0 CHECK begin,depth/subdepth: 4/0 with enabled:
+I1212 22:30:38.313513  7613 commlogManager.cpp:509] rank 0 enabled:1
+I1212 22:30:38.313519  7613 commlogManager.cpp:513] [0,6] :PMPI_Finalize
+I1212 22:30:38.313525  7613 commlogManager.cpp:509] rank 1 enabled:1
+I1212 22:30:38.313531  7613 commlogManager.cpp:513] [1,2] :PMPI_Finalize
+I1212 22:30:38.313537  7613 commlogManager.cpp:509] rank 2 enabled:2
+I1212 22:30:38.313542  7613 commlogManager.cpp:513] [2,1] :PMPI_Isend(0)
+I1212 22:30:38.313549  7613 commlogManager.cpp:513] [2,2] :PMPI_Finalize
+I1212 22:30:38.313555  7613 commlogManager.cpp:509] rank 3 enabled:1
+I1212 22:30:38.313560  7613 commlogManager.cpp:513] [3,4] :PMPI_Finalize
+I1212 22:30:38.313565  7613 commlogManager.cpp:516] enabled END*********************************
+I1212 22:30:38.313585  7613 commlogManager.cpp:541] MATCH pairs:
+I1212 22:30:38.313591  7613 commlogManager.cpp:544] [0,6]PMPI_Finalize
+I1212 22:30:38.313596  7613 commlogManager.cpp:544] [1,2]PMPI_Finalize
+I1212 22:30:38.313601  7613 commlogManager.cpp:544] [2,2]PMPI_Finalize
+I1212 22:30:38.313606  7613 commlogManager.cpp:544] [3,4]PMPI_Finalize
+I1212 22:30:38.313611  7613 commlogManager.cpp:547] MATCH END*********************************
+I1212 22:30:38.313629  7613 commlogManager.cpp:507] state 0x8a2e9f0 CHECK begin,depth/subdepth: 4/1 with enabled:
+I1212 22:30:38.313635  7613 commlogManager.cpp:509] rank 0 enabled:0
+I1212 22:30:38.313643  7613 commlogManager.cpp:509] rank 1 enabled:0
+I1212 22:30:38.313650  7613 commlogManager.cpp:509] rank 2 enabled:1
+I1212 22:30:38.313655  7613 commlogManager.cpp:513] [2,1] :PMPI_Isend(0)
+I1212 22:30:38.313663  7613 commlogManager.cpp:516] enabled END*********************************
+I1212 22:30:38.313719  7613 commlogManager.cpp:648] Wake up rank 0 for finalize.
+I1212 22:30:38.313731  7613 commlogManager.cpp:648] Wake up rank 1 for finalize.
+I1212 22:30:38.313741  7613 commlogManager.cpp:648] Wake up rank 2 for finalize.
+I1212 22:30:38.313750  7613 commlogManager.cpp:648] Wake up rank 3 for finalize.
+MPI_Barrier (start)	Process: 0
+MPI_Barrier (start)	Process: 1
+MPI_Barrier (start)	Process: 2
+MPI_Barrier (start)	Process: 3
+MPI_Barrier (end)  	Process:3
+I1212 22:30:38.729117  7613 Executor_Timers.cpp:218] current file line: /home/mpiklee/workspace/libmumpi/AzequiaMPI.llvm/azqmpi/src/private/p_key.c: 257/22871
+(3) Finished normally
+MPI_Barrier (end)  	Process:0
+(0) Finished normally
+MPI_Barrier (end)  	Process:1
+(1) Finished normally
+MPI_Barrier (end)  	Process:2
+(2) Finished normally
+I1212 22:30:39.729120  7613 Executor_Timers.cpp:218] current file line: /home/mpiklee/cloud9root/src/cloud9/runtime/POSIX/threadsync.c: 133/56879
+W1212 22:30:39.743139  7613 SpecialFunctionHandler.cpp:502] pthread_attr_destroy: pthread_attr_destroy does nothing
+W1212 22:30:39.747999  7613 SpecialFunctionHandler.cpp:502] pthread_attr_destroy: pthread_attr_destroy does nothing
+W1212 22:30:39.752720  7613 SpecialFunctionHandler.cpp:502] pthread_attr_destroy: pthread_attr_destroy does nothing
+W1212 22:30:39.757443  7613 SpecialFunctionHandler.cpp:502] pthread_attr_destroy: pthread_attr_destroy does nothing
+W1212 22:30:39.827996  7613 SpecialFunctionHandler.cpp:502] pthread_attr_destroy: pthread_attr_destroy does nothing
+W1212 22:30:39.840651  7613 SpecialFunctionHandler.cpp:502] pthread_attr_destroy: pthread_attr_destroy does nothing
+I1212 22:30:39.854873  7613 Executor_States.cpp:492] *********state 0x8a2e9f0********
+  Rank 0 Commlog begin**********
+[0,0] :PMPI_Barrier matched?: 1
+[0,1] :PMPI_Irecv(3) matched?: 1
+[0,2] :PMPI_Recv(3) matched?: 1
+[0,3] :PMPI_Isend(3) matched?: 1
+[0,4] :PMPI_Wait matched?: 1
+[0,5] :PMPI_Wait matched?: 1
+[0,6] :PMPI_Finalize matched?: 1
+***************************
+*********state 0x8a2e9f0********
+  Rank 1 Commlog begin**********
+[1,0] :PMPI_Barrier matched?: 1
+[1,1] :PMPI_Isend(0) matched?: 1
+[1,2] :PMPI_Finalize matched?: 1
+***************************
+*********state 0x8a2e9f0********
+  Rank 2 Commlog begin**********
+[2,0] :PMPI_Barrier matched?: 1
+[2,1] :PMPI_Isend(0) matched?: 0
+[2,2] :PMPI_Finalize matched?: 1
+***************************
+*********state 0x8a2e9f0********
+  Rank 3 Commlog begin**********
+[3,0] :PMPI_Barrier matched?: 1
+[3,1] :PMPI_Isend(0) matched?: 1
+[3,2] :PMPI_Recv(0) matched?: 1
+[3,3] :PMPI_Wait matched?: 1
+[3,4] :PMPI_Finalize matched?: 1
+***************************
+  Rank 2 enabled:**********
+[2,1] :PMPI_Isend(0)
+***************************
+rank 0 thread 2:4 blocked/enabled :0/0
+rank 1 thread 2:5 blocked/enabled :0/0
+rank 2 thread 2:6 blocked/enabled :0/0
+rank 3 thread 2:7 blocked/enabled :0/0
+I1212 22:30:39.855059  7613 commlogManager.cpp:846] getWildcardMatches:0,1,1,1;
+I1212 22:30:39.855036  7613 Executor_States.cpp:494] wildcard matches 0,1,1,1;
+I1212 22:30:40.014451  7613 Executor_States.cpp:422] state 0x8a2e9f0 terminated.
+I1212 22:30:40.014472  7613 Executor_States.cpp:425] before erase: state, 0x8a2e9f0
+I1212 22:30:40.014479  7613 Executor_States.cpp:425] before erase: state, 0x8a21960
+I1212 22:30:40.014484  7613 Executor_States.cpp:425] before erase: state, 0x8a118f0
+I1212 22:30:40.014489  7613 Executor_States.cpp:430] state 0x8a2e9f0 terminated, we erase it from location2state
+I1212 22:30:40.014497  7613 Executor_States.cpp:437] after erase: state, 0x8a21960
+I1212 22:30:40.014502  7613 Executor_States.cpp:437] after erase: state, 0x8a118f0
+MPI_Irecv(0). tag 0. src 2 BEGIN
+MPI_Irecv (end)  	Process: 0
+
+MPI_Recv(0). tag 0. source 3 BEGIN
+
+MPI_Isend(2). tag 0. dest 0 BEGIN
+MPI_Isend (end)  	Process: 2
+I1212 22:30:40.585873  7613 SpecialFunctionHandler.cpp:1703] blocking rank 2 for state: 0x8a21960 op: [2,2] :PMPI_Finalize
+
+MPI_Isend(3). tag 0. dest 0 BEGIN
+MPI_Isend (end)  	Process: 3
+I1212 22:30:40.815086  7613 SpecialFunctionHandler.cpp:1703] blocking rank 3 for state: 0x8a21960 op: [3,2] :PMPI_Recv(0)
+I1212 22:30:40.829113  7613 Executor_Timers.cpp:218] current file line: /home/mpiklee/cloud9root/src/klee-uclibc/libc/string/memset.c: 28/45407
+MPI_Recv (end)  	Process: 0
+wait get persist req: 0xf4d9eb20 -> 0xabababab
+I1212 22:30:41.019428  7613 commlogManager.cpp:85] state: 0x8a21960  rank 0 commlog begin**********
+I1212 22:30:41.019453  7613 commlogManager.cpp:87] [0,0] :PMPI_Barrier
+I1212 22:30:41.019460  7613 commlogManager.cpp:87] [0,1] :PMPI_Irecv(3)
+I1212 22:30:41.019469  7613 commlogManager.cpp:87] [0,2] :PMPI_Recv(3)
+I1212 22:30:41.019474  7613 commlogManager.cpp:87] [0,3] :PMPI_Isend(3)
+I1212 22:30:41.019481  7613 commlogManager.cpp:87] [0,4] :PMPI_Wait
+I1212 22:30:41.019486  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:41.019492  7613 commlogManager.cpp:85] state: 0x8a21960  rank 1 commlog begin**********
+I1212 22:30:41.019498  7613 commlogManager.cpp:87] [1,0] :PMPI_Barrier
+I1212 22:30:41.019503  7613 commlogManager.cpp:87] [1,1] :PMPI_Isend(0)
+I1212 22:30:41.019510  7613 commlogManager.cpp:87] [1,2] :PMPI_Finalize
+I1212 22:30:41.019516  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:41.019521  7613 commlogManager.cpp:85] state: 0x8a21960  rank 2 commlog begin**********
+I1212 22:30:41.019527  7613 commlogManager.cpp:87] [2,0] :PMPI_Barrier
+I1212 22:30:41.019533  7613 commlogManager.cpp:87] [2,1] :PMPI_Isend(0)
+I1212 22:30:41.019541  7613 commlogManager.cpp:87] [2,2] :PMPI_Finalize
+I1212 22:30:41.019546  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:41.019551  7613 commlogManager.cpp:85] state: 0x8a21960  rank 3 commlog begin**********
+I1212 22:30:41.019557  7613 commlogManager.cpp:87] [3,0] :PMPI_Barrier
+I1212 22:30:41.019562  7613 commlogManager.cpp:87] [3,1] :PMPI_Isend(0)
+I1212 22:30:41.019569  7613 commlogManager.cpp:87] [3,2] :PMPI_Recv(0)
+I1212 22:30:41.019577  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:41.019650  7613 commlogManager.cpp:507] state 0x8a21960 CHECK begin,depth/subdepth: 2/0 with enabled:
+I1212 22:30:41.019660  7613 commlogManager.cpp:509] rank 0 enabled:2
+I1212 22:30:41.019666  7613 commlogManager.cpp:513] [0,3] :PMPI_Isend(3)
+I1212 22:30:41.019673  7613 commlogManager.cpp:513] [0,4] :PMPI_Wait
+I1212 22:30:41.019680  7613 commlogManager.cpp:509] rank 1 enabled:2
+I1212 22:30:41.019685  7613 commlogManager.cpp:513] [1,1] :PMPI_Isend(0)
+I1212 22:30:41.019691  7613 commlogManager.cpp:513] [1,2] :PMPI_Finalize
+I1212 22:30:41.019697  7613 commlogManager.cpp:509] rank 2 enabled:1
+I1212 22:30:41.019703  7613 commlogManager.cpp:513] [2,2] :PMPI_Finalize
+I1212 22:30:41.019709  7613 commlogManager.cpp:509] rank 3 enabled:1
+I1212 22:30:41.019716  7613 commlogManager.cpp:513] [3,2] :PMPI_Recv(0)
+I1212 22:30:41.019721  7613 commlogManager.cpp:516] enabled END*********************************
+I1212 22:30:41.019758  7613 commlogManager.cpp:247] match set begin:
+I1212 22:30:41.019768  7613 commlogManager.cpp:251] [0,3] :PMPI_Isend(3)
+I1212 22:30:41.019774  7613 commlogManager.cpp:251] [3,2] :PMPI_Recv(0)
+I1212 22:30:41.019781  7613 commlogManager.cpp:253] *************
+I1212 22:30:41.019786  7613 commlogManager.cpp:541] MATCH pairs:
+I1212 22:30:41.019791  7613 commlogManager.cpp:544] [0,3]PMPI_Isend
+I1212 22:30:41.019798  7613 commlogManager.cpp:544] [3,2]PMPI_Recv
+I1212 22:30:41.019803  7613 commlogManager.cpp:547] MATCH END*********************************
+I1212 22:30:41.019835  7613 commlogManager.cpp:340] [0,3] :PMPI_Isend(3) and [3,2] :PMPI_Recv(0)  fired.
+I1212 22:30:41.019866  7613 commlogManager.cpp:507] state 0x8a21960 CHECK begin,depth/subdepth: 2/1 with enabled:
+I1212 22:30:41.019873  7613 commlogManager.cpp:509] rank 0 enabled:1
+I1212 22:30:41.019879  7613 commlogManager.cpp:513] [0,4] :PMPI_Wait
+I1212 22:30:41.019886  7613 commlogManager.cpp:509] rank 1 enabled:2
+I1212 22:30:41.019891  7613 commlogManager.cpp:513] [1,1] :PMPI_Isend(0)
+I1212 22:30:41.019897  7613 commlogManager.cpp:513] [1,2] :PMPI_Finalize
+I1212 22:30:41.019903  7613 commlogManager.cpp:509] rank 2 enabled:1
+I1212 22:30:41.019909  7613 commlogManager.cpp:513] [2,2] :PMPI_Finalize
+I1212 22:30:41.019915  7613 commlogManager.cpp:516] enabled END*********************************
+I1212 22:30:41.019942  7613 commlogManager.cpp:541] MATCH pairs:
+I1212 22:30:41.019949  7613 commlogManager.cpp:544] [0,4]PMPI_Wait
+I1212 22:30:41.019954  7613 commlogManager.cpp:547] MATCH END*********************************
+I1212 22:30:41.019966  7613 commlogManager.cpp:400] [0,4] :PMPI_Wait PMPI_Wait fired.
+I1212 22:30:41.019989  7613 commlogManager.cpp:507] state 0x8a21960 CHECK begin,depth/subdepth: 2/2 with enabled:
+I1212 22:30:41.019996  7613 commlogManager.cpp:509] rank 0 enabled:0
+I1212 22:30:41.020004  7613 commlogManager.cpp:509] rank 1 enabled:2
+I1212 22:30:41.020009  7613 commlogManager.cpp:513] [1,1] :PMPI_Isend(0)
+I1212 22:30:41.020016  7613 commlogManager.cpp:513] [1,2] :PMPI_Finalize
+I1212 22:30:41.020022  7613 commlogManager.cpp:509] rank 2 enabled:1
+I1212 22:30:41.020028  7613 commlogManager.cpp:513] [2,2] :PMPI_Finalize
+I1212 22:30:41.020035  7613 commlogManager.cpp:516] enabled END*********************************
+I1212 22:30:41.020066  7613 commlogManager.cpp:590] push functions into stack of rank 0 :
+I1212 22:30:41.020076  7613 commlogManager.cpp:600] function PMPI_Wait(15)
+I1212 22:30:41.020115  7613 commlogManager.cpp:600] function PMPI_Isend(3)
+I1212 22:30:41.020143  7613 Executor_Calls.cpp:351] marking state/thread 0x8a21960 0x8a24f50 sf of function PMPI_Isend as dirty
+I1212 22:30:41.020159  7613 commlogManager.cpp:621] push END*********&& wake up thread 0x8a24f50 in 32***********
+I1212 22:30:41.020167  7613 commlogManager.cpp:624] Wake up rank 0 for func push.
+I1212 22:30:41.020179  7613 commlogManager.cpp:590] push functions into stack of rank 3 :
+I1212 22:30:41.020186  7613 commlogManager.cpp:600] function PMPI_Recv(0)
+I1212 22:30:41.020217  7613 commlogManager.cpp:621] push END*********&& wake up thread 0x8a244a0 in 31***********
+I1212 22:30:41.020225  7613 commlogManager.cpp:624] Wake up rank 3 for func push.
+
+MPI_Isend(0). tag 0. dest 3 BEGIN
+MPI_Isend (end)  	Process: 0
+MPI_Wait (start)	 Rank: 0
+MPI_Wait (end)  	Process:0
+wait get persist req: 0xf4d9eb60 -> 0xabababab
+
+MPI_Recv(3). tag 0. source 0 BEGIN
+MPI_Recv (end)  	Process: 3
+wait get persist req: 0xf4e06f60 -> 0xabababab
+I1212 22:30:41.800842  7613 commlogManager.cpp:85] state: 0x8a21960  rank 0 commlog begin**********
+I1212 22:30:41.800886  7613 commlogManager.cpp:87] [0,0] :PMPI_Barrier
+I1212 22:30:41.800895  7613 commlogManager.cpp:87] [0,1] :PMPI_Irecv(3)
+I1212 22:30:41.800904  7613 commlogManager.cpp:87] [0,2] :PMPI_Recv(3)
+I1212 22:30:41.800910  7613 commlogManager.cpp:87] [0,3] :PMPI_Isend(3)
+I1212 22:30:41.800916  7613 commlogManager.cpp:87] [0,4] :PMPI_Wait
+I1212 22:30:41.800922  7613 commlogManager.cpp:87] [0,5] :PMPI_Wait
+I1212 22:30:41.800927  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:41.800933  7613 commlogManager.cpp:85] state: 0x8a21960  rank 1 commlog begin**********
+I1212 22:30:41.800940  7613 commlogManager.cpp:87] [1,0] :PMPI_Barrier
+I1212 22:30:41.800945  7613 commlogManager.cpp:87] [1,1] :PMPI_Isend(0)
+I1212 22:30:41.800951  7613 commlogManager.cpp:87] [1,2] :PMPI_Finalize
+I1212 22:30:41.800957  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:41.800962  7613 commlogManager.cpp:85] state: 0x8a21960  rank 2 commlog begin**********
+I1212 22:30:41.800968  7613 commlogManager.cpp:87] [2,0] :PMPI_Barrier
+I1212 22:30:41.800974  7613 commlogManager.cpp:87] [2,1] :PMPI_Isend(0)
+I1212 22:30:41.800981  7613 commlogManager.cpp:87] [2,2] :PMPI_Finalize
+I1212 22:30:41.800987  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:41.800990  7613 commlogManager.cpp:85] state: 0x8a21960  rank 3 commlog begin**********
+I1212 22:30:41.800997  7613 commlogManager.cpp:87] [3,0] :PMPI_Barrier
+I1212 22:30:41.801002  7613 commlogManager.cpp:87] [3,1] :PMPI_Isend(0)
+I1212 22:30:41.801008  7613 commlogManager.cpp:87] [3,2] :PMPI_Recv(0)
+I1212 22:30:41.801015  7613 commlogManager.cpp:87] [3,3] :PMPI_Wait
+I1212 22:30:41.801020  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:41.801100  7613 commlogManager.cpp:507] state 0x8a21960 CHECK begin,depth/subdepth: 3/0 with enabled:
+I1212 22:30:41.801108  7613 commlogManager.cpp:509] rank 0 enabled:1
+I1212 22:30:41.801115  7613 commlogManager.cpp:513] [0,5] :PMPI_Wait
+I1212 22:30:41.801120  7613 commlogManager.cpp:509] rank 1 enabled:2
+I1212 22:30:41.801126  7613 commlogManager.cpp:513] [1,1] :PMPI_Isend(0)
+I1212 22:30:41.801133  7613 commlogManager.cpp:513] [1,2] :PMPI_Finalize
+I1212 22:30:41.801139  7613 commlogManager.cpp:509] rank 2 enabled:1
+I1212 22:30:41.801144  7613 commlogManager.cpp:513] [2,2] :PMPI_Finalize
+I1212 22:30:41.801151  7613 commlogManager.cpp:509] rank 3 enabled:1
+I1212 22:30:41.801156  7613 commlogManager.cpp:513] [3,3] :PMPI_Wait
+I1212 22:30:41.801162  7613 commlogManager.cpp:516] enabled END*********************************
+I1212 22:30:41.801198  7613 commlogManager.cpp:541] MATCH pairs:
+I1212 22:30:41.801205  7613 commlogManager.cpp:544] [0,5]PMPI_Wait
+I1212 22:30:41.801211  7613 commlogManager.cpp:544] [3,3]PMPI_Wait
+I1212 22:30:41.801216  7613 commlogManager.cpp:547] MATCH END*********************************
+I1212 22:30:41.801244  7613 commlogManager.cpp:400] [0,5] :PMPI_Wait PMPI_Wait fired.
+I1212 22:30:41.801257  7613 commlogManager.cpp:400] [3,3] :PMPI_Wait PMPI_Wait fired.
+I1212 22:30:41.801283  7613 commlogManager.cpp:507] state 0x8a21960 CHECK begin,depth/subdepth: 3/1 with enabled:
+I1212 22:30:41.801290  7613 commlogManager.cpp:509] rank 0 enabled:0
+I1212 22:30:41.801297  7613 commlogManager.cpp:509] rank 1 enabled:2
+I1212 22:30:41.801303  7613 commlogManager.cpp:513] [1,1] :PMPI_Isend(0)
+I1212 22:30:41.801311  7613 commlogManager.cpp:513] [1,2] :PMPI_Finalize
+I1212 22:30:41.801316  7613 commlogManager.cpp:509] rank 2 enabled:1
+I1212 22:30:41.801322  7613 commlogManager.cpp:513] [2,2] :PMPI_Finalize
+I1212 22:30:41.801327  7613 commlogManager.cpp:516] enabled END*********************************
+I1212 22:30:41.801360  7613 commlogManager.cpp:590] push functions into stack of rank 0 :
+I1212 22:30:41.801372  7613 commlogManager.cpp:600] function PMPI_Wait(15)
+I1212 22:30:41.801409  7613 commlogManager.cpp:621] push END*********&& wake up thread 0x8a24f50 in 32***********
+I1212 22:30:41.801417  7613 commlogManager.cpp:624] Wake up rank 0 for func push.
+I1212 22:30:41.801429  7613 commlogManager.cpp:590] push functions into stack of rank 3 :
+I1212 22:30:41.801436  7613 commlogManager.cpp:600] function PMPI_Wait(15)
+I1212 22:30:41.801466  7613 commlogManager.cpp:621] push END*********&& wake up thread 0x8a244a0 in 31***********
+I1212 22:30:41.801473  7613 commlogManager.cpp:624] Wake up rank 3 for func push.
+I1212 22:30:41.829113  7613 Executor_Timers.cpp:218] current file line: /home/mpiklee/cloud9root/src/klee-uclibc/libc/string/memset.c: 28/45407
+MPI_Wait (start)	 Rank: 3
+MPI_Wait (end)  	Process:3
+I1212 22:30:41.945536  7613 SpecialFunctionHandler.cpp:1635] ****************Rank 3 MPI ops:******************
+I1212 22:30:41.945554  7613 SpecialFunctionHandler.cpp:1638] PMPI_Barrier
+I1212 22:30:41.945561  7613 SpecialFunctionHandler.cpp:1638] PMPI_Isend
+I1212 22:30:41.945566  7613 SpecialFunctionHandler.cpp:1638] PMPI_Recv
+I1212 22:30:41.945571  7613 SpecialFunctionHandler.cpp:1638] PMPI_Wait
+I1212 22:30:41.945576  7613 SpecialFunctionHandler.cpp:1638] PMPI_Finalize
+I1212 22:30:41.945581  7613 SpecialFunctionHandler.cpp:1641] **************************************************
+MPI_Wait (start)	 Rank: 0
+MPI_Wait (end)  	Process:0
+I1212 22:30:42.089848  7613 SpecialFunctionHandler.cpp:1635] ****************Rank 0 MPI ops:******************
+I1212 22:30:42.089866  7613 SpecialFunctionHandler.cpp:1638] PMPI_Barrier
+I1212 22:30:42.089872  7613 SpecialFunctionHandler.cpp:1638] PMPI_Irecv
+I1212 22:30:42.089879  7613 SpecialFunctionHandler.cpp:1638] PMPI_Recv
+I1212 22:30:42.089884  7613 SpecialFunctionHandler.cpp:1638] PMPI_Isend
+I1212 22:30:42.089889  7613 SpecialFunctionHandler.cpp:1638] PMPI_Wait
+I1212 22:30:42.089893  7613 SpecialFunctionHandler.cpp:1638] PMPI_Wait
+I1212 22:30:42.089898  7613 SpecialFunctionHandler.cpp:1638] PMPI_Finalize
+I1212 22:30:42.089903  7613 SpecialFunctionHandler.cpp:1641] **************************************************
+I1212 22:30:42.089912  7613 SpecialFunctionHandler.cpp:1668] All ranks finished normally.
+I1212 22:30:42.089918  7613 commlogManager.cpp:85] state: 0x8a21960  rank 0 commlog begin**********
+I1212 22:30:42.089926  7613 commlogManager.cpp:87] [0,0] :PMPI_Barrier
+I1212 22:30:42.089932  7613 commlogManager.cpp:87] [0,1] :PMPI_Irecv(3)
+I1212 22:30:42.089939  7613 commlogManager.cpp:87] [0,2] :PMPI_Recv(3)
+I1212 22:30:42.089946  7613 commlogManager.cpp:87] [0,3] :PMPI_Isend(3)
+I1212 22:30:42.089952  7613 commlogManager.cpp:87] [0,4] :PMPI_Wait
+I1212 22:30:42.089958  7613 commlogManager.cpp:87] [0,5] :PMPI_Wait
+I1212 22:30:42.089963  7613 commlogManager.cpp:87] [0,6] :PMPI_Finalize
+I1212 22:30:42.089969  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:42.089974  7613 commlogManager.cpp:85] state: 0x8a21960  rank 1 commlog begin**********
+I1212 22:30:42.089980  7613 commlogManager.cpp:87] [1,0] :PMPI_Barrier
+I1212 22:30:42.089985  7613 commlogManager.cpp:87] [1,1] :PMPI_Isend(0)
+I1212 22:30:42.089993  7613 commlogManager.cpp:87] [1,2] :PMPI_Finalize
+I1212 22:30:42.089998  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:42.090003  7613 commlogManager.cpp:85] state: 0x8a21960  rank 2 commlog begin**********
+I1212 22:30:42.090008  7613 commlogManager.cpp:87] [2,0] :PMPI_Barrier
+I1212 22:30:42.090014  7613 commlogManager.cpp:87] [2,1] :PMPI_Isend(0)
+I1212 22:30:42.090020  7613 commlogManager.cpp:87] [2,2] :PMPI_Finalize
+I1212 22:30:42.090026  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:42.090031  7613 commlogManager.cpp:85] state: 0x8a21960  rank 3 commlog begin**********
+I1212 22:30:42.090037  7613 commlogManager.cpp:87] [3,0] :PMPI_Barrier
+I1212 22:30:42.090042  7613 commlogManager.cpp:87] [3,1] :PMPI_Isend(0)
+I1212 22:30:42.090049  7613 commlogManager.cpp:87] [3,2] :PMPI_Recv(0)
+I1212 22:30:42.090055  7613 commlogManager.cpp:87] [3,3] :PMPI_Wait
+I1212 22:30:42.090060  7613 commlogManager.cpp:87] [3,4] :PMPI_Finalize
+I1212 22:30:42.090066  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:42.090121  7613 commlogManager.cpp:507] state 0x8a21960 CHECK begin,depth/subdepth: 4/0 with enabled:
+I1212 22:30:42.090129  7613 commlogManager.cpp:509] rank 0 enabled:1
+I1212 22:30:42.090136  7613 commlogManager.cpp:513] [0,6] :PMPI_Finalize
+I1212 22:30:42.090142  7613 commlogManager.cpp:509] rank 1 enabled:2
+I1212 22:30:42.090147  7613 commlogManager.cpp:513] [1,1] :PMPI_Isend(0)
+I1212 22:30:42.090153  7613 commlogManager.cpp:513] [1,2] :PMPI_Finalize
+I1212 22:30:42.090159  7613 commlogManager.cpp:509] rank 2 enabled:1
+I1212 22:30:42.090165  7613 commlogManager.cpp:513] [2,2] :PMPI_Finalize
+I1212 22:30:42.090170  7613 commlogManager.cpp:509] rank 3 enabled:1
+I1212 22:30:42.090176  7613 commlogManager.cpp:513] [3,4] :PMPI_Finalize
+I1212 22:30:42.090183  7613 commlogManager.cpp:516] enabled END*********************************
+I1212 22:30:42.090201  7613 commlogManager.cpp:541] MATCH pairs:
+I1212 22:30:42.090208  7613 commlogManager.cpp:544] [0,6]PMPI_Finalize
+I1212 22:30:42.090214  7613 commlogManager.cpp:544] [1,2]PMPI_Finalize
+I1212 22:30:42.090219  7613 commlogManager.cpp:544] [2,2]PMPI_Finalize
+I1212 22:30:42.090224  7613 commlogManager.cpp:544] [3,4]PMPI_Finalize
+I1212 22:30:42.090229  7613 commlogManager.cpp:547] MATCH END*********************************
+I1212 22:30:42.090247  7613 commlogManager.cpp:507] state 0x8a21960 CHECK begin,depth/subdepth: 4/1 with enabled:
+I1212 22:30:42.090255  7613 commlogManager.cpp:509] rank 0 enabled:0
+I1212 22:30:42.090261  7613 commlogManager.cpp:509] rank 1 enabled:1
+I1212 22:30:42.090267  7613 commlogManager.cpp:513] [1,1] :PMPI_Isend(0)
+I1212 22:30:42.090275  7613 commlogManager.cpp:516] enabled END*********************************
+I1212 22:30:42.090328  7613 commlogManager.cpp:648] Wake up rank 0 for finalize.
+I1212 22:30:42.090340  7613 commlogManager.cpp:648] Wake up rank 1 for finalize.
+I1212 22:30:42.090350  7613 commlogManager.cpp:648] Wake up rank 2 for finalize.
+I1212 22:30:42.090359  7613 commlogManager.cpp:648] Wake up rank 3 for finalize.
+MPI_Barrier (start)	Process: 0
+MPI_Barrier (start)	Process: I1212 22:30:42.229115  7613 Executor_Timers.cpp:218] current file line: /home/mpiklee/cloud9root/src/klee-uclibc/libc/stdio/_uintmaxtostr.c: 142/44740
+1
+I1212 22:30:42.429128  7613 Executor_Timers.cpp:218] current file line: /home/mpiklee/cloud9root/src/klee-uclibc/libc/string/memset.c: 28/45410
+I1212 22:30:42.429179  7613 StatsTracker.cpp:1243] [STATS] StateCount: 4 InstructionCount: 1293801 QueryCount: 94
+I1212 22:30:42.429188  7613 StatsTracker.cpp:1247] [GLOBAL COVERAGE] Source: 0% (0/9732) Instructions: 0% (0/51442)
+I1212 22:30:42.429200  7613 StatsTracker.cpp:1252] [FOCUSED COVERAGE] Source: - (0/0) Instructions: - (0/0)
+MPI_Barrier (start)	Process: 2
+MPI_Barrier (start)	Process: 3
+MPI_Barrier (end)  	Process:3
+(3) Finished normally
+I1212 22:30:42.829130  7613 Executor_Timers.cpp:218] current file line: /home/mpiklee/workspace/libmumpi/AzequiaMPI.llvm/idsp/blk/impl/wait.c: 90/29505
+MPI_Barrier (end)  	Process:0
+(0) Finished normally
+MPI_Barrier (end)  	Process:1
+(1) Finished normally
+MPI_Barrier (end)  	Process:2
+(2) Finished normally
+W1212 22:30:43.672118  7613 SpecialFunctionHandler.cpp:502] pthread_attr_destroy: pthread_attr_destroy does nothing
+W1212 22:30:43.676882  7613 SpecialFunctionHandler.cpp:502] pthread_attr_destroy: pthread_attr_destroy does nothing
+W1212 22:30:43.681604  7613 SpecialFunctionHandler.cpp:502] pthread_attr_destroy: pthread_attr_destroy does nothing
+W1212 22:30:43.686310  7613 SpecialFunctionHandler.cpp:502] pthread_attr_destroy: pthread_attr_destroy does nothing
+W1212 22:30:43.756759  7613 SpecialFunctionHandler.cpp:502] pthread_attr_destroy: pthread_attr_destroy does nothing
+W1212 22:30:43.769217  7613 SpecialFunctionHandler.cpp:502] pthread_attr_destroy: pthread_attr_destroy does nothing
+I1212 22:30:43.782980  7613 Executor_States.cpp:492] *********state 0x8a21960********
+  Rank 0 Commlog begin**********
+[0,0] :PMPI_Barrier matched?: 1
+[0,1] :PMPI_Irecv(3) matched?: 1
+[0,2] :PMPI_Recv(3) matched?: 1
+[0,3] :PMPI_Isend(3) matched?: 1
+[0,4] :PMPI_Wait matched?: 1
+[0,5] :PMPI_Wait matched?: 1
+[0,6] :PMPI_Finalize matched?: 1
+***************************
+*********state 0x8a21960********
+  Rank 1 Commlog begin**********
+[1,0] :PMPI_Barrier matched?: 1
+[1,1] :PMPI_Isend(0) matched?: 0
+[1,2] :PMPI_Finalize matched?: 1
+***************************
+*********state 0x8a21960********
+  Rank 2 Commlog begin**********
+[2,0] :PMPI_Barrier matched?: 1
+[2,1] :PMPI_Isend(0) matched?: 1
+[2,2] :PMPI_Finalize matched?: 1
+***************************
+*********state 0x8a21960********
+  Rank 3 Commlog begin**********
+[3,0] :PMPI_Barrier matched?: 1
+[3,1] :PMPI_Isend(0) matched?: 1
+[3,2] :PMPI_Recv(0) matched?: 1
+[3,3] :PMPI_Wait matched?: 1
+[3,4] :PMPI_Finalize matched?: 1
+***************************
+  Rank 1 enabled:**********
+[1,1] :PMPI_Isend(0)
+***************************
+rank 0 thread 2:4 blocked/enabled :0/0
+rank 1 thread 2:5 blocked/enabled :0/0
+rank 2 thread 2:6 blocked/enabled :0/0
+rank 3 thread 2:7 blocked/enabled :0/0
+I1212 22:30:43.783152  7613 commlogManager.cpp:846] getWildcardMatches:0,1,2,1;
+I1212 22:30:43.783085  7613 Executor_States.cpp:494] wildcard matches 0,1,2,1;
+I1212 22:30:43.874910  7613 Executor_States.cpp:422] state 0x8a21960 terminated.
+I1212 22:30:43.874928  7613 Executor_States.cpp:425] before erase: state, 0x8a21960
+I1212 22:30:43.874934  7613 Executor_States.cpp:425] before erase: state, 0x8a118f0
+I1212 22:30:43.874939  7613 Executor_States.cpp:430] state 0x8a21960 terminated, we erase it from location2state
+I1212 22:30:43.874946  7613 Executor_States.cpp:437] after erase: state, 0x8a118f0
+I1212 22:30:43.874959  7613 Executor_Timers.cpp:218] current file line: /home/mpiklee/cloud9root/src/cloud9/runtime/POSIX/processes.c: 99/47758
+MPI_Irecv(0). tag 0. src 3 BEGIN
+MPI_Irecv (end)  	Process: 0
+I1212 22:30:44.083837  7613 SpecialFunctionHandler.cpp:1703] blocking rank 0 for state: 0x8a118f0 op: [0,2] :PMPI_Recv(3)
+
+MPI_Isend(3). tag 0. dest 0 BEGIN
+MPI_Isend (end)  	Process: 3
+I1212 22:30:44.316264  7613 SpecialFunctionHandler.cpp:1703] blocking rank 3 for state: 0x8a118f0 op: [3,2] :PMPI_Recv(0)
+I1212 22:30:44.316334  7613 commlogManager.cpp:85] state: 0x8a118f0  rank 0 commlog begin**********
+I1212 22:30:44.316346  7613 commlogManager.cpp:87] [0,0] :PMPI_Barrier
+I1212 22:30:44.316354  7613 commlogManager.cpp:87] [0,1] :PMPI_Irecv(3)
+I1212 22:30:44.316360  7613 commlogManager.cpp:87] [0,2] :PMPI_Recv(3)
+I1212 22:30:44.316367  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:44.316372  7613 commlogManager.cpp:85] state: 0x8a118f0  rank 1 commlog begin**********
+I1212 22:30:44.316378  7613 commlogManager.cpp:87] [1,0] :PMPI_Barrier
+I1212 22:30:44.316385  7613 commlogManager.cpp:87] [1,1] :PMPI_Isend(0)
+I1212 22:30:44.316391  7613 commlogManager.cpp:87] [1,2] :PMPI_Finalize
+I1212 22:30:44.316397  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:44.316402  7613 commlogManager.cpp:85] state: 0x8a118f0  rank 2 commlog begin**********
+I1212 22:30:44.316408  7613 commlogManager.cpp:87] [2,0] :PMPI_Barrier
+I1212 22:30:44.316414  7613 commlogManager.cpp:87] [2,1] :PMPI_Isend(0)
+I1212 22:30:44.316421  7613 commlogManager.cpp:87] [2,2] :PMPI_Finalize
+I1212 22:30:44.316426  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:44.316431  7613 commlogManager.cpp:85] state: 0x8a118f0  rank 3 commlog begin**********
+I1212 22:30:44.316437  7613 commlogManager.cpp:87] [3,0] :PMPI_Barrier
+I1212 22:30:44.316442  7613 commlogManager.cpp:87] [3,1] :PMPI_Isend(0)
+I1212 22:30:44.316448  7613 commlogManager.cpp:87] [3,2] :PMPI_Recv(0)
+I1212 22:30:44.316454  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:44.316540  7613 commlogManager.cpp:507] state 0x8a118f0 CHECK begin,depth/subdepth: 2/0 with enabled:
+I1212 22:30:44.316550  7613 commlogManager.cpp:509] rank 0 enabled:1
+I1212 22:30:44.316556  7613 commlogManager.cpp:513] [0,2] :PMPI_Recv(3)
+I1212 22:30:44.316562  7613 commlogManager.cpp:509] rank 1 enabled:2
+I1212 22:30:44.316568  7613 commlogManager.cpp:513] [1,1] :PMPI_Isend(0)
+I1212 22:30:44.316576  7613 commlogManager.cpp:513] [1,2] :PMPI_Finalize
+I1212 22:30:44.316581  7613 commlogManager.cpp:509] rank 2 enabled:2
+I1212 22:30:44.316586  7613 commlogManager.cpp:513] [2,1] :PMPI_Isend(0)
+I1212 22:30:44.316593  7613 commlogManager.cpp:513] [2,2] :PMPI_Finalize
+I1212 22:30:44.316599  7613 commlogManager.cpp:509] rank 3 enabled:1
+I1212 22:30:44.316606  7613 commlogManager.cpp:513] [3,2] :PMPI_Recv(0)
+I1212 22:30:44.316612  7613 commlogManager.cpp:516] enabled END*********************************
+I1212 22:30:44.316658  7613 commlogManager.cpp:525] CommLogManager::check: No matched pairs. wildcard: 0
+I1212 22:30:44.316668  7613 Executor_Threading.cpp:63] *********state 0x8a118f0********
+  Rank 0 Commlog begin**********
+[0,0] :PMPI_Barrier matched?: 1
+[0,1] :PMPI_Irecv(3) matched?: 1
+[0,2] :PMPI_Recv(3) matched?: 0
+***************************
+*********state 0x8a118f0********
+  Rank 1 Commlog begin**********
+[1,0] :PMPI_Barrier matched?: 1
+[1,1] :PMPI_Isend(0) matched?: 0
+[1,2] :PMPI_Finalize matched?: 0
+***************************
+*********state 0x8a118f0********
+  Rank 2 Commlog begin**********
+[2,0] :PMPI_Barrier matched?: 1
+[2,1] :PMPI_Isend(0) matched?: 0
+[2,2] :PMPI_Finalize matched?: 0
+***************************
+*********state 0x8a118f0********
+  Rank 3 Commlog begin**********
+[3,0] :PMPI_Barrier matched?: 1
+[3,1] :PMPI_Isend(0) matched?: 1
+[3,2] :PMPI_Recv(0) matched?: 0
+***************************
+  Rank 0 enabled:**********
+[0,2] :PMPI_Recv(3)
+***************************
+  Rank 1 enabled:**********
+[1,1] :PMPI_Isend(0)
+[1,2] :PMPI_Finalize
+***************************
+  Rank 2 enabled:**********
+[2,1] :PMPI_Isend(0)
+[2,2] :PMPI_Finalize
+***************************
+  Rank 3 enabled:**********
+[3,2] :PMPI_Recv(0)
+***************************
+rank 0 thread 2:4 blocked/enabled :1/0
+rank 1 thread 2:5 blocked/enabled :1/0
+rank 2 thread 2:6 blocked/enabled :1/0
+rank 3 thread 2:7 blocked/enabled :1/0
+E1212 22:30:44.316752  7613 Executor_States.cpp:521] /home/mpiklee/workspace/libmumpi/AzequiaMPI.llvm/azqmpi/src/hook/hook.c:77(asmline): 3780:  ******** hang (possible deadlock?)
+I1212 22:30:44.316761  7613 Executor_States.cpp:544] Now ignoring this error at this location
+E1212 22:30:44.316766  7613 ExecutionState.cpp:583] ***********************************************************
+I1212 22:30:44.316771  7613 ExecutionState.cpp:585] Call:    MPI_Recv(/home/mpiklee/workspace/libmumpi/AzequiaMPI.llvm/tests/beijing_dec/./ppt_example.c,54)
+I1212 22:30:44.316792  7613 ExecutionState.cpp:585] Call:    usermain(/home/mpiklee/workspace/libmumpi/AzequiaMPI.llvm/azqmpi/src/private/main.c,74)
+I1212 22:30:44.316799  7613 ExecutionState.cpp:585] Call:    node_main__(/home/mpiklee/workspace/libmumpi/AzequiaMPI.llvm/idsp/blk/impl/thr.c,228)
+E1212 22:30:44.316805  7613 ExecutionState.cpp:589] Call:    wrapper
+E1212 22:30:44.316812  7613 ExecutionState.cpp:590] ***********************************************************
+E1212 22:30:44.316817  7613 ExecutionState.cpp:583] ***********************************************************
+I1212 22:30:44.316822  7613 ExecutionState.cpp:585] Call:    MPI_Finalize(/home/mpiklee/workspace/libmumpi/AzequiaMPI.llvm/tests/beijing_dec/./ppt_example.c,88)
+I1212 22:30:44.316828  7613 ExecutionState.cpp:585] Call:    usermain(/home/mpiklee/workspace/libmumpi/AzequiaMPI.llvm/azqmpi/src/private/main.c,74)
+I1212 22:30:44.316833  7613 ExecutionState.cpp:585] Call:    node_main__(/home/mpiklee/workspace/libmumpi/AzequiaMPI.llvm/idsp/blk/impl/thr.c,228)
+E1212 22:30:44.316839  7613 ExecutionState.cpp:589] Call:    wrapper
+E1212 22:30:44.316844  7613 ExecutionState.cpp:590] ***********************************************************
+E1212 22:30:44.316849  7613 ExecutionState.cpp:583] ***********************************************************
+I1212 22:30:44.316854  7613 ExecutionState.cpp:585] Call:    MPI_Finalize(/home/mpiklee/workspace/libmumpi/AzequiaMPI.llvm/tests/beijing_dec/./ppt_example.c,88)
+I1212 22:30:44.316859  7613 ExecutionState.cpp:585] Call:    usermain(/home/mpiklee/workspace/libmumpi/AzequiaMPI.llvm/azqmpi/src/private/main.c,74)
+I1212 22:30:44.316865  7613 ExecutionState.cpp:585] Call:    node_main__(/home/mpiklee/workspace/libmumpi/AzequiaMPI.llvm/idsp/blk/impl/thr.c,228)
+E1212 22:30:44.316871  7613 ExecutionState.cpp:589] Call:    wrapper
+E1212 22:30:44.316877  7613 ExecutionState.cpp:590] ***********************************************************
+E1212 22:30:44.316882  7613 ExecutionState.cpp:583] ***********************************************************
+I1212 22:30:44.316886  7613 ExecutionState.cpp:585] Call:    MPI_Recv(/home/mpiklee/workspace/libmumpi/AzequiaMPI.llvm/tests/beijing_dec/./ppt_example.c,83)
+I1212 22:30:44.316892  7613 ExecutionState.cpp:585] Call:    usermain(/home/mpiklee/workspace/libmumpi/AzequiaMPI.llvm/azqmpi/src/private/main.c,74)
+I1212 22:30:44.316898  7613 ExecutionState.cpp:585] Call:    node_main__(/home/mpiklee/workspace/libmumpi/AzequiaMPI.llvm/idsp/blk/impl/thr.c,228)
+E1212 22:30:44.316905  7613 ExecutionState.cpp:589] Call:    wrapper
+E1212 22:30:44.316910  7613 ExecutionState.cpp:590] ***********************************************************
+I1212 22:30:44.317011  7613 Executor_States.cpp:574] *********state 0x8a118f0********
+  Rank 0 Commlog begin**********
+[0,0] :PMPI_Barrier matched?: 1
+[0,1] :PMPI_Irecv(3) matched?: 1
+[0,2] :PMPI_Recv(3) matched?: 0
+***************************
+*********state 0x8a118f0********
+  Rank 1 Commlog begin**********
+[1,0] :PMPI_Barrier matched?: 1
+[1,1] :PMPI_Isend(0) matched?: 0
+[1,2] :PMPI_Finalize matched?: 0
+***************************
+*********state 0x8a118f0********
+  Rank 2 Commlog begin**********
+[2,0] :PMPI_Barrier matched?: 1
+[2,1] :PMPI_Isend(0) matched?: 0
+[2,2] :PMPI_Finalize matched?: 0
+***************************
+*********state 0x8a118f0********
+  Rank 3 Commlog begin**********
+[3,0] :PMPI_Barrier matched?: 1
+[3,1] :PMPI_Isend(0) matched?: 1
+[3,2] :PMPI_Recv(0) matched?: 0
+***************************
+  Rank 0 enabled:**********
+[0,2] :PMPI_Recv(3)
+***************************
+  Rank 1 enabled:**********
+[1,1] :PMPI_Isend(0)
+[1,2] :PMPI_Finalize
+***************************
+  Rank 2 enabled:**********
+[2,1] :PMPI_Isend(0)
+[2,2] :PMPI_Finalize
+***************************
+  Rank 3 enabled:**********
+[3,2] :PMPI_Recv(0)
+***************************
+rank 0 thread 2:4 blocked/enabled :1/0
+rank 1 thread 2:5 blocked/enabled :1/0
+rank 2 thread 2:6 blocked/enabled :1/0
+rank 3 thread 2:7 blocked/enabled :1/0
+E1212 22:30:44.317090  7613 ExecutionState.cpp:583] ***********************************************************
+I1212 22:30:44.317097  7613 ExecutionState.cpp:585] Call:    MPI_Recv(/home/mpiklee/workspace/libmumpi/AzequiaMPI.llvm/tests/beijing_dec/./ppt_example.c,54)
+I1212 22:30:44.317105  7613 ExecutionState.cpp:585] Call:    usermain(/home/mpiklee/workspace/libmumpi/AzequiaMPI.llvm/azqmpi/src/private/main.c,74)
+I1212 22:30:44.317111  7613 ExecutionState.cpp:585] Call:    node_main__(/home/mpiklee/workspace/libmumpi/AzequiaMPI.llvm/idsp/blk/impl/thr.c,228)
+E1212 22:30:44.317116  7613 ExecutionState.cpp:589] Call:    wrapper
+E1212 22:30:44.317121  7613 ExecutionState.cpp:590] ***********************************************************
+E1212 22:30:44.317126  7613 ExecutionState.cpp:583] ***********************************************************
+I1212 22:30:44.317131  7613 ExecutionState.cpp:585] Call:    MPI_Finalize(/home/mpiklee/workspace/libmumpi/AzequiaMPI.llvm/tests/beijing_dec/./ppt_example.c,88)
+I1212 22:30:44.317137  7613 ExecutionState.cpp:585] Call:    usermain(/home/mpiklee/workspace/libmumpi/AzequiaMPI.llvm/azqmpi/src/private/main.c,74)
+I1212 22:30:44.317143  7613 ExecutionState.cpp:585] Call:    node_main__(/home/mpiklee/workspace/libmumpi/AzequiaMPI.llvm/idsp/blk/impl/thr.c,228)
+E1212 22:30:44.317148  7613 ExecutionState.cpp:589] Call:    wrapper
+E1212 22:30:44.317154  7613 ExecutionState.cpp:590] ***********************************************************
+E1212 22:30:44.317158  7613 ExecutionState.cpp:583] ***********************************************************
+I1212 22:30:44.317163  7613 ExecutionState.cpp:585] Call:    MPI_Finalize(/home/mpiklee/workspace/libmumpi/AzequiaMPI.llvm/tests/beijing_dec/./ppt_example.c,88)
+I1212 22:30:44.317169  7613 ExecutionState.cpp:585] Call:    usermain(/home/mpiklee/workspace/libmumpi/AzequiaMPI.llvm/azqmpi/src/private/main.c,74)
+I1212 22:30:44.317174  7613 ExecutionState.cpp:585] Call:    node_main__(/home/mpiklee/workspace/libmumpi/AzequiaMPI.llvm/idsp/blk/impl/thr.c,228)
+E1212 22:30:44.317180  7613 ExecutionState.cpp:589] Call:    wrapper
+E1212 22:30:44.317186  7613 ExecutionState.cpp:590] ***********************************************************
+E1212 22:30:44.317190  7613 ExecutionState.cpp:583] ***********************************************************
+I1212 22:30:44.317195  7613 ExecutionState.cpp:585] Call:    MPI_Recv(/home/mpiklee/workspace/libmumpi/AzequiaMPI.llvm/tests/beijing_dec/./ppt_example.c,83)
+I1212 22:30:44.317201  7613 ExecutionState.cpp:585] Call:    usermain(/home/mpiklee/workspace/libmumpi/AzequiaMPI.llvm/azqmpi/src/private/main.c,74)
+I1212 22:30:44.317208  7613 ExecutionState.cpp:585] Call:    node_main__(/home/mpiklee/workspace/libmumpi/AzequiaMPI.llvm/idsp/blk/impl/thr.c,228)
+E1212 22:30:44.317212  7613 ExecutionState.cpp:589] Call:    wrapper
+E1212 22:30:44.317219  7613 ExecutionState.cpp:590] ***********************************************************
+I1212 22:30:44.317242  7613 commlogManager.cpp:846] getWildcardMatches:0,1,3,1;
+I1212 22:30:44.317224  7613 Executor_States.cpp:576] wildcard matches 0,1,3,1;
+I1212 22:30:44.410625  7613 Executor_States.cpp:422] state 0x8a118f0 terminated.
+I1212 22:30:44.410641  7613 Executor_States.cpp:425] before erase: state, 0x8a118f0
+I1212 22:30:44.410647  7613 Executor_States.cpp:430] state 0x8a118f0 terminated, we erase it from location2state
+I1212 22:30:44.412679  7613 commlogManager.cpp:85] state: 0x80b4b70  rank 0 commlog begin**********
+I1212 22:30:44.412699  7613 commlogManager.cpp:87] [0,0] :PMPI_Barrier
+I1212 22:30:44.412706  7613 commlogManager.cpp:87] [0,1] :PMPI_Irecv(1)
+I1212 22:30:44.412713  7613 commlogManager.cpp:87] [0,2] :PMPI_Recv(3)
+I1212 22:30:44.412719  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:44.412724  7613 commlogManager.cpp:85] state: 0x80b4b70  rank 1 commlog begin**********
+I1212 22:30:44.412730  7613 commlogManager.cpp:87] [1,0] :PMPI_Barrier
+I1212 22:30:44.412735  7613 commlogManager.cpp:87] [1,1] :PMPI_Isend(0)
+I1212 22:30:44.412741  7613 commlogManager.cpp:87] [1,2] :PMPI_Finalize
+I1212 22:30:44.412747  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:44.412752  7613 commlogManager.cpp:85] state: 0x80b4b70  rank 2 commlog begin**********
+I1212 22:30:44.412758  7613 commlogManager.cpp:87] [2,0] :PMPI_Barrier
+I1212 22:30:44.412763  7613 commlogManager.cpp:87] [2,1] :PMPI_Isend(0)
+I1212 22:30:44.412770  7613 commlogManager.cpp:87] [2,2] :PMPI_Finalize
+I1212 22:30:44.412775  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:44.412781  7613 commlogManager.cpp:85] state: 0x80b4b70  rank 3 commlog begin**********
+I1212 22:30:44.412786  7613 commlogManager.cpp:87] [3,0] :PMPI_Barrier
+I1212 22:30:44.412791  7613 commlogManager.cpp:87] [3,1] :PMPI_Isend(0)
+I1212 22:30:44.412797  7613 commlogManager.cpp:87] [3,2] :PMPI_Recv(0)
+I1212 22:30:44.412803  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:44.412905  7613 commlogManager.cpp:507] state 0x80b4b70 CHECK begin,depth/subdepth: 1/0 with enabled:
+I1212 22:30:44.412914  7613 commlogManager.cpp:509] rank 0 enabled:2
+I1212 22:30:44.412920  7613 commlogManager.cpp:513] [0,1] :PMPI_Irecv(1)
+I1212 22:30:44.412927  7613 commlogManager.cpp:513] [0,2] :PMPI_Recv(3)
+I1212 22:30:44.412935  7613 commlogManager.cpp:509] rank 1 enabled:2
+I1212 22:30:44.412940  7613 commlogManager.cpp:513] [1,1] :PMPI_Isend(0)
+I1212 22:30:44.412946  7613 commlogManager.cpp:513] [1,2] :PMPI_Finalize
+I1212 22:30:44.412952  7613 commlogManager.cpp:509] rank 2 enabled:2
+I1212 22:30:44.412958  7613 commlogManager.cpp:513] [2,1] :PMPI_Isend(0)
+I1212 22:30:44.412964  7613 commlogManager.cpp:513] [2,2] :PMPI_Finalize
+I1212 22:30:44.412971  7613 commlogManager.cpp:509] rank 3 enabled:2
+I1212 22:30:44.412976  7613 commlogManager.cpp:513] [3,1] :PMPI_Isend(0)
+I1212 22:30:44.412983  7613 commlogManager.cpp:513] [3,2] :PMPI_Recv(0)
+I1212 22:30:44.412989  7613 commlogManager.cpp:516] enabled END*********************************
+I1212 22:30:44.413028  7613 commlogManager.cpp:247] match set begin:
+I1212 22:30:44.413036  7613 commlogManager.cpp:251] [1,1] :PMPI_Isend(0)
+I1212 22:30:44.413043  7613 commlogManager.cpp:251] [0,1] :PMPI_Irecv(1)
+I1212 22:30:44.413049  7613 commlogManager.cpp:253] *************
+I1212 22:30:44.413054  7613 commlogManager.cpp:247] match set begin:
+I1212 22:30:44.413059  7613 commlogManager.cpp:251] [3,1] :PMPI_Isend(0)
+I1212 22:30:44.413065  7613 commlogManager.cpp:251] [0,2] :PMPI_Recv(3)
+I1212 22:30:44.413071  7613 commlogManager.cpp:253] *************
+I1212 22:30:44.413077  7613 commlogManager.cpp:541] MATCH pairs:
+I1212 22:30:44.413082  7613 commlogManager.cpp:544] [1,1]PMPI_Isend
+I1212 22:30:44.413087  7613 commlogManager.cpp:544] [0,1]PMPI_Irecv
+I1212 22:30:44.413092  7613 commlogManager.cpp:544] [3,1]PMPI_Isend
+I1212 22:30:44.413097  7613 commlogManager.cpp:544] [0,2]PMPI_Recv
+I1212 22:30:44.413102  7613 commlogManager.cpp:547] MATCH END*********************************
+I1212 22:30:44.413137  7613 commlogManager.cpp:340] [1,1] :PMPI_Isend(0) and [0,1] :PMPI_Irecv(1)  fired.
+I1212 22:30:44.413159  7613 commlogManager.cpp:340] [3,1] :PMPI_Isend(0) and [0,2] :PMPI_Recv(3)  fired.
+I1212 22:30:44.413190  7613 commlogManager.cpp:507] state 0x80b4b70 CHECK begin,depth/subdepth: 1/1 with enabled:
+I1212 22:30:44.413198  7613 commlogManager.cpp:509] rank 0 enabled:0
+I1212 22:30:44.413205  7613 commlogManager.cpp:509] rank 1 enabled:1
+I1212 22:30:44.413211  7613 commlogManager.cpp:513] [1,2] :PMPI_Finalize
+I1212 22:30:44.413218  7613 commlogManager.cpp:509] rank 2 enabled:2
+I1212 22:30:44.413223  7613 commlogManager.cpp:513] [2,1] :PMPI_Isend(0)
+I1212 22:30:44.413229  7613 commlogManager.cpp:513] [2,2] :PMPI_Finalize
+I1212 22:30:44.413235  7613 commlogManager.cpp:509] rank 3 enabled:1
+I1212 22:30:44.413241  7613 commlogManager.cpp:513] [3,2] :PMPI_Recv(0)
+I1212 22:30:44.413249  7613 commlogManager.cpp:516] enabled END*********************************
+I1212 22:30:44.413282  7613 commlogManager.cpp:590] push functions into stack of rank 0 :
+I1212 22:30:44.413295  7613 commlogManager.cpp:600] function PMPI_Recv(3)
+I1212 22:30:44.413334  7613 commlogManager.cpp:600] function PMPI_Irecv(1)
+I1212 22:30:44.413362  7613 Executor_Calls.cpp:351] marking state/thread 0x80b4b70 0x832d650 sf of function PMPI_Irecv as dirty
+I1212 22:30:44.413382  7613 commlogManager.cpp:621] push END*********&& wake up thread 0x832d650 in 32***********
+I1212 22:30:44.413389  7613 commlogManager.cpp:624] Wake up rank 0 for func push.
+I1212 22:30:44.413400  7613 commlogManager.cpp:590] push functions into stack of rank 1 :
+I1212 22:30:44.413408  7613 commlogManager.cpp:600] function PMPI_Isend(0)
+I1212 22:30:44.413444  7613 commlogManager.cpp:621] push END*********&& wake up thread 0x832f4b0 in 33***********
+I1212 22:30:44.413452  7613 commlogManager.cpp:624] Wake up rank 1 for func push.
+I1212 22:30:44.413462  7613 commlogManager.cpp:590] push functions into stack of rank 3 :
+I1212 22:30:44.413470  7613 commlogManager.cpp:600] function PMPI_Isend(0)
+I1212 22:30:44.413502  7613 commlogManager.cpp:621] push END*********&& wake up thread 0x8330cd0 in 31***********
+I1212 22:30:44.413509  7613 commlogManager.cpp:624] Wake up rank 3 for func push.
+MPI_Irecv(0). tag 0. src 1 BEGIN
+MPI_Irecv (end)  	Process: 0
+
+MPI_Recv(0). tag 0. source 3 BEGIN
+
+MPI_Isend(1). tag 0. dest 0 BEGIN
+MPI_Isend (end)  	Process: 1
+I1212 22:30:44.987011  7613 SpecialFunctionHandler.cpp:1703] blocking rank 1 for state: 0x80b4b70 op: [1,2] :PMPI_Finalize
+I1212 22:30:45.029137  7613 Executor_Timers.cpp:218] current file line: /home/mpiklee/cloud9root/src/klee-uclibc/libc/stdio/_vfprintf.c: 987/43276
+
+MPI_Isend(3). tag 0. dest 0 BEGIN
+MPI_Isend (end)  	Process: 3
+I1212 22:30:45.218014  7613 SpecialFunctionHandler.cpp:1703] blocking rank 3 for state: 0x80b4b70 op: [3,2] :PMPI_Recv(0)
+MPI_Recv (end)  	Process: 0
+wait get persist req: 0xf4d9eb20 -> 0xabababab
+I1212 22:30:45.422701  7613 commlogManager.cpp:85] state: 0x80b4b70  rank 0 commlog begin**********
+I1212 22:30:45.422724  7613 commlogManager.cpp:87] [0,0] :PMPI_Barrier
+I1212 22:30:45.422731  7613 commlogManager.cpp:87] [0,1] :PMPI_Irecv(1)
+I1212 22:30:45.422739  7613 commlogManager.cpp:87] [0,2] :PMPI_Recv(3)
+I1212 22:30:45.422745  7613 commlogManager.cpp:87] [0,3] :PMPI_Isend(3)
+I1212 22:30:45.422751  7613 commlogManager.cpp:87] [0,4] :PMPI_Wait
+I1212 22:30:45.422757  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:45.422762  7613 commlogManager.cpp:85] state: 0x80b4b70  rank 1 commlog begin**********
+I1212 22:30:45.422768  7613 commlogManager.cpp:87] [1,0] :PMPI_Barrier
+I1212 22:30:45.422773  7613 commlogManager.cpp:87] [1,1] :PMPI_Isend(0)
+I1212 22:30:45.422780  7613 commlogManager.cpp:87] [1,2] :PMPI_Finalize
+I1212 22:30:45.422785  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:45.422790  7613 commlogManager.cpp:85] state: 0x80b4b70  rank 2 commlog begin**********
+I1212 22:30:45.422796  7613 commlogManager.cpp:87] [2,0] :PMPI_Barrier
+I1212 22:30:45.422801  7613 commlogManager.cpp:87] [2,1] :PMPI_Isend(0)
+I1212 22:30:45.422807  7613 commlogManager.cpp:87] [2,2] :PMPI_Finalize
+I1212 22:30:45.422813  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:45.422817  7613 commlogManager.cpp:85] state: 0x80b4b70  rank 3 commlog begin**********
+I1212 22:30:45.422823  7613 commlogManager.cpp:87] [3,0] :PMPI_Barrier
+I1212 22:30:45.422829  7613 commlogManager.cpp:87] [3,1] :PMPI_Isend(0)
+I1212 22:30:45.422835  7613 commlogManager.cpp:87] [3,2] :PMPI_Recv(0)
+I1212 22:30:45.422842  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:45.422909  7613 commlogManager.cpp:507] state 0x80b4b70 CHECK begin,depth/subdepth: 2/0 with enabled:
+I1212 22:30:45.422919  7613 commlogManager.cpp:509] rank 0 enabled:2
+I1212 22:30:45.422925  7613 commlogManager.cpp:513] [0,3] :PMPI_Isend(3)
+I1212 22:30:45.422932  7613 commlogManager.cpp:513] [0,4] :PMPI_Wait
+I1212 22:30:45.422938  7613 commlogManager.cpp:509] rank 1 enabled:1
+I1212 22:30:45.422943  7613 commlogManager.cpp:513] [1,2] :PMPI_Finalize
+I1212 22:30:45.422950  7613 commlogManager.cpp:509] rank 2 enabled:2
+I1212 22:30:45.422955  7613 commlogManager.cpp:513] [2,1] :PMPI_Isend(0)
+I1212 22:30:45.422961  7613 commlogManager.cpp:513] [2,2] :PMPI_Finalize
+I1212 22:30:45.422967  7613 commlogManager.cpp:509] rank 3 enabled:1
+I1212 22:30:45.422973  7613 commlogManager.cpp:513] [3,2] :PMPI_Recv(0)
+I1212 22:30:45.422979  7613 commlogManager.cpp:516] enabled END*********************************
+I1212 22:30:45.423014  7613 commlogManager.cpp:247] match set begin:
+I1212 22:30:45.423022  7613 commlogManager.cpp:251] [0,3] :PMPI_Isend(3)
+I1212 22:30:45.423029  7613 commlogManager.cpp:251] [3,2] :PMPI_Recv(0)
+I1212 22:30:45.423035  7613 commlogManager.cpp:253] *************
+I1212 22:30:45.423041  7613 commlogManager.cpp:541] MATCH pairs:
+I1212 22:30:45.423046  7613 commlogManager.cpp:544] [0,3]PMPI_Isend
+I1212 22:30:45.423051  7613 commlogManager.cpp:544] [3,2]PMPI_Recv
+I1212 22:30:45.423056  7613 commlogManager.cpp:547] MATCH END*********************************
+I1212 22:30:45.423084  7613 commlogManager.cpp:340] [0,3] :PMPI_Isend(3) and [3,2] :PMPI_Recv(0)  fired.
+I1212 22:30:45.423116  7613 commlogManager.cpp:507] state 0x80b4b70 CHECK begin,depth/subdepth: 2/1 with enabled:
+I1212 22:30:45.423123  7613 commlogManager.cpp:509] rank 0 enabled:1
+I1212 22:30:45.423130  7613 commlogManager.cpp:513] [0,4] :PMPI_Wait
+I1212 22:30:45.423135  7613 commlogManager.cpp:509] rank 1 enabled:1
+I1212 22:30:45.423141  7613 commlogManager.cpp:513] [1,2] :PMPI_Finalize
+I1212 22:30:45.423147  7613 commlogManager.cpp:509] rank 2 enabled:2
+I1212 22:30:45.423153  7613 commlogManager.cpp:513] [2,1] :PMPI_Isend(0)
+I1212 22:30:45.423159  7613 commlogManager.cpp:513] [2,2] :PMPI_Finalize
+I1212 22:30:45.423166  7613 commlogManager.cpp:516] enabled END*********************************
+I1212 22:30:45.423193  7613 commlogManager.cpp:541] MATCH pairs:
+I1212 22:30:45.423199  7613 commlogManager.cpp:544] [0,4]PMPI_Wait
+I1212 22:30:45.423205  7613 commlogManager.cpp:547] MATCH END*********************************
+I1212 22:30:45.423218  7613 commlogManager.cpp:400] [0,4] :PMPI_Wait PMPI_Wait fired.
+I1212 22:30:45.423243  7613 commlogManager.cpp:507] state 0x80b4b70 CHECK begin,depth/subdepth: 2/2 with enabled:
+I1212 22:30:45.423250  7613 commlogManager.cpp:509] rank 0 enabled:0
+I1212 22:30:45.423257  7613 commlogManager.cpp:509] rank 1 enabled:1
+I1212 22:30:45.423264  7613 commlogManager.cpp:513] [1,2] :PMPI_Finalize
+I1212 22:30:45.423269  7613 commlogManager.cpp:509] rank 2 enabled:2
+I1212 22:30:45.423274  7613 commlogManager.cpp:513] [2,1] :PMPI_Isend(0)
+I1212 22:30:45.423281  7613 commlogManager.cpp:513] [2,2] :PMPI_Finalize
+I1212 22:30:45.423287  7613 commlogManager.cpp:516] enabled END*********************************
+I1212 22:30:45.423318  7613 commlogManager.cpp:590] push functions into stack of rank 0 :
+I1212 22:30:45.423326  7613 commlogManager.cpp:600] function PMPI_Wait(15)
+I1212 22:30:45.423363  7613 commlogManager.cpp:600] function PMPI_Isend(3)
+I1212 22:30:45.423389  7613 Executor_Calls.cpp:351] marking state/thread 0x80b4b70 0x832d650 sf of function PMPI_Isend as dirty
+I1212 22:30:45.423408  7613 commlogManager.cpp:621] push END*********&& wake up thread 0x832d650 in 32***********
+I1212 22:30:45.423414  7613 commlogManager.cpp:624] Wake up rank 0 for func push.
+I1212 22:30:45.423425  7613 commlogManager.cpp:590] push functions into stack of rank 3 :
+I1212 22:30:45.423434  7613 commlogManager.cpp:600] function PMPI_Recv(0)
+I1212 22:30:45.423465  7613 commlogManager.cpp:621] push END*********&& wake up thread 0x8330cd0 in 31***********
+I1212 22:30:45.423471  7613 commlogManager.cpp:624] Wake up rank 3 for func push.
+
+MPI_Isend(0). tag 0. dest 3 BEGIN
+MPI_Isend (end)  	Process: 0
+MPI_Wait (start)	 Rank: 0
+MPI_Wait (end)  	Process:0
+wait get persist req: 0xf4d9eb60 -> 0xabababab
+
+MPI_Recv(3). tag 0. source 0 BEGIN
+MPI_Recv (end)  	Process: 3
+I1212 22:30:46.129118  7613 Executor_Timers.cpp:218] current file line: /home/mpiklee/cloud9root/src/klee-uclibc/libc/string/memset.c: 28/45406
+wait get persist req: 0xf4e06f60 -> 0xabababab
+I1212 22:30:46.207017  7613 commlogManager.cpp:85] state: 0x80b4b70  rank 0 commlog begin**********
+I1212 22:30:46.207037  7613 commlogManager.cpp:87] [0,0] :PMPI_Barrier
+I1212 22:30:46.207046  7613 commlogManager.cpp:87] [0,1] :PMPI_Irecv(1)
+I1212 22:30:46.207052  7613 commlogManager.cpp:87] [0,2] :PMPI_Recv(3)
+I1212 22:30:46.207058  7613 commlogManager.cpp:87] [0,3] :PMPI_Isend(3)
+I1212 22:30:46.207064  7613 commlogManager.cpp:87] [0,4] :PMPI_Wait
+I1212 22:30:46.207070  7613 commlogManager.cpp:87] [0,5] :PMPI_Wait
+I1212 22:30:46.207075  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:46.207080  7613 commlogManager.cpp:85] state: 0x80b4b70  rank 1 commlog begin**********
+I1212 22:30:46.207087  7613 commlogManager.cpp:87] [1,0] :PMPI_Barrier
+I1212 22:30:46.207093  7613 commlogManager.cpp:87] [1,1] :PMPI_Isend(0)
+I1212 22:30:46.207098  7613 commlogManager.cpp:87] [1,2] :PMPI_Finalize
+I1212 22:30:46.207103  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:46.207108  7613 commlogManager.cpp:85] state: 0x80b4b70  rank 2 commlog begin**********
+I1212 22:30:46.207115  7613 commlogManager.cpp:87] [2,0] :PMPI_Barrier
+I1212 22:30:46.207121  7613 commlogManager.cpp:87] [2,1] :PMPI_Isend(0)
+I1212 22:30:46.207128  7613 commlogManager.cpp:87] [2,2] :PMPI_Finalize
+I1212 22:30:46.207134  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:46.207137  7613 commlogManager.cpp:85] state: 0x80b4b70  rank 3 commlog begin**********
+I1212 22:30:46.207144  7613 commlogManager.cpp:87] [3,0] :PMPI_Barrier
+I1212 22:30:46.207149  7613 commlogManager.cpp:87] [3,1] :PMPI_Isend(0)
+I1212 22:30:46.207155  7613 commlogManager.cpp:87] [3,2] :PMPI_Recv(0)
+I1212 22:30:46.207161  7613 commlogManager.cpp:87] [3,3] :PMPI_Wait
+I1212 22:30:46.207166  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:46.207229  7613 commlogManager.cpp:507] state 0x80b4b70 CHECK begin,depth/subdepth: 3/0 with enabled:
+I1212 22:30:46.207238  7613 commlogManager.cpp:509] rank 0 enabled:1
+I1212 22:30:46.207244  7613 commlogManager.cpp:513] [0,5] :PMPI_Wait
+I1212 22:30:46.207250  7613 commlogManager.cpp:509] rank 1 enabled:1
+I1212 22:30:46.207257  7613 commlogManager.cpp:513] [1,2] :PMPI_Finalize
+I1212 22:30:46.207262  7613 commlogManager.cpp:509] rank 2 enabled:2
+I1212 22:30:46.207267  7613 commlogManager.cpp:513] [2,1] :PMPI_Isend(0)
+I1212 22:30:46.207274  7613 commlogManager.cpp:513] [2,2] :PMPI_Finalize
+I1212 22:30:46.207280  7613 commlogManager.cpp:509] rank 3 enabled:1
+I1212 22:30:46.207286  7613 commlogManager.cpp:513] [3,3] :PMPI_Wait
+I1212 22:30:46.207293  7613 commlogManager.cpp:516] enabled END*********************************
+I1212 22:30:46.207324  7613 commlogManager.cpp:541] MATCH pairs:
+I1212 22:30:46.207330  7613 commlogManager.cpp:544] [0,5]PMPI_Wait
+I1212 22:30:46.207336  7613 commlogManager.cpp:544] [3,3]PMPI_Wait
+I1212 22:30:46.207341  7613 commlogManager.cpp:547] MATCH END*********************************
+I1212 22:30:46.207357  7613 commlogManager.cpp:400] [0,5] :PMPI_Wait PMPI_Wait fired.
+I1212 22:30:46.207370  7613 commlogManager.cpp:400] [3,3] :PMPI_Wait PMPI_Wait fired.
+I1212 22:30:46.207397  7613 commlogManager.cpp:507] state 0x80b4b70 CHECK begin,depth/subdepth: 3/1 with enabled:
+I1212 22:30:46.207406  7613 commlogManager.cpp:509] rank 0 enabled:0
+I1212 22:30:46.207412  7613 commlogManager.cpp:509] rank 1 enabled:1
+I1212 22:30:46.207418  7613 commlogManager.cpp:513] [1,2] :PMPI_Finalize
+I1212 22:30:46.207424  7613 commlogManager.cpp:509] rank 2 enabled:2
+I1212 22:30:46.207430  7613 commlogManager.cpp:513] [2,1] :PMPI_Isend(0)
+I1212 22:30:46.207437  7613 commlogManager.cpp:513] [2,2] :PMPI_Finalize
+I1212 22:30:46.207442  7613 commlogManager.cpp:516] enabled END*********************************
+I1212 22:30:46.207475  7613 commlogManager.cpp:590] push functions into stack of rank 0 :
+I1212 22:30:46.207484  7613 commlogManager.cpp:600] function PMPI_Wait(15)
+I1212 22:30:46.207520  7613 commlogManager.cpp:621] push END*********&& wake up thread 0x832d650 in 32***********
+I1212 22:30:46.207528  7613 commlogManager.cpp:624] Wake up rank 0 for func push.
+I1212 22:30:46.207538  7613 commlogManager.cpp:590] push functions into stack of rank 3 :
+I1212 22:30:46.207545  7613 commlogManager.cpp:600] function PMPI_Wait(15)
+I1212 22:30:46.207576  7613 commlogManager.cpp:621] push END*********&& wake up thread 0x8330cd0 in 31***********
+I1212 22:30:46.207583  7613 commlogManager.cpp:624] Wake up rank 3 for func push.
+MPI_Wait (start)	 Rank: 3
+MPI_Wait (end)  	Process:3
+I1212 22:30:46.351902  7613 SpecialFunctionHandler.cpp:1635] ****************Rank 3 MPI ops:******************
+I1212 22:30:46.351922  7613 SpecialFunctionHandler.cpp:1638] PMPI_Barrier
+I1212 22:30:46.351927  7613 SpecialFunctionHandler.cpp:1638] PMPI_Isend
+I1212 22:30:46.351933  7613 SpecialFunctionHandler.cpp:1638] PMPI_Recv
+I1212 22:30:46.351938  7613 SpecialFunctionHandler.cpp:1638] PMPI_Wait
+I1212 22:30:46.351943  7613 SpecialFunctionHandler.cpp:1638] PMPI_Finalize
+I1212 22:30:46.351948  7613 SpecialFunctionHandler.cpp:1641] **************************************************
+MPI_Wait (start)	 Rank: 0
+MPI_Wait (end)  	Process:0
+I1212 22:30:46.497025  7613 SpecialFunctionHandler.cpp:1635] ****************Rank 0 MPI ops:******************
+I1212 22:30:46.497045  7613 SpecialFunctionHandler.cpp:1638] PMPI_Barrier
+I1212 22:30:46.497051  7613 SpecialFunctionHandler.cpp:1638] PMPI_Irecv
+I1212 22:30:46.497056  7613 SpecialFunctionHandler.cpp:1638] PMPI_Recv
+I1212 22:30:46.497061  7613 SpecialFunctionHandler.cpp:1638] PMPI_Isend
+I1212 22:30:46.497066  7613 SpecialFunctionHandler.cpp:1638] PMPI_Wait
+I1212 22:30:46.497071  7613 SpecialFunctionHandler.cpp:1638] PMPI_Wait
+I1212 22:30:46.497076  7613 SpecialFunctionHandler.cpp:1638] PMPI_Finalize
+I1212 22:30:46.497081  7613 SpecialFunctionHandler.cpp:1641] **************************************************
+I1212 22:30:46.497091  7613 SpecialFunctionHandler.cpp:1668] All ranks finished normally.
+I1212 22:30:46.497097  7613 commlogManager.cpp:85] state: 0x80b4b70  rank 0 commlog begin**********
+I1212 22:30:46.497104  7613 commlogManager.cpp:87] [0,0] :PMPI_Barrier
+I1212 22:30:46.497110  7613 commlogManager.cpp:87] [0,1] :PMPI_Irecv(1)
+I1212 22:30:46.497117  7613 commlogManager.cpp:87] [0,2] :PMPI_Recv(3)
+I1212 22:30:46.497125  7613 commlogManager.cpp:87] [0,3] :PMPI_Isend(3)
+I1212 22:30:46.497131  7613 commlogManager.cpp:87] [0,4] :PMPI_Wait
+I1212 22:30:46.497138  7613 commlogManager.cpp:87] [0,5] :PMPI_Wait
+I1212 22:30:46.497143  7613 commlogManager.cpp:87] [0,6] :PMPI_Finalize
+I1212 22:30:46.497148  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:46.497153  7613 commlogManager.cpp:85] state: 0x80b4b70  rank 1 commlog begin**********
+I1212 22:30:46.497159  7613 commlogManager.cpp:87] [1,0] :PMPI_Barrier
+I1212 22:30:46.497164  7613 commlogManager.cpp:87] [1,1] :PMPI_Isend(0)
+I1212 22:30:46.497170  7613 commlogManager.cpp:87] [1,2] :PMPI_Finalize
+I1212 22:30:46.497176  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:46.497181  7613 commlogManager.cpp:85] state: 0x80b4b70  rank 2 commlog begin**********
+I1212 22:30:46.497187  7613 commlogManager.cpp:87] [2,0] :PMPI_Barrier
+I1212 22:30:46.497192  7613 commlogManager.cpp:87] [2,1] :PMPI_Isend(0)
+I1212 22:30:46.497198  7613 commlogManager.cpp:87] [2,2] :PMPI_Finalize
+I1212 22:30:46.497205  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:46.497210  7613 commlogManager.cpp:85] state: 0x80b4b70  rank 3 commlog begin**********
+I1212 22:30:46.497215  7613 commlogManager.cpp:87] [3,0] :PMPI_Barrier
+I1212 22:30:46.497220  7613 commlogManager.cpp:87] [3,1] :PMPI_Isend(0)
+I1212 22:30:46.497226  7613 commlogManager.cpp:87] [3,2] :PMPI_Recv(0)
+I1212 22:30:46.497233  7613 commlogManager.cpp:87] [3,3] :PMPI_Wait
+I1212 22:30:46.497238  7613 commlogManager.cpp:87] [3,4] :PMPI_Finalize
+I1212 22:30:46.497243  7613 commlogManager.cpp:89] ***************************
+I1212 22:30:46.497303  7613 commlogManager.cpp:507] state 0x80b4b70 CHECK begin,depth/subdepth: 4/0 with enabled:
+I1212 22:30:46.497311  7613 commlogManager.cpp:509] rank 0 enabled:1
+I1212 22:30:46.497318  7613 commlogManager.cpp:513] [0,6] :PMPI_Finalize
+I1212 22:30:46.497323  7613 commlogManager.cpp:509] rank 1 enabled:1
+I1212 22:30:46.497329  7613 commlogManager.cpp:513] [1,2] :PMPI_Finalize
+I1212 22:30:46.497335  7613 commlogManager.cpp:509] rank 2 enabled:2
+I1212 22:30:46.497340  7613 commlogManager.cpp:513] [2,1] :PMPI_Isend(0)
+I1212 22:30:46.497347  7613 commlogManager.cpp:513] [2,2] :PMPI_Finalize
+I1212 22:30:46.497354  7613 commlogManager.cpp:509] rank 3 enabled:1
+I1212 22:30:46.497359  7613 commlogManager.cpp:513] [3,4] :PMPI_Finalize
+I1212 22:30:46.497364  7613 commlogManager.cpp:516] enabled END*********************************
+I1212 22:30:46.497385  7613 commlogManager.cpp:541] MATCH pairs:
+I1212 22:30:46.497390  7613 commlogManager.cpp:544] [0,6]PMPI_Finalize
+I1212 22:30:46.497395  7613 commlogManager.cpp:544] [1,2]PMPI_Finalize
+I1212 22:30:46.497400  7613 commlogManager.cpp:544] [2,2]PMPI_Finalize
+I1212 22:30:46.497405  7613 commlogManager.cpp:544] [3,4]PMPI_Finalize
+I1212 22:30:46.497409  7613 commlogManager.cpp:547] MATCH END*********************************
+I1212 22:30:46.497429  7613 commlogManager.cpp:507] state 0x80b4b70 CHECK begin,depth/subdepth: 4/1 with enabled:
+I1212 22:30:46.497437  7613 commlogManager.cpp:509] rank 0 enabled:0
+I1212 22:30:46.497443  7613 commlogManager.cpp:509] rank 1 enabled:0
+I1212 22:30:46.497450  7613 commlogManager.cpp:509] rank 2 enabled:1
+I1212 22:30:46.497457  7613 commlogManager.cpp:513] [2,1] :PMPI_Isend(0)
+I1212 22:30:46.497463  7613 commlogManager.cpp:516] enabled END*********************************
+I1212 22:30:46.497519  7613 commlogManager.cpp:648] Wake up rank 0 for finalize.
+I1212 22:30:46.497532  7613 commlogManager.cpp:648] Wake up rank 1 for finalize.
+I1212 22:30:46.497541  7613 commlogManager.cpp:648] Wake up rank 2 for finalize.
+I1212 22:30:46.497551  7613 commlogManager.cpp:648] Wake up rank 3 for finalize.
+MPI_Barrier (start)	Process: 0
+MPI_Barrier (start)	Process: 1
+MPI_Barrier (start)	Process: 2
+MPI_Barrier (start)	Process: 3
+MPI_Barrier (end)  	Process:3
+(3) Finished normally
+I1212 22:30:47.129117  7613 Executor_Timers.cpp:218] current file line: /home/mpiklee/cloud9root/src/klee-uclibc/libc/stdio/_vfprintf.c: 1899/40216
+MPI_Barrier (end)  	Process:0
+(0) Finished normally
+MPI_Barrier (end)  	Process:1
+I1212 22:30:47.429116  7613 Executor_Timers.cpp:218] current file line: /home/mpiklee/cloud9root/src/klee-uclibc/libc/string/memset.c: 29/45413
+I1212 22:30:47.429139  7613 StatsTracker.cpp:1243] [STATS] StateCount: 2 InstructionCount: 1835891 QueryCount: 94
+I1212 22:30:47.429148  7613 StatsTracker.cpp:1247] [GLOBAL COVERAGE] Source: 0% (0/9732) Instructions: 0% (0/51442)
+I1212 22:30:47.429160  7613 StatsTracker.cpp:1252] [FOCUSED COVERAGE] Source: - (0/0) Instructions: - (0/0)
+(1) Finished normally
+MPI_Barrier (end)  	Process:2
+(2) Finished normally
+W1212 22:30:47.933894  7613 SpecialFunctionHandler.cpp:502] pthread_attr_destroy: pthread_attr_destroy does nothing
+W1212 22:30:47.938699  7613 SpecialFunctionHandler.cpp:502] pthread_attr_destroy: pthread_attr_destroy does nothing
+W1212 22:30:47.943447  7613 SpecialFunctionHandler.cpp:502] pthread_attr_destroy: pthread_attr_destroy does nothing
+W1212 22:30:47.948194  7613 SpecialFunctionHandler.cpp:502] pthread_attr_destroy: pthread_attr_destroy does nothing
+W1212 22:30:48.018997  7613 SpecialFunctionHandler.cpp:502] pthread_attr_destroy: pthread_attr_destroy does nothing
+W1212 22:30:48.031383  7613 SpecialFunctionHandler.cpp:502] pthread_attr_destroy: pthread_attr_destroy does nothing
+I1212 22:30:48.045063  7613 Executor_States.cpp:492] *********state 0x80b4b70********
+  Rank 0 Commlog begin**********
+[0,0] :PMPI_Barrier matched?: 1
+[0,1] :PMPI_Irecv(1) matched?: 1
+[0,2] :PMPI_Recv(3) matched?: 1
+[0,3] :PMPI_Isend(3) matched?: 1
+[0,4] :PMPI_Wait matched?: 1
+[0,5] :PMPI_Wait matched?: 1
+[0,6] :PMPI_Finalize matched?: 1
+***************************
+*********state 0x80b4b70********
+  Rank 1 Commlog begin**********
+[1,0] :PMPI_Barrier matched?: 1
+[1,1] :PMPI_Isend(0) matched?: 1
+[1,2] :PMPI_Finalize matched?: 1
+***************************
+*********state 0x80b4b70********
+  Rank 2 Commlog begin**********
+[2,0] :PMPI_Barrier matched?: 1
+[2,1] :PMPI_Isend(0) matched?: 0
+[2,2] :PMPI_Finalize matched?: 1
+***************************
+*********state 0x80b4b70********
+  Rank 3 Commlog begin**********
+[3,0] :PMPI_Barrier matched?: 1
+[3,1] :PMPI_Isend(0) matched?: 1
+[3,2] :PMPI_Recv(0) matched?: 1
+[3,3] :PMPI_Wait matched?: 1
+[3,4] :PMPI_Finalize matched?: 1
+***************************
+  Rank 2 enabled:**********
+[2,1] :PMPI_Isend(0)
+***************************
+rank 0 thread 2:4 blocked/enabled :0/0
+rank 1 thread 2:5 blocked/enabled :0/0
+rank 2 thread 2:6 blocked/enabled :0/0
+rank 3 thread 2:7 blocked/enabled :0/0
+I1212 22:30:48.045163  7613 commlogManager.cpp:846] getWildcardMatches:
+I1212 22:30:48.045153  7613 Executor_States.cpp:494] wildcard matches 
+I1212 22:30:48.160611  7613 Executor_States.cpp:422] state 0x80b4b70 terminated.
+I1212 22:30:48.160640  7613 Executor_Timers.cpp:218] current file line: /home/mpiklee/cloud9root/src/cloud9/runtime/POSIX/processes.c: 99/47758
+I1212 22:30:48.161900  7613 Executor_States.cpp:422] state 0x75b5410 terminated.
+
+KLEE: done: total instructions = 1916484
+KLEE: done: completed paths = 5
+KLEE: done: generated tests = 4
+

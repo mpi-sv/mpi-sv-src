@@ -1,0 +1,484 @@
+AZQ_init: 
+  GRP_init:
+Reserved 160 (acum: 160) bytes at 8803008
+Group entries: (1)  40
+Reserved 300 (acum: 460) bytes at 88030b0
+Thread entries per group: (8)  160
+Reserved 10908 (acum: 11368) bytes at 88031e0
+THR_MAX: (27)  10908
+Reserved 1080448 (acum: 1091816) bytes at b7d70008
+SLM_POOL_SET_MAX: (16)  1080448
+THR initialised
+Reading file ./netcfg.azq for network machine addresses ...
+
+
+Machine number: 1
+Machine name: hurdes
+	Address: 127.0.1.1 (0x101007f)
+[INET_TCP  RI_init] Reserved 4 (acum: 4) bytes at 88063d0
+Node number: 1 
+[INET_TCP  INET_init] Reserved 4 (acum: 8) bytes at 88062d8
+[INET_TCP  INET_init] Reserved 44 (acum: 52) bytes at 88062e8
+[INET_TCP  INET_init] Freeing memory at 88062d8
+[INET_TCP  RI_destroy] Freeing memory at 88063d0
+[INET_TCP  ELB_create] Reserved 180 (acum: 232) bytes at 8805c80
+[INET_TCP  init_queues] Reserved 134479872 (acum: 134480104) bytes at afd2f008
+Reserved 256 (acum: 1092072) bytes at 8806e48
+PMP_init:
+Reserved 192 (acum: 1092264) bytes at 8806f50
+CPL_MAX: (16)  192
+GRP_server:
+GRP_joinFxn
+THR_create:
+thrAlloc
+thrAlloc: End
+Reserved 16 (acum: 1092280) bytes at 8806338
+Reserved 16 (acum: 1092296) bytes at 8807018
+THR_create: End ...
+wrapper:
+PMP_service_loop (GROUP 1, RANK 0) (AZQ thread 88031e0):
+PMP_service_loop: Policy 0. Priority 0
+PMP_service_loop: running on machine 0
+GRP_server: End
+PMP_init: PMP daemon launched. 
+GRP_server:
+GRP_joinFxn
+THR_create:
+thrAlloc
+thrAlloc: End
+Reserved 16 (acum: 1092312) bytes at 88070c0
+Reserved 16 (acum: 1092328) bytes at 88070d8
+THR_create: End ...
+PMP_register: Registering SERVICE 1 as GROUP 6b8b4567
+PMP_register: End
+wrapper:
+GRP_service_loop (GROUP 6b8b4567, RANK 0) (AZQ thread 8803374):
+GRP_server: End
+  GRP daemon launched
+GRP_init: (gix: 0x6b8b4567) End
+GRP_enroll:
+THR_create:
+thrAlloc
+thrAlloc: End
+Reserved 16 (acum: 1092344) bytes at 8807180
+Reserved 16 (acum: 1092360) bytes at 8807198
+THR_create: End ...
+GRP_enroll: End
+
+
+ ==============================   0. Creando   ============================== 
+
+	^------------------------
+	GRP_create (stub): begin 8803508 
+	THR_setmask(8803508): Masking 8803508
+
+		^--m#0---------------------------------------
+		GRP_CREATE command 8803374 
+		v---------------------------------------------
+	THR_setmask(8803508): Unmasking 8803508
+	GRP_create (stub): end   8803508 
+	v-------------------------
+
+	^------------------------
+	GRP_join (stub): begin 8803508 
+Reserved 72 (acum: 1092432) bytes at 8807228
+	THR_setmask(8803508): Masking 8803508
+
+		^--m#0---------------------------------------
+		GRP_JOIN command
+THR_create:
+thrAlloc
+thrAlloc: End
+Reserved 16 (acum: 1092448) bytes at 8807278
+Reserved 16 (acum: 1092464) bytes at 8807290
+THR_create: End ...
+		v---------------------------------------------
+	THR_setmask(8803508): Unmasking 8803508
+	GRP_join (stub): end   8803508 
+	v-------------------------
+Freeing memory at 8807228
+
+	^------------------------
+	GRP_join (stub): begin 8803508 
+Reserved 72 (acum: 1092536) bytes at 8807228
+	THR_setmask(8803508): Masking 8803508
+
+		^--m#0---------------------------------------
+		GRP_JOIN command
+THR_create:
+thrAlloc
+thrAlloc: End
+Reserved 16 (acum: 1092552) bytes at 88072a8
+Reserved 16 (acum: 1092568) bytes at 88072c0
+THR_create: End ...
+		v---------------------------------------------
+	THR_setmask(8803508): Unmasking 8803508
+	GRP_join (stub): end   8803508 
+	v-------------------------
+Freeing memory at 8807228
+
+	^------------------------
+	GRP_join (stub): begin 8803508 
+Reserved 72 (acum: 1092640) bytes at 8807228
+	THR_setmask(8803508): Masking 8803508
+
+		^--m#0---------------------------------------
+		GRP_JOIN command
+THR_create:
+thrAlloc
+thrAlloc: End
+Reserved 16 (acum: 1092656) bytes at 88072d8
+Reserved 16 (acum: 1092672) bytes at 88072f0
+THR_create: End ...
+		v---------------------------------------------
+	THR_setmask(8803508): Unmasking 8803508
+	GRP_join (stub): end   8803508 
+	v-------------------------
+Freeing memory at 8807228
+
+	^------------------------
+	GRP_join (stub): begin 8803508 
+Reserved 72 (acum: 1092744) bytes at 8807228
+	THR_setmask(8803508): Masking 8803508
+
+		^--m#0---------------------------------------
+		GRP_JOIN command
+THR_create:
+thrAlloc
+thrAlloc: End
+Reserved 16 (acum: 1092760) bytes at 8807308
+Reserved 16 (acum: 1092776) bytes at 8807320
+THR_create: End ...
+		v---------------------------------------------
+	THR_setmask(8803508): Unmasking 8803508
+	GRP_join (stub): end   8803508 
+	v-------------------------
+Freeing memory at 8807228
+
+	^------------------------
+	GRP_join (stub): begin 8803508 
+Reserved 72 (acum: 1092848) bytes at 8807228
+	THR_setmask(8803508): Masking 8803508
+
+		^--m#0---------------------------------------
+		GRP_JOIN command
+THR_create:
+thrAlloc
+thrAlloc: End
+Reserved 16 (acum: 1092864) bytes at 8807338
+Reserved 16 (acum: 1092880) bytes at 8807350
+THR_create: End ...
+		v---------------------------------------------
+	THR_setmask(8803508): Unmasking 8803508
+	GRP_join (stub): end   8803508 
+	v-------------------------
+Freeing memory at 8807228
+
+	^------------------------
+	GRP_join (stub): begin 8803508 
+Reserved 72 (acum: 1092952) bytes at 8807228
+	THR_setmask(8803508): Masking 8803508
+
+		^--m#0---------------------------------------
+		GRP_JOIN command
+THR_create:
+thrAlloc
+thrAlloc: End
+Reserved 16 (acum: 1092968) bytes at 8807368
+Reserved 16 (acum: 1092984) bytes at 8807380
+THR_create: End ...
+		v---------------------------------------------
+	THR_setmask(8803508): Unmasking 8803508
+	GRP_join (stub): end   8803508 
+	v-------------------------
+Freeing memory at 8807228
+
+	^------------------------
+	GRP_join (stub): begin 8803508 
+Reserved 72 (acum: 1093056) bytes at 8807228
+	THR_setmask(8803508): Masking 8803508
+
+		^--m#0---------------------------------------
+		GRP_JOIN command
+THR_create:
+thrAlloc
+thrAlloc: End
+Reserved 16 (acum: 1093072) bytes at 8807398
+Reserved 16 (acum: 1093088) bytes at 88073b0
+THR_create: End ...
+		v---------------------------------------------
+	THR_setmask(8803508): Unmasking 8803508
+	GRP_join (stub): end   8803508 
+	v-------------------------
+Freeing memory at 8807228
+
+	^------------------------
+	GRP_join (stub): begin 8803508 
+Reserved 72 (acum: 1093160) bytes at 8807228
+	THR_setmask(8803508): Masking 8803508
+
+		^--m#0---------------------------------------
+		GRP_JOIN command
+THR_create:
+thrAlloc
+thrAlloc: End
+Reserved 16 (acum: 1093176) bytes at 88073c8
+Reserved 16 (acum: 1093192) bytes at 88073e0
+THR_create: End ...
+		v---------------------------------------------
+	THR_setmask(8803508): Unmasking 8803508
+	GRP_join (stub): end   8803508 
+	v-------------------------
+Freeing memory at 8807228
+
+	^------------------------
+	GRP_start (stub): begin 8803508 
+	THR_setmask(8803508): Masking 8803508
+
+		^--m#0---------------------------------------
+		GRP_START command
+wrapper:
+wrapper:
+wrapper:
+wrapper:
+wrapper:
+wrapper:
+wrapper:
+wrapper:
+		= R [100 0] itr [0] 	time: Tue Jul 28 13:14:55 2009
+		= R [100 0] itr [100] 	time: Tue Jul 28 13:14:55 2009
+THR_exit(8803830):
+
+	^------------------------
+	GRP_leave (stub): Begin  (8803830)([64, 1])
+	THR_setmask(8803830): Masking 8803830
+THR_exit(88039c4):
+
+	^------------------------
+	GRP_leave (stub): Begin  (88039c4)([64, 2])
+	THR_setmask(88039c4): Masking 88039c4
+THR_exit(8803b58):
+
+	^------------------------
+	GRP_leave (stub): Begin  (8803b58)([64, 3])
+	THR_setmask(8803b58): Masking 8803b58
+THR_exit(8803cec):
+
+	^------------------------
+	GRP_leave (stub): Begin  (8803cec)([64, 4])
+	THR_setmask(8803cec): Masking 8803cec
+THR_exit(8804014):
+
+	^------------------------
+	GRP_leave (stub): Begin  (8804014)([64, 6])
+	THR_setmask(8804014): Masking 8804014
+THR_exit(8803e80):
+
+	^------------------------
+	GRP_leave (stub): Begin  (8803e80)([64, 5])
+	THR_setmask(8803e80): Masking 8803e80
+[100  0] ::::  Pi    = 3.1415927369231227   Error = -0.0000000833333296   Time:   0.007868
+THR_exit(880369c):
+
+	^------------------------
+	GRP_leave (stub): Begin  (880369c)([64, 0])
+	THR_setmask(880369c): Masking 880369c
+THR_exit(88041a8):
+
+	^------------------------
+	GRP_leave (stub): Begin  (88041a8)([64, 7])
+	THR_setmask(88041a8): Masking 88041a8
+		v---------------------------------------------
+	THR_setmask(8803508): Unmasking 8803508
+	GRP_start (stub):end 8803508 
+	v-------------------------
+
+
+ ==============================   0. Esperando   ==============================
+
+	^---------------------- 0 --
+	GRP_wait(8803508) (stub): Begin  
+	THR_setmask(8803508): Masking 8803508
+	THR_setmask(8803830): Unmasking 8803830
+	GRP_leave (stub): End    (8803830)([64, 1]) pth afbf9b90: Adios 
+	v-------------------------
+THR_exit(8803830): End
+
+		^--m#0---------------------------------------
+		GRP_LEAVE command (from [64, 1])
+		v---------------------------------------------
+	THR_setmask(88039c4): Unmasking 88039c4
+	GRP_leave (stub): End    (88039c4)([64, 2]) pth afbe8b90: Adios 
+	v-------------------------
+THR_exit(88039c4): End
+
+		^--m#0---------------------------------------
+		GRP_LEAVE command (from [64, 2])
+		v---------------------------------------------
+	THR_setmask(8803b58): Unmasking 8803b58
+	GRP_leave (stub): End    (8803b58)([64, 3]) pth afbd7b90: Adios 
+	v-------------------------
+THR_exit(8803b58): End
+
+		^--m#0---------------------------------------
+		GRP_LEAVE command (from [64, 3])
+		v---------------------------------------------
+	THR_setmask(8803cec): Unmasking 8803cec
+	GRP_leave (stub): End    (8803cec)([64, 4]) pth afbc6b90: Adios 
+	v-------------------------
+THR_exit(8803cec): End
+
+		^--m#0---------------------------------------
+		GRP_LEAVE command (from [64, 4])
+		v---------------------------------------------
+	THR_setmask(8804014): Unmasking 8804014
+	GRP_leave (stub): End    (8804014)([64, 6]) pth afba4b90: Adios 
+	v-------------------------
+THR_exit(8804014): End
+
+		^--m#0---------------------------------------
+		GRP_LEAVE command (from [64, 6])
+		v---------------------------------------------
+	THR_setmask(8803e80): Unmasking 8803e80
+	GRP_leave (stub): End    (8803e80)([64, 5]) pth afbb5b90: Adios 
+	v-------------------------
+THR_exit(8803e80): End
+
+		^--m#0---------------------------------------
+		GRP_LEAVE command (from [64, 5])
+		v---------------------------------------------
+	THR_setmask(880369c): Unmasking 880369c
+	GRP_leave (stub): End    (880369c)([64, 0]) pth afc0ab90: Adios 
+	v-------------------------
+THR_exit(880369c): End
+
+		^--m#0---------------------------------------
+		GRP_LEAVE command (from [64, 0])
+		v---------------------------------------------
+	THR_setmask(88041a8): Unmasking 88041a8
+	GRP_leave (stub): End    (88041a8)([64, 7]) pth afb93b90: Adios 
+	v-------------------------
+THR_exit(88041a8): End
+
+		^--m#0---------------------------------------
+		GRP_LEAVE command (from [64, 7])
+		v---------------------------------------------
+
+		^--m#0---------------------------------------
+		GRP_WAIT command (from [327b23c6, 0])
+		v---------------------------------------------
+
+		^--m#0---------------------------------------
+		GRP_WAIT2 command (from [327b23c6, 0])
+GRP_wait2:
+GRP_wait2: End
+		v---------------------------------------------
+	THR_setmask(8803508): Unmasking 8803508
+	GRP_wait(8803508) (stub): End  
+	v------------------------ 0 --
+
+	^---------------------- 8 --
+	GRP_destroy(8803508) (stub) (to machine 0): Begin 
+	THR_setmask(8803508): Masking 8803508
+	THR_setmask(8803508): Unmasking 8803508
+	GRP_destroy(8803508) (stub): End  
+	v------------------------ 8 --
+
+	^---------------------- 0 --
+	GRP_shutdown(8803508) (stub): Begin  
+	THR_setmask(8803508): Masking 8803508
+
+		^--m#0---------------------------------------
+		GRP_DESTROY command (from [327b23c6, 0])
+GRP_destroy:
+THR_wait: for 880369c
+Freeing memory at 8807278
+Freeing memory at 8807290
+THR_wait: for 880369c. End
+THR_wait: for 8803830
+Freeing memory at 88072a8
+Freeing memory at 88072c0
+THR_wait: for 8803830. End
+THR_wait: for 88039c4
+Freeing memory at 88072d8
+Freeing memory at 88072f0
+THR_wait: for 88039c4. End
+THR_wait: for 8803b58
+Freeing memory at 8807308
+Freeing memory at 8807320
+THR_wait: for 8803b58. End
+THR_wait: for 8803cec
+Freeing memory at 8807338
+Freeing memory at 8807350
+THR_wait: for 8803cec. End
+THR_wait: for 8803e80
+Freeing memory at 8807368
+Freeing memory at 8807380
+THR_wait: for 8803e80. End
+THR_wait: for 8804014
+Freeing memory at 8807398
+Freeing memory at 88073b0
+THR_wait: for 8804014. End
+THR_wait: for 88041a8
+Freeing memory at 88073c8
+Freeing memory at 88073e0
+THR_wait: for 88041a8. End
+GRP_destroy: End
+		v---------------------------------------------
+	THR_setmask(8803508): Unmasking 8803508
+	GRP_shutdown(8803508) (stub): End  
+	v------------------------ 0 --
+
+	^---------------------- 0 --
+	GRP_wait(8803508) (stub): Begin  
+	THR_setmask(8803508): Masking 8803508
+
+		^--m#0---------------------------------------
+		GRP_SHUTDOWN command (from [327b23c6, 0])
+GRP_shutdown:
+GRP_shutdown: End
+		v---------------------------------------------
+
+		^--m#0---------------------------------------
+		GRP_WAIT command (from [327b23c6, 0])
+		v---------------------------------------------
+
+		^--m#0---------------------------------------
+		GRP_WAIT2 command (from [327b23c6, 0])
+GRP_wait2:
+GRP_wait2: End
+		v---------------------------------------------
+	THR_setmask(8803508): Unmasking 8803508
+	GRP_wait(8803508) (stub): End  
+	v------------------------ 0 --
+THR_wait: for 8803374
+GRP_server shutdown in machine 0 
+THR_exit(8803374):
+THR_exit(8803374): End
+Freeing memory at 88070c0
+Freeing memory at 88070d8
+THR_wait: for 8803374. End
+THR_kill(8803508):
+THR_kill(8803508): 88031e0 signaled
+			[Node 0]>>> Exception COM_E_SIGNALED.			         Raised by 88031e0 in timed_wait 
+			[Node 0]>>> Exception RPC_E_SIGNALED.			         Raised by 88031e0 in rpc_recv 
+THR_exit(88031e0):
+THR_exit(88031e0): End
+THR_kill(8803508): End
+THR_wait: for 88031e0
+Freeing memory at 8806338
+Freeing memory at 8807018
+THR_wait: for 88031e0. End
+Freeing memory at 8806f50
+Freeing memory at 8806e48
+[INET_TCP  INET_finalize] Freeing memory at 88062e8
+[INET_TCP  ELB_destroy] Freeing memory at afd2f008
+[INET_TCP  ELB_destroy] Freeing memory at 8805c80
+Freeing memory at b7d70008
+Freeing memory at 88031e0
+Freeing memory at 88030b0
+Freeing memory at 8803008
+AZQ_init: End
+
+main: End.
+

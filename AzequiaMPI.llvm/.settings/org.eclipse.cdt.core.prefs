@@ -1,0 +1,6 @@
+eclipse.preferences.version=1
+environment/project/cdt.managedbuild.toolchain.gnu.base.2044677142/PATH/delimiter=\:
+environment/project/cdt.managedbuild.toolchain.gnu.base.2044677142/PATH/operation=replace
+environment/project/cdt.managedbuild.toolchain.gnu.base.2044677142/PATH/value=/usr/local/texlive/2012/bin/i386-linux\:/home/mpiklee/workspace/libmumpi/test\:/home/mpiklee/workspace/libmumpi/AzequiaMPI-2.0.3/bin\:/home/mpiklee/soft/TASSv1.1\:/usr/share/isp/bin/\:/usr/share/depot_tools\:/usr/share/eclipse\:/opt/llvm-gcc4.2-2.9-x86_64-linux/bin\:/home/s2e/jpf-core/bin\:/usr/share/apache-ant-1.8.4/bin\:/usr/lib/jvm/jdk1.7.0_10/bin\:/usr/local/sbin\:/usr/local/bin\:/usr/sbin\:/usr/bin\:/sbin\:/bin\:/usr/games\:$PATH\:/home/mpiklee/cloud9root/src/third_party/llvm-build/Release+Asserts/bin
+environment/project/cdt.managedbuild.toolchain.gnu.base.2044677142/append=true
+environment/project/cdt.managedbuild.toolchain.gnu.base.2044677142/appendContributed=true

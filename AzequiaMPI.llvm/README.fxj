@@ -1,0 +1,31 @@
+1.  2050 abs_builddir=./  adding to Makefile,orelse make tests fails. 
+
+2.  2.0.3version needs exactly hw1.0.3version.
+
+3.   add /usr/local/lib to $LD_LIBRARY_PATH
+
+4.   pmi/pmi_interface.c [164]: ERROR:
+     >>> Exception raised in AZQ_clnt
+	[Machine 0] >>> Exception AZQ_E_EXHAUST
+	                 Raised by thread 0x7f8bc8000940 in function azqClntBody 
+    to solve this error, set the following enviriments properly:
+
+export AZQMPI_NODES=1
+export AZQMPI_PERHOST=8
+export AZQMPI_HOSTS=1
+export AZQMPI_BYSOCKET=0
+export AZQMPI_NO_BINDING=1
+
+
+5. how to produce llvm bytecode.
+
+for hwloc lib :
+make CC=clang CLINKER=clang CFLAGS="-g -flto -c" CLINKFLAGS="-flto -WI -plugin-opt=also-emit-llvm",  
+
+then goto src/.lib, llvm-ld *.o -b libhw.a
+
+
+
+for azeqmpi: 
+make CC=clang CLINKER=clang CFLAGS="-g -flto -c" CLINKFLAGS="-flto -WI -plugin-opt=also-emit-llvm" AR="llvm-ar" RANLIB="llvm-ranlib"
+

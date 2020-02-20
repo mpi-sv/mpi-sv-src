@@ -1,0 +1,120 @@
+[0] Recibiendo msg 0 de 1 ...
+
+[1] Enviando msg 0 ...
+-S- SLM en hdr  0x805cc88
+[1] Enviado msg 0
+
+[1] Enviando msg 1 ...
+deliver_slm (1) hdr 0x805cc88
+-S- SLM en hdr  0x805cc88
+[1] Enviado msg 1
+
+[1] Enviando msg 2 ...
+deliver_slm (1) hdr 0x805ccc0
+-S- SLM en hdr  0x805ccc0
+[1] Enviado msg 2
+
+[1] Enviando msg 3 ...
+deliver_slm (1) hdr 0x805ccf8
+-S- SLM en hdr  0x805ccf8
+[1] Enviado msg 3
+
+[1] Enviando msg 4 ...
+deliver_slm (1) hdr 0x805cd30
+-S- SLM en hdr  0x805cd30
+[1] Enviado msg 4
+
+[1] Enviando msg 5 ...
+deliver_slm (1) hdr 0x805cd68
+-S- SLM en hdr  0x805cd68
+[1] Enviado msg 5
+
+[1] Enviando msg 6 ...
+deliver_slm (1) hdr 0x805cda0
+-S- SLM en hdr  0x805cda0
+[1] Enviado msg 6
+
+[1] Enviando msg 7 ...
+deliver_slm (1) hdr 0x805cdd8
+-S- SLM en hdr  0x805cdd8
+[1] Enviado msg 7
+
+[1] Enviando msg 8 ...
+deliver_slm (1) hdr 0x805ce10
+-S- SLM en hdr  0x805ce10
+[1] Enviado msg 8
+
+[1] Enviando msg 9 ...
+
+[0] Recibido msg 0 de 1 con total: 0 (0)
+
+[0] Recibiendo msg 1 de 1 ...
+[0] Recibido msg 1 de 1 con total: 1 (1)
+
+[1] Enviado msg 9
+
+[1] Enviando msg 10 ...
+
+[0] Recibiendo msg 2 de 1 ...
+[0] Recibido msg 2 de 1 con total: 2 (1)
+
+[1] Enviado msg 10
+[1] Enviando msg 11 ...
+[0] Recibiendo msg 3 de 1 ...
+[0] Recibido msg 3 de 1 con total: 3 (1)
+[1] Enviado msg 11
+[1] Enviando msg 12 ...
+[0] Recibiendo msg 4 de 1 ...
+[0] Recibido msg 4 de 1 con total: 4 (1)
+[1] Enviado msg 12
+[1] Enviando msg 13 ...
+[0] Recibiendo msg 5 de 1 ...
+[0] Recibido msg 5 de 1 con total: 5 (1)
+[1] Enviado msg 13
+[1] Enviando msg 14 ...
+[0] Recibiendo msg 6 de 1 ...
+[0] Recibido msg 6 de 1 con total: 6 (1)
+[1] Enviado msg 14
+[1] Enviando msg 15 ...
+[0] Recibiendo msg 7 de 1 ...
+[0] Recibido msg 7 de 1 con total: 7 (1)
+[1] Enviado msg 15
+[1] Enviando msg 16 ...
+[0] Recibiendo msg 8 de 1 ...
+[0] Recibido msg 8 de 1 con total: 8 (1)
+[1] Enviado msg 16
+[1] Enviando msg 17 ...
+deliver_slm (1) hdr 0x805cc88
+-S- SLM en hdr  0x805cc88
+[1] Enviado msg 17
+[1] Enviando msg 18 ...
+deliver_slm (1) hdr 0x805ccc0
+-S- SLM en hdr  0x805ccc0
+[1] Enviado msg 18
+[1] Enviando msg 19 ...
+deliver_slm (1) hdr 0x805ccf8
+-S- SLM en hdr  0x805ccf8
+[1] Enviado msg 19
+[1] Enviando msg 20 ...
+deliver_slm (1) hdr 0x805cd30
+-S- SLM en hdr  0x805cd30
+[1] Enviado msg 20
+[1] Enviando msg 21 ...
+deliver_slm (1) hdr 0x805cd68
+-S- SLM en hdr  0x805cd68
+[1] Enviado msg 21
+[1] Enviando msg 22 ...
+deliver_slm (1) hdr 0x805cda0
+-S- SLM en hdr  0x805cda0
+[1] Enviado msg 22
+[1] Enviando msg 23 ...
+deliver_slm (1) hdr 0x805cdd8
+-S- SLM en hdr  0x805cdd8
+[1] Enviado msg 23
+[1] Enviando msg 24 ...
+deliver_slm (1) hdr 0x805ce10
+-S- SLM en hdr  0x805ce10
+[1] Enviado msg 24
+[1] Enviando msg 25 ...
+[0] Recibiendo msg 9 de 1 ...
+[0] Recibido msg 9 de 1 con total: 25 (1)

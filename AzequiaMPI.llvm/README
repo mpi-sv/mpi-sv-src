@@ -1,0 +1,97 @@
++-----------------------------------------------+
+| Azequia_v 2.1.2 installation and user«s guide |
+|                                               |
+| Author: http://gim.unex.es/azequia            |
+| Date:   April 26th, 2010                      |
+|                                               |
++-----------------------------------------------+
+
+
+Azequia package contents.
+------------------------
+
+./idsp:  Source code for the kernel
+./test:  Source code for the examples
+./doc:   Some documentation (probably out of date)
+./inet:  Source code for network levels
+
+
+Installing Azequia.
+-------------------
+
+1. Download and decompress Azequia.
+
+
+2. Set up installation options in root folder Makefile.
+
+OPTION 1. Set installation folder. 
+
+AZQ_INSTALL_DIR
+
+
+OPTION 2. Network. Current support options are:
+
+  - TCPIP:  shared memory for communication in the same machine and TCP/IP for remote communication.
+  - NONE:   only shared memory.
+
+Set the NET_TYPE option with the correct value.
+
+
+OPTION 3. Platform. 
+
+If you are going to run Azequia in a system with POSIX 1003.1c support (e.g. Linux), you can choose LINUX or MACOSX. MACOSX only provides limited support for some features like semaphores or timers.
+You can choose OSI, an implementation of the POSIX 1003.1c standard for Digital Signal Processing systems of Texas Instruments on top of DSP/BIOS operating system. If do, set the root folder for OSI installation.
+OSI can be downloaded from http://gim.unex.es/osi
+
+Set AZQ_PLATFORM_OPTS with correct values.
+
+
+OPTION 4. Debug support.
+
+Different levels of debugging messages showed.
+
+Set AZQ_DEBUG_OPTS with correct values.
+
+
+OPTION 5. C compiler options
+
+set AZQ_COMPILING_OPTS with correct values for passing to C compiler.
+
+
+OPTION 6. Other options:
+
+AZQ_MPI: This options needs to be used for supporting AzequiaMPI library, an implementation of MPI-1 on top of Azequia. AzequiaMPI can be downloaded from:
+http://gim.unex.es/azequiampi
+
+__XPN_PRINT: This option enables the exception verbose mode of Azequia.
+
+set AZQ_OTHER_OPTS with correct values.
+
+
+3. Compiling Azequia. Type:
+
+make clean; make; make install
+
+
+4. If you want to compile tests:
+
+make tests
+
+
+Using Azequia.
+--------------
+
+Goto to tests/basic folder and type:
+
+make clean; make 
+
+for compiling example.
+
+You need the MPD daemon for running applications
+
+The executable needs to be available to all the nodes (e.g. through NFS). Launch mpd daemon on the nodes and type:
+
+mpiexec -n 4 ./executable
+
+(Note that -n option indicates the number of nodes, not the number of endpoints as usually used in MPI implementations).
+

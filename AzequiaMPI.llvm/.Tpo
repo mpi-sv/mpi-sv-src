@@ -1,0 +1,4 @@
+azqmpi/src/private/check.o: azqmpi/src/private/check.c \
+  azqmpi/include/check.h
+
+azqmpi/include/check.h:

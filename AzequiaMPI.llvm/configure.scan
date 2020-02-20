@@ -1,0 +1,112 @@
+#                                               -*- Autoconf -*-
+# Process this file with autoconf to produce a configure script.
+
+AC_PREREQ([2.68])
+AC_INIT([FULL-PACKAGE-NAME], [VERSION], [BUG-REPORT-ADDRESS])
+AC_CONFIG_SRCDIR([inet/inet.h])
+AC_CONFIG_HEADERS([config.h])
+
+# Checks for programs.
+AC_PROG_CXX
+AC_PROG_CC
+AC_PROG_LN_S
+AC_PROG_MAKE_SET
+AC_PROG_RANLIB
+
+# Checks for libraries.
+# FIXME: Replace `main' with a function in `-lazq':
+AC_CHECK_LIB([azq], [main])
+# FIXME: Replace `main' with a function in `-lazqmpi':
+AC_CHECK_LIB([azqmpi], [main])
+# FIXME: Replace `main' with a function in `-lchn':
+AC_CHECK_LIB([chn], [main])
+# FIXME: Replace `main' with a function in `-lidsp':
+AC_CHECK_LIB([idsp], [main])
+# FIXME: Replace `main' with a function in `-linet':
+AC_CHECK_LIB([inet], [main])
+# FIXME: Replace `main' with a function in `-llnk':
+AC_CHECK_LIB([lnk], [main])
+# FIXME: Replace `main' with a function in `-lm':
+AC_CHECK_LIB([m], [main])
+# FIXME: Replace `main' with a function in `-lnet':
+AC_CHECK_LIB([net], [main])
+# FIXME: Replace `main' with a function in `-losi':
+AC_CHECK_LIB([osi], [main])
+# FIXME: Replace `main' with a function in `-lpequines':
+AC_CHECK_LIB([pequines], [main])
+# FIXME: Replace `main' with a function in `-lpthread':
+AC_CHECK_LIB([pthread], [main])
+# FIXME: Replace `main' with a function in `-lrt':
+AC_CHECK_LIB([rt], [main])
+
+# Checks for header files.
+AC_FUNC_ALLOCA
+AC_CHECK_HEADERS([arpa/inet.h fcntl.h libintl.h limits.h malloc.h netdb.h netinet/in.h stdlib.h string.h strings.h sys/ioctl.h sys/param.h sys/socket.h sys/time.h unistd.h])
+
+# Checks for typedefs, structures, and compiler characteristics.
+AC_HEADER_STDBOOL
+AC_C_INLINE
+AC_C_RESTRICT
+AC_TYPE_SIZE_T
+AC_TYPE_UINT64_T
+
+# Checks for library functions.
+AC_FUNC_ERROR_AT_LINE
+AC_FUNC_FORK
+AC_FUNC_MALLOC
+AC_FUNC_REALLOC
+AC_CHECK_FUNCS([bzero clock_gettime dup2 gethostbyname gethostname gettimeofday inet_ntoa memset select socket strchr strdup strerror strtol])
+
+AC_CONFIG_FILES([Makefile
+                 arch/include/Makefile
+                 arch/src/Makefile
+                 azqmpi/include/Makefile
+                 azqmpi/src/attr/Makefile
+                 azqmpi/src/bindings/f77/Makefile
+                 azqmpi/src/coll/Makefile
+                 azqmpi/src/comn/Makefile
+                 azqmpi/src/dtype/Makefile
+                 azqmpi/src/errhnd/Makefile
+                 azqmpi/src/group/Makefile
+                 azqmpi/src/hook/Makefile
+                 azqmpi/src/misc/Makefile
+                 azqmpi/src/private/Makefile
+                 azqmpi/src/pt2pt/Makefile
+                 azqmpi/src/topol/Makefile
+                 config/Makefile
+                 idsp/blk/impl/Makefile
+                 idsp/blk/spec/Makefile
+                 idsp/lfq/impl/Makefile
+                 idsp/lfq/spec/Makefile
+                 inet/Makefile
+                 inet/OLD_tcpip/impl/Makefile
+                 inet/none/impl/Makefile
+                 inet/none/spec/Makefile
+                 inet/tcpip/impl/Makefile
+                 inet/tcpip/spec/Makefile
+                 inet/udpip/impl/Makefile
+                 inet/udpip/spec/Makefile
+                 pmi/Makefile
+                 pmi/simple/Makefile
+                 tests/azq/Makefile
+                 tests/azq/async/Makefile
+                 tests/azq/basic/Makefile
+                 tests/azq/cpi/Makefile
+                 tests/azq/cs/Makefile
+                 tests/azq/echo/Makefile
+                 tests/azq/integration/Makefile
+                 tests/azq/latency/Makefile
+                 tests/azq/matrix/Makefile
+                 tests/azq/nc_adder/Makefile
+                 tests/azq/perf/Makefile
+                 tests/azq/pi/Makefile
+                 tests/azq/pingpong/Makefile
+                 tests/azq/prueba.1/Makefile
+                 tests/azq/radiator/Makefile
+                 tests/azq/slow_pi/Makefile
+                 tests/azq/sr/Makefile
+                 tests/azq/timed/Makefile
+                 tests/azq/vec/Makefile
+                 tests/azqmpi/Makefile
+                 tests/fxjtest/Makefile])
+AC_OUTPUT

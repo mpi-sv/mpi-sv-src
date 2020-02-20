@@ -1,0 +1,51 @@
+inet_tcp_v0.c
+=============
+Version original del nivel de red.
+
+inet_tcp_v1.c
+=============
+Version original con una unica tarea SCAN usando Select(), mas buffers de envio y recepcion a 128KB.
+Nota: he desactivado los buffers a 128KB porque me ofrecen peor rendimiento con NetPipe.
+
+inet_tcp_v2.c
+=============
+Version original con una unica tarea SCAN usando Select() y sin Deliver().
+
+inet_tcp_v3.c
+=============
+Version de prueba igual que inet_tcp.c.v2, pero sin fragmentación de mensajes:
+
+"He hecho una modificación en INET de tal manera que ya no se fragmenta
+nunca en emisión, y se recibe todo de una tacada en recepción. Esto pasa
+para mensajes que caben en un BUCKET y para mensajes RRV, donde el receptor
+está preparado para recibir y del cúal ya sabemos la dirección del buffer destino.
+He eliminado la posibilidad de que el receptor NO esté preparado para recibir
+(obligando a que el RRV_THRESHOLD==BUCKET_SIZE), sino la mejora no funcionaría y
+me complicaria el codigo.
+
+Sorprendentemente, hay tan sólo una reducción de unos 8000 y pico writev(),
+y es que tiene su lógica, los mensajes grandes se envían muy pocas veces con
+NETPIPE, entre tres y siete veces. Por ejemplo, 8MB en fragmentos de 128KB
+salen 64 fragmentos, osea 64 llamadas al sistema que me ahorro solamente.
+
+Otro error es que estaba comparando NETPIPE entre MPICH2 y nosotros sin fijarme
+en el numero de veces que se envian cada tamaño de mensaje entre nosotros y ellos.
+La cosa es con ellos se hacen menos envios de cada tamaño, y con nosotros se hacen
+muchos. La razon no la se. Por eso me salian esas diferencias tan grandes de
+llamadas al sistema. Si cambio NETPIPE para que envie, por ejemplo, 100 veces cada
+tamaño de mensaje, ya casi nos igualamos en el numero de llamadas al sistema.
+
+Con la mejora de la fragmentacion, nosotros hacemos menos llamadas WRITEV() al
+sistema que ellos, pero ellos hacen menos llamadas READ() que nosotros. Parece
+que nuestro talon de aquiles es tener que leer cabecera+datos por cada mensaje.
+
+Lo siguiente seria hacer igual que MPICH2, que cada hilo tenga su buffer de
+recepcion e ir leyendo "todo lo que se pueda", en vez de cabecera+datos. Asi
+con una llamada al sistema podriamos leer muchos mensajes pequeñitos de una vez,
+pero para eso los receptores tendrian que bajar a hacer recv()..."
+
+
+
+
+
+

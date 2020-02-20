@@ -1,0 +1,43 @@
+/* Fichier de description KFR		 */
+/* par Karin Ait-Si-Amer Florian Dang	*/
+/* Scène simple du rapport		*/
+
+// Amusez vous à changer les coefficients !
+
+Scene{
+	Width = 640;
+	Height = 480;
+	Materials = 1;
+	Planes = 0;
+	Spheres = 1;
+	Lights = 1;
+	Camera = 0.0, 0.0, -200.0;
+	Distview = 200.0
+}
+
+//Mat violet pour Karin
+Material{
+	Id = 1;
+	Type = normal;
+	RGB = 102.0, 0.0, 153.0;	//violet
+	//RGB = 255.0, 255.0, 0.0	//jaune
+	Reflection = 0.6; 
+	Specular = 0.2
+	roughness = 600.0
+	perlin = 1.25
+	bump = 0.0
+}
+
+Sphere{
+	Center = 320.0, 220.0, 10.0;
+	Radius = 140.0;
+	Material = 1;
+}
+
+Light{
+	Position = -20.0, 400.0, -1200.0; 
+	Intensity = 0.7, 0.7, 0.7;
+}
+
+
+

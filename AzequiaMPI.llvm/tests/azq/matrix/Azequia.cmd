@@ -1,0 +1,4 @@
+SECTIONS {
+		cbsect: {} > ISRAM       
+}
+

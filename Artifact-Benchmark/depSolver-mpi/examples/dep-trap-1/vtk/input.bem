@@ -1,0 +1,34 @@
+NODES
+9764
+nodes.bem
+
+ELEMENTS
+4444
+tria6
+elems.bem
+
+MATERIALS
+3
+1	7.5e-1	80.0
+2	0.0	2.50
+3	0.0	1.00
+
+INTERFACES
+2
+1	2	1
+2	3	2
+
+PROBLEM
+1.0e+06
+bcs.bem
+
+ANALYSIS
+1 0
+2
+
+INTERNALPOINTS
+441 VTK
+internal-vtk.bem
+
+COLUMNS
+0

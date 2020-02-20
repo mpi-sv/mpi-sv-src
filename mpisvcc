@@ -1,0 +1,9 @@
+#!/bin/bash
+
+export AZQROOT=/root/mpi-sv/libs/Azequialib
+export KLEEROOT=/root/mpi-sv
+
+export AZQFLAGS="-I$AZQROOT/pmi -I$AZQROOT/pmi/simple -I$AZQROOT/arch/include -I$AZQROOT/idsp/blk/impl -I$AZQROOT/idsp/blk/spec -I$AZQROOT/inet -I$AZQROOT/inet/none/spec -I$AZQROOT/inet/none/impl -I/usr/local/include -I$AZQROOT/azqmpi/include -I$AZQROOT/config"
+export KLEECFLAGS="-I$KLEEROOT/include"
+
+exec "clang" -c -g -emit-llvm $AZQFLAGS $KLEECFLAGS -include hook.h $*

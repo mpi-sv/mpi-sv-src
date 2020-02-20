@@ -1,0 +1,32 @@
+NODES
+7803
+nodes.bem
+
+ELEMS
+3750
+tria6
+elems.bem
+
+MATERIALS
+2
+1	0.0	80.0
+2	0.0	60.0
+
+INTERFACES
+1
+1	1	2
+
+PROBLEMS
+1.0E6
+bcs.bem
+
+ANALYSIS
+1 0
+2
+
+INTERNALPOINTS
+21 STD
+line.bem
+
+COLUMNS
+0

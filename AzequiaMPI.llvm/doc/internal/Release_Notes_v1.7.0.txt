@@ -1,0 +1,61 @@
+Azequia v. 2.0.0
+Date: 2009, July 2nd
+----------------------------------------------
+
+Change log
+
+Redesigned the concurrency model of Azequia.
+
+Issues for users
+none
+
+Issues for developers
+none
+
+
+﻿Azequia v. 1.7.0.
+Date: 2009, February 16th.
+----------------------------------------------
+
+Change log
+
+- New GRP_SHUTDOWN message for shuting dow this server when all applications finalize. This allows to finish the process
+  and return control to OS. 
+- SIGNAL2 synchronization improvement
+- getEnd() modified. This saves fastGetEnd() and COM_setGroupInfo and makes code a little bit clear
+- Re-design of the communication level that support Azequia communications upon different network architectures.
+- Header of Azequia messages is reduced for sending to remote machines, because some fields are not really used in remote communication
+
+< THIS IS A VERSION UNDER DEVELOPMENT. ONLY THE SHARED MEMORY VERSION IS TESTED, OTHER DEVICES ONLY COMPILE >
+
+
+Issues for users
+
+
+Issues for developers
+
+
+﻿Azequia v. 1.6.0.
+Date: 2009, February 16th.
+----------------------------------------------
+
+Change log
+
+< THIS VERSION IS OVERTAKEN >
+
+
+﻿Azequia v. 1.5.5.
+Date: 2009, February 1st.
+----------------------------------------------
+
+Change log
+
+- Gained about 1% performance storing information about group in a thread for local messages
+- Threads now get argc/argv as arguments to main
+- try_deliver() is modified. 
+
+
+Issues for users
+
+
+Issues for developers

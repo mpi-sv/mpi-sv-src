@@ -1,0 +1,78 @@
+/* Fichier de description KFR		 */
+/* par Karin Ait-Si-Amer Florian Dang	*/
+/* Scène par défaut			*/
+
+Scene{
+	Width = 640;
+	Height = 480;
+	Materials = 3;
+	Planes = 0;
+	Spheres = 3;
+	Lights = 2;
+	Camera = 0.0, 0.0, -110.0; 
+}
+
+//Mat jaune
+Material{
+	Id = 1;
+	Type = turbulence;
+	RGB = 255.0, 255.0, 0.0;
+	Reflection = 0.5;
+	Specular = 1.0;
+	Roughness = 60.0;
+	Perlin = 1.0;
+	Bump = 0.0;
+}
+
+//Mat Cyan
+Material{
+	Id = 2;
+	Type = marbel;
+	RGB = 0.0, 255.0, 255.0;
+	Reflection = 0.5;
+	Specular = 1.0;
+	Roughness = 60.0;
+	Perlin = 1.0;
+	Bump = 0.0;
+}
+
+//Mat Magenta
+Material{
+	Id = 3;
+	Type = wood;
+	RGB = 255.0, 0.0, 255.0;
+	Reflection = 0.5;
+	Specular = 1.0;
+	Roughness = 60.0;
+	Perlin = 1.0;
+	Bump = 0.0;
+}
+
+Sphere{
+	Center = 260.0, 290.0, 0.0;
+	Radius = 100.0;
+	Material = 1;
+}
+
+Sphere{
+	Center = 440.0, 290.0, 0.0;
+	Radius = 100.0;
+	Material = 2;
+}
+
+Sphere{
+	Center = 350.0, 140.0, 0.0;
+	Radius = 100.0;
+	Material = 3;
+}
+Light{
+	Position = 640.0, 240.0, -10000.0; 
+	Intensity = 0.5, 0.5, 0.5;
+}
+
+Light{
+	Position = 0.0, 240.0, -100.0;
+	Intensity = 0.2, 0.2, 0.2;
+}
+
+

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<BrowseTracker_layout_file>
+	<ActiveTarget name="Debug" />
+	<File name="basic.c" open="1" top="1" tabpos="9">
+		<Cursor position="664" topLine="6" />
+		<BrowseMarks positions="424,407,407,707,1947,1947,2191,2196,2751,2751,3309,3309" />
+		<Book_Marks positions="707" />
+	</File>
+	<File name="main.c" open="1" top="0" tabpos="8">
+		<Cursor position="2298" topLine="0" />
+	</File>
+</BrowseTracker_layout_file>

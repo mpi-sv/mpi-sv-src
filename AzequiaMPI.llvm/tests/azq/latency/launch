@@ -1,0 +1,5 @@
+#!/bin/sh
+#gnome-terminal
+#gnome-terminal
+./latency 1 > /dev/pts/1 &
+./latency 0 > /dev/pts/1 &

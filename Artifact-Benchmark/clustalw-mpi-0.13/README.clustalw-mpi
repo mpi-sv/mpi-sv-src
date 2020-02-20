@@ -1,0 +1,164 @@
+******************************************************************************
+
+      CLUSTALW-MPI: ClustalW Analysis Using Grid and Parallel Computing 
+
+                 based on ClustalW, the multiple sequence alignment program 
+                 (version 1.82, Feb 2001)
+
+                 Please send bug reports, comments etc. to 
+                   kuobin@bii.a-star.edu.sg (Kuo-Bin Li)
+
+******************************************************************************
+
+       COPYRIGHT and LICENSING POLICY
+
+CLUSTALW-MPI is freely available to the user community.  You can 
+redistribute it and/or modify it. Since CLUSTALW-MPI was derived from
+CLUSTAL W, the original license policy of CLUSTAL W is listed here:
+
+   Clustal W is freely available to the user community. However, Clustal W is
+   increasingly being distributed as part of commercial sequence analysis
+   packages. To help us safeguard future maintenance and development, commercial
+   distributors of Clustal W must take out a NON-EXCLUSIVE LICENCE. Anyone
+   wishing to commercially distribute version 1.81 of Clustal W should contact the
+   authors unless they have previously taken out a licence.
+
+******************************************************************************
+
+
+ClustalW is a popular tool for multiple sequence alignment. The
+alignment is achieved via three steps: pairwise alignment,
+guide-tree generation and progressive alignment. ClustalW-MPI is an
+MPI implementation of ClustalW. Based on
+version 1.82 of the original ClustalW, both the pairwise
+and progressive alignments are parallelized with MPI, a
+popular message passing programming standard. The
+pairwise alignments can be easily parallelized since the many
+alignments are time independent on each other. However
+the progressive alignments are essentially not parallelizable
+because of the time dependencies between each alignment.
+Here we applied the recursive parallelism paradigm to the linear space
+profile-profile alignment algorithm. This approach is more time
+efficient on computers with distributed memory architecture.
+Traditional approach that relies on precomputing the profile-profile
+score matrix has also been implemented. Results shown the latter is indeed
+more appropriate for shared memory multiprocessor computer.
+The software is available at
+http://www.bii.a-star.edu.sg/~kuobin/clustalw-mpi/
+
+The original ClustalW/ClustalX can be found at ftp://ftp-igbmc.u-strasbg.fr.
+
+
+REFERENCE
+---------
+Kuo-Bin Li (2003) "ClustalW-MPI: ClustalW Analysis Using Distributed and Parallel Computing",
+Bioinformatics, in press.
+
+
+INSTALLATION    (for Unix/Linux)
+------------
+
+This is an extremely quick installation guide.
+
+1. Make sure you have MPICH or LAM installed on your system.
+
+2. Unpack the package in any working directory:
+
+     tar xvfp clustalw-mpi-0.1.tar.gz
+
+3. Take a look at the Makefile and make the modifications that you might desire,
+   in particular:
+
+      CC = mpicc
+      CFLAGS = -c -g 
+
+        or
+
+      CFLAGS = -c -O3
+
+4. Build the whole thing simply by typing "make".
+
+5. If you wanted to use serial codes to compute the neighbor-joining tree, 
+   you would have to define the macro "SERIAL_NJTREE" when compiling trees.c:
+
+   CFLAGS = -c -g -DSERIAL_NJTREE
+
+   This macro is defined in the default Makefile. That is, to use
+   MPI codes in neighbor-joining tree, you have to "undefine" the 
+   macro "SERIAL_NJTREE" in your Makefile.
+
+
+SAMPLE USAGE    (for Unix/Linux)
+------------
+
+1. To make a full multiple sequence alignment:
+   (using one master node and 4 computing nodes)
+
+   %mpirun -np 5 ./clustalw-mpi -infile=dele.input  
+   %mpirun -np 5 ./clustalw-mpi -infile=CFTR.input  
+
+2. To make a guide tree only:
+
+   %mpirun -np 5 ./clustalw-mpi -infile=dele.input  -newtree=dele.mytree
+   %mpirun -np 5 ./clustalw-mpi -infile=CFTR.input  -newtree=CFTR.mytree
+
+3. To make a multiple sequence alignment out of an existing
+   tree:
+
+   %mpirun -np 5 ./clustalw-mpi -infile=dele.input  -usetree=dele.mytree
+   %mpirun -np 5 ./clustalw-mpi -infile=CFTR.input  -usetree=CFTR.mytree
+
+4. The environment variable, CLUSTALG_PARALLEL_PDIFF, could be used to
+   run the progressive alignment based on the parallelized pdiff(). 
+
+   By default the variable CLUSTALG_PARALLEL_PDIFF is not set, and 
+   the progressive alignment will be parallelized accroding the structure
+   of the neighbor-joining tree. However, parallelized pdiff() will still
+   be used in the later stage when prfalign() tries to align more distant
+   sequences to the profiles. If you don't understand this, 
+   simply leave the variable unset.
+
+KNOWN PROBLEM 
+------------
+1. On Intel IA32 platforms, slightly different neighbor-joining trees 
+   might be obtained with and without enabling the compiler's optimization flags. 
+
+   This is due to the fact that Intel processors use 80-bit FPU registers
+   to cache "double" variables, which are supposed to be 64-bit long. With '-O1'
+   or above optimizer flag, the compiler would not always immediately save the 
+   variables involved in a double operation back to memory. Instead, intermediate
+   results will be saved in registers, having 80-bit of precision. This would
+   cause problem for nj_tree() because it is sensitive to the precision of floating
+   point numbers.
+
+   Solutions:
+
+   (1) Other platforms, including Intel's IA64, don't seem to have this problem.
+
+    or 
+
+   (2) Building "trees.c" with optios like the below: (potentially 
+       with high performance overhead)
+
+        %gcc -c -O3 -ffloat-store trees.c   // GNU gcc
+
+        %icc -c -O3 -mp trees.c             // Intel C compiler
+   
+    or
+
+   (3) Decalring relevant variables as "volatile" in nj_tree():
+
+       volatile double diq, djq, dij, d2r, dr, dio, djo, da;
+       volatile double *rdiq;
+
+       rdiq = (volatile double *)malloc(((last_seq-first_seq+1)+1)*
+                       sizeof(volatile double));
+       ...
+       ...
+       free((void*)rdiq);
+ 
+   
+ACKNOWLEDGEMENTS
+------------
+1. In parallel_compare.c: "fprintf(stderr, ..." changed to "fprintf(stdout,....".
+   Thanks to Ville Silventoinen <vsi@ebi.ac.uk>.

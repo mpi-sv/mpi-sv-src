@@ -1,0 +1,28 @@
+Azequia Mediaframework BLOCKING VERSION
+Version 2.1
+------------------------------------------------------------------------------------------------------
+
+rev. 7 (05/07/10):
+==================
+
+1. New field in Rqst for supporting AzequiaMPI requests
+
+
+rev. 8 (08/07/10):
+==================
+
+1. HWLOC library supported to pin operators to physical processing units inside a host in round robin 
+
+
+rev. 9 (16/07/10):
+==================
+
+1. Solved some bugs in HWLOC use. 
+
+2. Change names of some macros (in timer.c) 
+
+
+rev.10 (20/07/10):
+==================
+
+1. Change name of wait() primitive (conflicts with wait system call)

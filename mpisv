@@ -1,0 +1,17 @@
+#!/bin/bash
+
+export KLEE_ROOT=/root/mpi-sv/ 
+export KLEE_LIBMPI=/root/mpi-sv/libs/Azequialib/lib/ 
+export KLEE_UCLIBC_ROOT=/root/mpi-sv/libs/libc/ 
+export GLOG_minloglevel=0
+export GLOG_stderrthreshold=1
+export GLOG_max_log_size=1
+export GLOG_logtostderr=1
+export GLOG_v=0
+export AZQMPI_NODES=$1
+export AZQMPI_BYSOCKET=0
+export AZQMPI_HOSTS=1
+export AZQMPI_NO_BINDING=1
+
+shift
+/root/mpi-sv/klee -lib-MPI -threaded-all-globals $*

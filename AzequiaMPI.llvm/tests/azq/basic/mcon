@@ -1,0 +1,40 @@
+#######################################################################
+##
+##   Azequia Mediaframework 
+##
+##  Examples to test the Azequia functionality
+##
+##  Author: http://gsd.unex.es
+##  Date:   November 5th, 2008
+##
+#######################################################################
+
+CC= gcc
+
+INC= 
+INC_LIB= 
+LIB=  -lrt -lpthread 
+EXE=./con
+OPTIONS= -Wall -O3 --fast-math 
+DEFINES= -D_POSIX_THREADS -D__XPN_PRINT -D_DEBUG
+COMPILE=$(CC) $(DEFINES) $(OPTIONS)
+
+
+SOURCES= \
+con.c
+
+OBJECTS= \
+con.o 
+
+all: $(OBJECTS)
+	$(CC) -o $(EXE) $(OBJECTS) $(INC_LIB) $(LIB)  
+
+%.o: %.c
+	$(COMPILE) $(INC)  -c $? -o $@
+
+clean:
+	rm -f *.o
+	rm -f con
+
+install:
+

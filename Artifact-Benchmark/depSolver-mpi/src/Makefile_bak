@@ -1,0 +1,106 @@
+# Makefile for depSolver-mpi v1.0
+#
+# Copyright 2006, 2008 Carlos Rosales Fernandez and IHPC (A*STAR).             *
+#                                                                              *
+# This file is part of depSolver-mpi.                                          *
+#                                                                              *
+# depSolver-mpi is free software: you can redistribute it and/or modify it     *
+# under the terms of the GNU GPL version 3 or (at your option) any later       *
+# version.
+#                                                                              *
+# depSolver-mpi is distributed in the hope that it will be useful, but WITHOUT *
+# ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS*
+# FOR A PARTICULAR PURPOSE. See the GNU General Public License for details.    *
+#                                                                              *
+# You should have received a copy of the GNU General Public License along with *
+# depSolver-mpi. If not, see <http://gnu.org/licenses/gpl.html>.               *
+
+SHELL = /bin/sh
+
+# Compiler
+CC = mpicc
+
+# Flags
+# In Debian and Debian variants like the Ubuntu family, please add the flag
+# -fno-stack-protector because libssp0-dev has a bug and will post an error
+# message on return from main. This error is bogus. The code DOES NOT smash the stack.
+LFLAGS =  -lm -msse2 -mfpmath=sse -funroll-loops -fprefetch-loop-arrays -O3
+CFLAGS =  -msse2 -mfpmath=sse -funroll-loops -fprefetch-loop-arrays -O3
+
+# Linking Step
+depSolver-mpi: assembly-mpi.o depolarization.o depSolver-mpi.o errorHandler.o  \
+               field.o force.o forceIntegrals.o globalToLocal.o gmres-mpi.o    \
+               kernelIntegrals.o memHandler.o normals.o postProcess.o          \
+               potential.o preProcess.o shapeFunctions.o
+	$(CC) $(LFLAGS) assembly-mpi.o depolarization.o depSolver-mpi.o              \
+  errorHandler.o field.o force.o forceIntegrals.o globalToLocal.o gmres-mpi.o  \
+  kernelIntegrals.o memHandler.o normals.o postProcess.o potential.o           \
+  preProcess.o shapeFunctions.o -o depSolver-mpi
+
+
+# Compiling Step
+assembly-mpi.o: assembly-mpi.c constants.h kernelIntegrals.h memHandler.h
+	$(CC) -c $(CFLAGS) assembly-mpi.c -o assembly-mpi.o
+
+depolarization.o: depolarization.c errorHandler.h globalToLocal.h             \
+                  shapeFunctions.h
+	$(CC) -c $(CFLAGS) depolarization.c -o depolarization.o
+
+depSolver-mpi.o: depSolver-mpi.c assembly-mpi.h errorHandler.h gaussData.h \
+             gmres-mpi.h memHandler.h postProcess.h preProcess.h
+	$(CC) -c $(CFLAGS) depSolver-mpi.c -o depSolver-mpi.o
+
+errorHandler.o: errorHandler.c
+	$(CC) -c $(CFLAGS) errorHandler.c -o errorHandler.o
+
+field.o: field.c constants.h kernelIntegrals.h normals.h
+	$(CC) -c $(CFLAGS) field.c -o field.o
+
+force.o: force.c constants.h depolarization.h field.h forceIntegrals.h        \
+         globalToLocal.h shapeFunctions.h memHandler.h
+	$(CC) -c $(CFLAGS) force.c -o force.o
+
+forceIntegrals.o: forceIntegrals.c constants.h globalToLocal.h                \
+                  shapeFunctions.h normals.h
+	$(CC) -c $(CFLAGS) forceIntegrals.c -o forceIntegrals.o
+
+globalToLocal.o: globalToLocal.c
+	$(CC) -c $(CFLAGS) globalToLocal.c -o globalToLocal.o
+
+gmres-mpi.o: gmres-mpi.c errorHandler.h memHandler.h
+	$(CC) -c $(CFLAGS) gmres-mpi.c -o gmres-mpi.o
+
+kernelIntegrals.o: kernelIntegrals.c constants.h globalToLocal.h              \
+                   shapeFunctions.h
+	$(CC) -c $(CFLAGS) kernelIntegrals.c -o kernelIntegrals.o
+
+memHandler.o: memHandler.c errorHandler.h
+	$(CC) -c $(CFLAGS) memHandler.c -o memHandler.o
+
+normals.o: normals.c 
+	$(CC) -c $(CFLAGS) normals.c -o normals.o
+
+postProcess.o: postProcess.c constants.h memHandler.h field.h force.h         \
+               potential.h
+	$(CC) -c $(CFLAGS) postProcess.c -o postProcess.o
+
+potential.o: potential.c constants.h kernelIntegrals.h normals.h
+	$(CC) -c $(CFLAGS) potential.c -o potential.o
+
+preProcess.o: preProcess.c
+	$(CC) -c $(CFLAGS) preProcess.c -o preProcess.o
+
+shapeFunctions.o: shapeFunctions.c 
+	$(CC) -c $(CFLAGS) shapeFunctions.c -o shapeFunctions.o
+
+# Build options
+all: depSolver-mpi
+
+build: clean depSolver-mpi install
+
+install:
+	mv ./depSolver-mpi ../bin/depSolver-mpi
+
+clean:
+	rm -f ./*.o
+

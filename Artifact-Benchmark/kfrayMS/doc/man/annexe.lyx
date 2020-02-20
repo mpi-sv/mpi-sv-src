@@ -1,0 +1,2822 @@
+#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass report
+\begin_preamble
+\usepackage{fullpage}
+\date{}
+\floatname{algorithm}{Pseudo-code}
+\end_preamble
+\use_default_options true
+\language french
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\float_placement H
+\paperfontsize default
+\spacing single
+\use_hyperref false
+\papersize default
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine natbib_numerical
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation skip
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Standard
+Voici les algos :
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+Entrée : Scène 3D (caméra comprise)
+\end_layout
+
+\begin_layout Plain Layout
+Sortie : Image PPM
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+Début
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+Pour 
+\series default
+chaque ligne de balayage de l'image 
+\series bold
+Faire
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+Pour
+\series default
+ chaque pixel de la ligne de balayage 
+\series bold
+Faire
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+On lance un rayon du pixel vers le point de fuite (centre de projection)
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+On initialise 
+\begin_inset Formula $profondeur\leftarrow0$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+On initialise 
+\begin_inset Formula $\lambda\leftarrow INIT_{\lambda}$
+\end_inset
+
+ 
+\begin_inset space \quad{}
+\end_inset
+
+ //
+\begin_inset Formula $INIT_{\lambda}$
+\end_inset
+
+ est un nombre assez grand pour les objets les plus distants
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+FPour
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+FPour
+\series default
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+Pour
+\series default
+ chaque objet 
+\series bold
+Faire
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+Si
+\series default
+ il y a intersection entre l'objet courant et le rayon 
+\series bold
+Alors
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+Si 
+\series default
+cette intersection est plus proche que la précédente 
+\series bold
+Alors
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+On affecte à 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ sa nouvelle valeur d'intersection
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+On affecte à 
+\begin_inset Formula $mat\_courant\leftarrow$
+\end_inset
+
+matériau courant de l'objet intersecté
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+FSi
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+FSi
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+Si
+\series default
+ il y a intersection 
+\series bold
+Alors
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+Pour
+\series default
+ chaque source de lumière 
+\series bold
+Faire
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+On envoie un rayon du point d'intersection à la source de lumière
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+Si
+\series default
+ le point n'est pas dans l'ombre 
+\series bold
+Alors
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+Si
+\series default
+ 
+\begin_inset Formula $profondeur<profondeur\_maximum$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+Si
+\series default
+ l'objet est réfléchissant
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+On relance un rayon de réflexion
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+FSi
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+Si
+\series default
+ l'objet est transparent
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+On relance un rayon de réfraction
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+FSi
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+On calcule la couleur du pixel grâce aux modèles d'éclairement
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset Formula $profondeur\leftarrow profondeur+1$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+FSi
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+FSi
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+FPour
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+FSi
+\series default
+
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\series bold
+Fin
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Algorithme de ray tracing utilisé
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+sdsdsd
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+Entrées 
+\series default
+: 
+\end_layout
+
+\begin_layout Itemize
+Nombre de lignes : h
+\end_layout
+
+\begin_layout Itemize
+Nombre de colonnes : w
+\end_layout
+
+\begin_layout Itemize
+Nombre de lignes calculées par chaque processus : nlines
+\end_layout
+
+\begin_layout Itemize
+Rang du processus Maitre : MASTER_NODE
+\end_layout
+
+\begin_layout Plain Layout
+
+\series bold
+Sortie
+\series default
+ : 
+\end_layout
+
+\begin_layout Itemize
+Tableau image des slaves : grid_slave
+\end_layout
+
+\begin_layout Itemize
+Tableau final : grid
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\series bold
+Début de l'algorithme
+\series default
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+Initialisation de MPI
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+On initialise pas à 0
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+On définit des tags différents : TAG_REQ, TAG_DATA, TAG_END
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+Si 
+\series default
+le processus actuel est MASTER_NODE 
+\series bold
+Faire
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+Pour
+\series default
+ chaque processus différent de MASTER_NODE
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+On envoie le premier travail avec le pas à utiliser au processus slave grâce
+ à TAG_REQ
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+On incrémente le pas
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+FPour
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+Tant Que
+\series default
+ pas ne sort pas du tableau final à calculer
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+On reçoit le pas utilisé par n'importe quel slave grâce à TAG_REQ
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+On reçoit un tableau grid_slave calculé par ce slave grâce à TAG_DATA
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+On envoie un autre travail avec le pas à utiliser à ce slave grâce à TAG_REQ
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+On incrémente le pas
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+FTantQue
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+Pour
+\series default
+ chaque processus différent de MASTER_NODE Faire (On sort du tableau final)
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+On reçoit le dernier pas utilisé par n'importe quel slave grâce à TAG_REQ
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+On reçoit le dernier tableau grid_slave calculé par ce slave grâce à TAG_DATA
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+On envoie un message de fin de travail à ce slave grâce à TAG_END
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+FPour
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+On sauvegarde le tableau final grid
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+Sinon
+\series default
+ (les processus sont les slaves)
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+Tant Que 
+\series default
+le processus n'a pas reçu de TAG_END
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+On reçoit le pas à utiliser grâce à TAG_REQ
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+On calcule le tableau grid_slave associé à ce pas
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+On renvoit au MASTER_NODE le pas utilisé grâce à TAG_REQ
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+On envoit le tableau grid_slave calculé grâce à TAG_DATA
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+FTantQue
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+FSi
+\series default
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\series bold
+Fin de l'algorithme
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Algorithme de modèle Master/Worker avec MPI
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+\start_of_appendix
+Exemple de fichier de scène complet
+\end_layout
+
+\begin_layout Quote
+\begin_inset Tabular
+<lyxtabular version="3" rows="1" columns="2">
+<features>
+<column alignment="center" valignment="top" width="0">
+<column alignment="left" valignment="top" width="6in">
+<row>
+<cell multicolumn="1" alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" usebox="none" width="2.5in">
+\begin_inset Text
+
+\begin_layout Plain Layout
+\noindent
+
+\shape italic
+\size footnotesize
+/* 
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+
+\shape italic
+\size footnotesize
+**
+\begin_inset space ~
+\end_inset
+
+Description de scène 1 
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+
+\shape italic
+\size footnotesize
+** Scène par défaut
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+
+\shape italic
+\size footnotesize
+* /
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+
+\shape italic
+\size footnotesize
+Scene{
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+
+\shape italic
+\size footnotesize
+Width = 640;
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+
+\shape italic
+\size footnotesize
+Height = 480;
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+
+\shape italic
+\size footnotesize
+Materials = 3;
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+
+\shape italic
+\size footnotesize
+Planes = 0;
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+
+\shape italic
+\size footnotesize
+Spheres = 3;
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+
+\shape italic
+\size footnotesize
+Lights = 2;
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+
+\shape italic
+\size footnotesize
+Camera = 0.0, 0.0, -110.0; 
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+
+\shape italic
+\size footnotesize
+}
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+
+\shape italic
+\size footnotesize
+//Mat jaune
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+
+\shape italic
+\size footnotesize
+Material{
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+
+\shape italic
+\size footnotesize
+Id = 1;
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+
+\shape italic
+\size footnotesize
+Type = turbulence;
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+
+\shape italic
+\size footnotesize
+RGB = 255.0, 255.0, 0.0;
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+
+\shape italic
+\size footnotesize
+Reflection = 0.5;
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+
+\shape italic
+\size footnotesize
+Specular = 1.0;
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+
+\shape italic
+\size footnotesize
+Roughness = 60.0;
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+
+\shape italic
+\size footnotesize
+Perlin = 1.0;
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+
+\shape italic
+\size footnotesize
+Bump = 0.0;
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+
+\shape italic
+\size footnotesize
+}
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+
+\shape italic
+\size footnotesize
+//Mat Cyan
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+
+\shape italic
+\size footnotesize
+Material{
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+
+\shape italic
+\size footnotesize
+Id = 2;
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+
+\shape italic
+\size footnotesize
+Type = marbel;
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+
+\shape italic
+\size footnotesize
+RGB = 0.0, 255.0, 255.0;
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+
+\shape italic
+\size footnotesize
+Reflection = 0.5;
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+
+\shape italic
+\size footnotesize
+Specular = 1.0;
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+
+\shape italic
+\size footnotesize
+Roughness = 60.0;
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+
+\shape italic
+\size footnotesize
+Perlin = 1.0;
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+
+\shape italic
+\size footnotesize
+Bump = 0.0;
+\end_layout
+
+\begin_layout Plain Layout
+\noindent
+
+\shape italic
+\size footnotesize
+}
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\end_inset
+</cell>
+<cell multicolumn="1" alignment="left" valignment="top" topline="true" bottomline="true" leftline="true" rightline="true" usebox="none" width="2.5in">
+\begin_inset Text
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\shape italic
+\size footnotesize
+//Mat Magenta
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\shape italic
+\size footnotesize
+Material{
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\shape italic
+\size footnotesize
+Id = 3;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\shape italic
+\size footnotesize
+Type = wood;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\shape italic
+\size footnotesize
+RGB = 255.0, 0.0, 255.0;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\shape italic
+\size footnotesize
+Reflection = 0.5;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\shape italic
+\size footnotesize
+Specular = 1.0;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\shape italic
+\size footnotesize
+Roughness = 60.0;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\shape italic
+\size footnotesize
+Perlin = 1.0;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\shape italic
+\size footnotesize
+Bump = 0.0;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\shape italic
+\size footnotesize
+}
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\shape italic
+\size footnotesize
+Sphere{
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\shape italic
+\size footnotesize
+Center = 260.0, 290.0, 0.0;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\shape italic
+\size footnotesize
+Radius = 100.0;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\shape italic
+\size footnotesize
+Material = 1;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\shape italic
+\size footnotesize
+}
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\shape italic
+\size footnotesize
+Sphere{
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\shape italic
+\size footnotesize
+Center = 440.0, 290.0, 0.0;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\shape italic
+\size footnotesize
+Radius = 100.0;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\shape italic
+\size footnotesize
+Material = 2;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\shape italic
+\size footnotesize
+}
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\shape italic
+\size footnotesize
+Sphere{
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\shape italic
+\size footnotesize
+Center = 350.0, 140.0, 0.0;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\shape italic
+\size footnotesize
+Radius = 100.0;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\shape italic
+\size footnotesize
+Material = 3;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\shape italic
+\size footnotesize
+}
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\shape italic
+\size footnotesize
+Light{
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\shape italic
+\size footnotesize
+Position = 640.0, 240.0, -10000.0; 
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\shape italic
+\size footnotesize
+Intensity = 0.5, 0.5, 0.5;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\shape italic
+\size footnotesize
+}
+\begin_inset Newline newline
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\shape italic
+\size footnotesize
+Light{
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\shape italic
+\size footnotesize
+Position = 0.0, 240.0, -100.0;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\shape italic
+\size footnotesize
+Intensity = 0.2, 0.2, 0.2;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\shape italic
+\size footnotesize
+}
+\end_layout
+
+\end_inset
+</cell>
+</row>
+</lyxtabular>
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Intersection d'un rayon avec une sphère
+\end_layout
+
+\begin_layout Description
+Rayon 
+\begin_inset Formula $\overrightarrow{OP}=O_{R}+\lambda.\overrightarrow{u}$
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $O$
+\end_inset
+
+ est l'origine du repère
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $O_{R}$
+\end_inset
+
+ est l'origine de la source lumineuse
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\lambda$
+\end_inset
+
+ est l'abscisse du rayon
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\overrightarrow{u}$
+\end_inset
+
+ est le vecteur directeur du rayon
+\end_layout
+
+\begin_layout Description
+Sphère 
+\begin_inset Formula $\left\Vert \overrightarrow{O_{s}M}\right\Vert ^{2}=r^{2}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $O_{s}$
+\end_inset
+
+ est le centre de la sphère
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $r$
+\end_inset
+
+ est le rayon de la sphère
+\end_layout
+
+\begin_layout Standard
+Soit M l'intersection entre la sphère et le rayon.
+ M vérifie : 
+\begin_inset Formula $\begin{cases}
+\overrightarrow{OM}=O_{R}+\lambda.\overrightarrow{u}\\
+\left\Vert \overrightarrow{OM}\right\Vert ^{2}=r^{2}\end{cases}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+On veut savoir où se trouve l'intersersection.
+ 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ est l'abscisse recherchée.
+\end_layout
+
+\begin_layout Standard
+On résoud alors :
+\begin_inset Formula \[
+(M_{x}+\lambda.u_{x})^{2}+(M_{y}+\lambda.u_{y})^{2}+(M_{z}+\lambda.u_{z})^{2}=r^{2}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Ce qui revient à résoudre : 
+\begin_inset Formula \[
+(u_{x}^{2}+u_{y}^{2}+u_{z}^{2}).\lambda^{2}+2.(M_{x}.u_{x}+M_{y}.u_{y}+M_{z}.u_{z}).\lambda+(M_{x}^{2}+M_{y}^{2}+M_{z}^{2}-r^{2})=0\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Ceci est une équation du second ordre que l'on sait résoudre facilement.
+\end_layout
+
+\begin_layout Standard
+D'où l'algorithme employé qui affecte un nouveau 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ s'il a trouvé une sphère plus proche que le dernier objet intersecté :
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+Entrées
+\series default
+ :
+\end_layout
+
+\begin_layout Plain Layout
+réel 
+\begin_inset Formula $\lambda$
+\end_inset
+
+, objet rayon envoyé, objet sphère courante.
+\end_layout
+
+\begin_layout Plain Layout
+
+\series bold
+Sorties
+\series default
+ : réel 
+\begin_inset Formula $\lambda$
+\end_inset
+
+, booléen VRAI si intersection plus proche FAUX sinon.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\series bold
+Début
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+On affecte :
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset Formula $b\leftarrow\overrightarrow{u}.\overrightarrow{O_{S}O_{R}}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset Formula $a\leftarrow\overrightarrow{O_{s}O_{R}}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset Formula $c\leftarrow r²$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+On calcule le discriminant réduit
+\begin_inset Formula $\Delta'\leftarrow b^{2}-a.c$
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+Si
+\series default
+ 
+\begin_inset Formula $\Delta'<0$
+\end_inset
+
+ 
+\series bold
+Alors
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+On retourne FAUX
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+FSi
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+On calcule les racines : 
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset Formula $\lambda_{1}\leftarrow\frac{b-\sqrt{\Delta'}}{a}$
+\end_inset
+
+ 
+\begin_inset space \quad{}
+\end_inset
+
+ // b est négatif
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset Formula $\lambda_{2}\leftarrow\frac{b+\sqrt{\Delta'}}{a}$
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+Si
+\series default
+ 
+\begin_inset Formula $\lambda_{1}>0$
+\end_inset
+
+ 
+\series bold
+ET 
+\series default
+
+\begin_inset Formula $\lambda_{1}<\lambda$
+\end_inset
+
+ 
+\series bold
+Alors
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset Formula $\lambda\leftarrow\lambda_{1}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+On retourne VRAI
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+FSi
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+Si
+\series default
+ 
+\begin_inset Formula $\lambda_{2}>0$
+\end_inset
+
+ 
+\series bold
+ET
+\series default
+ 
+\begin_inset Formula $\lambda_{2}<\lambda$
+\end_inset
+
+ 
+\series bold
+Alors
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset Formula $\lambda\leftarrow\lambda_{2}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+On retourne VRAI
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+FSi
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\series bold
+Fin
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Fonction calcul d'intersection d'un rayon et d'une sphère
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Intersection d'un rayon avec un plan
+\end_layout
+
+\begin_layout Description
+Rayon 
+\begin_inset Formula $\overrightarrow{OP}=O_{R}+\lambda.\overrightarrow{u}$
+\end_inset
+
+ 
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $O$
+\end_inset
+
+ est l'origine du repère
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $O_{R}$
+\end_inset
+
+ est l'origine de la source lumineuse
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\lambda$
+\end_inset
+
+ est l'abscisse du rayon
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\overrightarrow{u}$
+\end_inset
+
+ est le vecteur directeur du rayon
+\end_layout
+
+\begin_layout Description
+Plan 
+\begin_inset Formula $\alpha.x+\beta.y+\gamma.z+\delta=0$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\overrightarrow{n}=\left(\begin{array}{c}
+\alpha\\
+\beta\\
+\gamma\end{array}\right)$
+\end_inset
+
+ est un vecteur normale du plan
+\end_layout
+
+\begin_layout Itemize
+\begin_inset Formula $\delta$
+\end_inset
+
+ est la distance du plan par rapport à l'origine
+\end_layout
+
+\begin_layout Standard
+M est l'intersection du plan et du rayon ssi : 
+\begin_inset Formula $\begin{cases}
+\alpha.x+\beta.y+\gamma.z+\delta & =0\\
+x & =O_{Rx}+\lambda.u_{x}\\
+y & =O_{Ry}+\lambda.u_{y}\\
+z & =O_{Rz}+\lambda.u_{z}\end{cases}$
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+En injectant on obtient :
+\begin_inset Formula \[
+\alpha.(O_{Rx}+\lambda.u_{x})+\beta.(O_{Ry}+\lambda.u_{y})+\gamma.(O_{z}+\lambda.uz)+\delta=0\]
+
+\end_inset
+
+ En isolant 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ on obtient :
+\begin_inset Formula \[
+\lambda=\frac{-(\alpha.O_{Rx}+\beta.O_{Ry}+\gamma.O_{Rz}+\delta)}{\alpha.u_{x}+\beta.u_{y}+\gamma.u_{z}}\]
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+On en déduit un algorithme simple, qui affecte un nouveau 
+\begin_inset Formula $\lambda$
+\end_inset
+
+ s'il a trouvé un plan plus proche que le dernier objet intersecté :
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float algorithm
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+
+\series bold
+Entrées
+\series default
+ : réel 
+\begin_inset Formula $\lambda$
+\end_inset
+
+, objet rayon envoyé, objet plan courant.
+\end_layout
+
+\begin_layout Plain Layout
+
+\series bold
+Sorties
+\series default
+ : réel 
+\begin_inset Formula $\lambda$
+\end_inset
+
+, booléen VRAI si intersection plus proche FAUX sinon.
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\series bold
+Début
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+Si
+\series default
+ 
+\begin_inset Formula $\overrightarrow{u}.\overrightarrow{n}<0$
+\end_inset
+
+ 
+\series bold
+Alors
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+On retourne FAUX
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+FSi
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset Formula $\lambda_{0}=\frac{-(\overrightarrow{n}.\overrightarrow{OO_{R}}+\delta)}{\overrightarrow{u}.\overrightarrow{n}}$
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+Si
+\series default
+ 
+\begin_inset Formula $\lambda<\lambda_{0}$
+\end_inset
+
+ 
+\series bold
+OU
+\series default
+ 
+\family roman
+\series medium
+\shape up
+\size normal
+\emph off
+\bar no
+\noun off
+\color none
+\lang english
+
+\begin_inset Formula $\lambda_{0}<0$
+\end_inset
+
+ 
+\family default
+\series bold
+\shape default
+\size default
+\emph default
+\bar default
+\noun default
+\color inherit
+Alors
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset space \quad{}
+\end_inset
+
+On retourne FAUX
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\series bold
+\lang english
+FSi
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset space \quad{}
+\end_inset
+
+
+\begin_inset Formula $\lambda=\lambda_{0}$
+\end_inset
+
+
+\begin_inset Newline newline
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\series bold
+Fin
+\end_layout
+
+\begin_layout Plain Layout
+\begin_inset Caption
+
+\begin_layout Plain Layout
+Fonction calcul d'intersection entre un rayon et un plan
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Plain Layout
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-1"
+
+\end_inset
+
+B.
+ Péroche, D.
+ Ghazanfarpour, D.
+ Michelucci, M.
+ Roelens.
+ 
+\shape italic
+Informatique Graphique : Méthodes et Modèles
+\shape default
+.
+ 1997, HERMES.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-2"
+
+\end_inset
+
+J.
+ Foley, A.
+ van Dam, S.
+ Feiner, J.
+ Hughes, R.
+ Phillips.
+ 
+\shape italic
+Introduction to computer graphics
+\shape default
+.
+ 1994, Addison-Wesley.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-3"
+
+\end_inset
+
+N.
+ Dodgson, A.
+ Blackwell.
+ 
+\shape italic
+Some Mathematics for Advanced Graphics
+\shape default
+.
+ University of Cambridge Computer Laboratory.
+ http://www.cl.cam.ac.uk/teaching/1999/AGraphHCI/SMAG/
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-4"
+
+\end_inset
+
+Grégory Massal.
+ 
+\shape italic
+The Raytracer series
+\shape default
+ from Codermind.
+\begin_inset Newline newline
+\end_inset
+
+http://www.codermind.com/articles/Raytracer-in-C++-Introduction-What-is-ray-tracin
+g.html
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-6"
+
+\end_inset
+
+P.
+ Fortin, J.L.
+ Lamotte, C.
+ Denis.
+ Cours et TP de programmation parallèle Polytech'Paris-UPMC.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-7"
+
+\end_inset
+
+J.
+ Levine.
+ 
+\shape italic
+Lex & Yacc
+\shape default
+.
+ 1994, O'Reily.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-8"
+
+\end_inset
+
+C.T.
+ Lieu.
+ Cours de compilation Polytech'Paris-UPMC.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-9"
+
+\end_inset
+
+H.
+ Pennington.
+ 
+\shape italic
+Programmation GKT+/GNOME
+\shape default
+.
+ 2000, Campus Press.
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-10"
+
+\end_inset
+
+POV-Ray The Persistence of Vision Raytracer.
+ http://www.povray.org/
+\end_layout
+
+\begin_layout Bibliography
+\begin_inset CommandInset bibitem
+LatexCommand bibitem
+key "key-11"
+
+\end_inset
+
+J.B.
+ Mouret, Preche, Storde, Solt.
+ zRCube.
+ http://sourceforge.net/projects/zrcube/
+\end_layout
+
+\end_body
+\end_document

@@ -1,0 +1,140 @@
+/* Fichier de description KFR		 */
+/* par Karin Ait-Si-Amer Florian Dang	*/
+/* Scène 5 clin d'oeil à sirat		*/
+
+scene{
+	width = 800
+	height = 600
+	materials = 5
+	planes = 6
+	spheres = 2
+	lights = 2
+	camera = 0.0, 0.0, -400.0
+	distview = 2000.0
+}
+
+
+// mat jaune
+material{
+	id = 1
+	type = marbel
+	rgb = 255.0, 255.0, 0.0
+	reflection = 0.4
+	specular = 0.1
+	roughness = 600.0
+	perlin = 1.25
+	bump = 0.0
+}
+
+
+// mat bleu
+material{
+	id = 2
+	type = normal
+	rgb = 0.0, 0.0, 255.0
+	reflection = 0.2
+	specular = 0.2
+	roughness = 100.0
+}
+
+
+// mat vert
+material{
+	id = 3
+	type = normal
+	rgb = 0.0, 255.0, 0.0
+	reflection = 0.8
+	specular = 0.6
+	roughness = 100.0
+}
+
+
+// mat red
+material{
+	id = 4
+	type = normal
+	rgb = 255.0, 0.0, 0.0
+	reflection = 0.2
+	specular = 0.8
+	roughness = 1000.0
+	perlin = 1.0
+	bump = 0.0
+}
+
+
+// mat plan blanc
+material{
+	id = 5
+	type = normal
+	rgb = 250.0, 250.0, 250.0
+	reflection = 0.3
+	specular = 0.2
+	roughness = 1000.0
+	perlin = 1.0
+	bump = 0.0
+}
+
+
+//vert
+sphere{
+	center = 580.0, 80.0, 160.0
+	radius = 80.0
+	material = 3
+}
+
+//blanche
+sphere{
+	center = 200.0, 140.0, 200.0
+	radius = 140.0
+	material = 5
+}
+
+plane{
+	normal = 0.0, -1.0, 0.00
+	distance = 0.0
+	material = 5
+}
+
+//plan rouge
+plane{
+	normal = -1.0, 0.0, 0.0
+	distance = 800.0
+	material = 4
+}
+
+//plan bleu
+plane{
+	normal = 1.0, 0.0, 0.0
+	distance = 0.0
+	material = 2
+}
+
+//plan derriere
+plane{
+	normal = 0.0, 0.0, -1.0
+	distance = 1400.0
+	material = 5
+}
+
+plane{
+	normal = 0.0, -1.0, 0.0
+	distance = 600.0
+	material = 5
+}
+
+plane{
+	normal = 0.0, 0.0, 1.0
+	distance = 800.0
+	material = 5
+}
+
+light{
+	position = 400.0, 400.0, -600.0
+	intensity = 0.4, 0.4, 0.4
+}
+
+light{
+	position = 400.0, 600.0, -600.0
+	intensity = 0.4, 0.4, 0.4
+}
+

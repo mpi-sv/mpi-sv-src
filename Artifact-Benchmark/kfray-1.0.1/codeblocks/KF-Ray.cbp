@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="KF-Ray" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/KF-Ray" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option parameters="-i 4 -d" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/KF-Ray" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="`pkg-config gtk+-2.0 --cflags`" />
+		</Compiler>
+		<Linker>
+			<Add option="`pkg-config gtk+-2.0 --libs`" />
+		</Linker>
+		<Unit filename="../src/arguments.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/arguments.h" />
+		<Unit filename="../src/loader/loader.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/loader/loader.h" />
+		<Unit filename="../src/loader/parser_lex.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/loader/parser_yy.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/loader/parser_yy.h" />
+		<Unit filename="../src/main.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/main.h" />
+		<Unit filename="../src/mainpage.h" />
+		<Unit filename="../src/misc/image.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/misc/image.h" />
+		<Unit filename="../src/misc/misc.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/misc/misc.h" />
+		<Unit filename="../src/misc/printinfo.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/misc/printinfo.h" />
+		<Unit filename="../src/models/brdf.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/models/brdf.h" />
+		<Unit filename="../src/models/effects.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/models/effects.h" />
+		<Unit filename="../src/models/postprocessing.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/models/postprocessing.h" />
+		<Unit filename="../src/objects/light.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/objects/light.h" />
+		<Unit filename="../src/objects/material.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/objects/material.h" />
+		<Unit filename="../src/objects/plan.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/objects/plan.h" />
+		<Unit filename="../src/objects/scene.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/objects/scene.h" />
+		<Unit filename="../src/objects/sphere.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/objects/sphere.h" />
+		<Unit filename="../src/objects/vector.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/objects/vector.h" />
+		<Unit filename="../src/parallel/master.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/parallel/master.h" />
+		<Unit filename="../src/parallel/slave.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/parallel/slave.h" />
+		<Unit filename="../src/raycaster/intersections.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/raycaster/intersections.h" />
+		<Unit filename="../src/raycaster/raycaster.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/raycaster/raycaster.h" />
+		<Unit filename="../src/raycaster/reflection.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/raycaster/reflection.h" />
+		<Unit filename="../src/raycaster/refraction.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/raycaster/refraction.h" />
+		<Unit filename="../src/raytracer.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/raytracer.h" />
+		<Unit filename="../src/textures/perlin.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/textures/perlin.h" />
+		<Unit filename="../src/textures/procedural.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/textures/procedural.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+			<envvars />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

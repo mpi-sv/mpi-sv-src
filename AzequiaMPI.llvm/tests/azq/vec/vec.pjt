@@ -1,0 +1,73 @@
+; Code Composer Project File, Version 2.0 (do not modify or remove this line)
+
+[Project Settings]
+ProjectDir="C:\misdoc\UEX\Azequia\Azequia_v1.4.0\tests\dsp_bios\vec\"
+ProjectType=Executable
+CPUFamily=TMS320C64XX
+Tool="Compiler"
+Tool="CustomBuilder"
+Tool="DspBiosBuilder"
+Tool="Linker"
+Config="Debug"
+Config="Release"
+
+[Project Dependencies]
+Source="..\..\..\idsp\knl\knl.pjt"
+Source="..\..\..\idsp\lnk\lnk.pjt"
+Source="..\..\..\idsp\net\net.pjt"
+Source="..\..\..\idsp\osi\osi.pjt"
+
+["..\..\..\idsp\knl\knl.pjt" Settings]
+MatchConfigName=true
+
+["..\..\..\idsp\lnk\lnk.pjt" Settings]
+MatchConfigName=true
+
+["..\..\..\idsp\net\net.pjt" Settings]
+MatchConfigName=true
+
+["..\..\..\idsp\osi\osi.pjt" Settings]
+MatchConfigName=true
+
+[Source Files]
+Source="..\..\..\..\..\..\..\CCStudio_v3.3\C6000\csl\lib\csl6416.lib"
+Source="..\..\..\lib\libidsp.lib"
+Source="..\..\..\lib\liblnk.lib"
+Source="..\..\..\lib\libnet.lib"
+Source="..\..\..\lib\libosi.lib"
+Source="..\..\..\lib\routinginit395.lib"
+Source="main.c"
+Source="res.c"
+Source="smt395.tcf"
+Source="sum.c"
+Source="Azequia.cmd"
+Source="smt395cfg.cmd"
+
+[Generated Files]
+Source="smt395cfg.s62"
+Source="smt395cfg_c.c"
+
+["Compiler" Settings: "Debug"]
+Options=-g -fr"$(Proj_dir)\Debug" -i"../../../include" -i"." -d"__OSI" -mv6400
+
+["Compiler" Settings: "Release"]
+Options=-o3 -fr"$(Proj_dir)\Release" -mv6400
+
+["Linker" Settings: "Debug"]
+Options=-c -m".\Debug\vec.map" -o".\Debug\vec.out" -w -x
+
+["Linker" Settings: "Release"]
+Options=-c -m".\Release\matrix.map" -o".\Release\matrix.out" -w -x
+
+["Azequia.cmd" Settings: "Debug"]
+LinkOrder=1
+
+["Azequia.cmd" Settings: "Release"]
+LinkOrder=1
+
+["smt395cfg.cmd" Settings: "Debug"]
+LinkOrder=2
+
+["smt395cfg.cmd" Settings: "Release"]
+LinkOrder=1
+

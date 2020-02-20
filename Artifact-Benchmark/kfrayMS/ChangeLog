@@ -1,0 +1,83 @@
+Release v1.0.1 
+--------------
+* Corrections parallélisation MPI
+* Corrections Parser
+
+
+v1.0.0
+------
+* Corrections de bugs mineurs liés à l'interface GTK
+* Rééorganisation du code et cohérence avec les fichiers KFR
+
+
+v0.4.1
+-------
+* Intégration du parser choix du fichier scène
+* Réécriture compatibilité réflexion/réfraction
+
+
+v0.4.0
+-------
+* Davantage d'options dans l'interface GTK
+* Possibilité de générer des images pour faire une animation
+* Réglages compatibilité distributions Linux (chemins)
+* Simplifications sur le code réécritures des fonctions
+* Parallélisation revue et corrections de bugs
+
+
+v0.3.4
+-------
+* Ajout début de la réfraction (transparence)
+* Amélioration de l'interface GTK
+* Corrections bugs (ombrage enfin réaliste)
+
+
+v0.3.3
+-------
+* Effet de perspective caméra modifiée
+* Ajout du checker (procédural)
+* Ajout du anti-aliasing par méthode de supersampling (à remanier)
+* Améliorations de la parallélisation
+
+
+v0.3.2
+-------
+* Ajout de textures procédurales avec le Bruit de Perlin
+* Ajout d'effets (bump mapping)
+* Parallélisation avec équilibrage de charge dynamique suivant le modèle master/slave
+* Repère cartésien usuel
+
+
+v0.3.1
+-------
+* Parallélisation simple sans équilibrage avec OpenMPI & LAM/MPI
+* Le backend gère des options dorénavant (getopt)
+* Ajout de l'intersection plan (à remanier)
+
+
+v0.3.0
+-------
+* Version Backend MPI et Frontend GTK (GUI) séparées
+* Version backend complètement remaniée pour la mémoire
+* Image enregistrée en format PPM
+* Le backend prend des arguments
+
+
+v0.2.5
+-------
+* Dernier version avec GTK en main essai avec MPI
+* Problème d'incompatibilité entre GTK et MPI irrésolu (annonce le passage à v0.3.0)
+* Réflexion
+
+
+v0.2.4
+-------
+* Modèles d'éclairement diffus : Lambert
+* Modèles d'éclairement spéculaire : Phong, Blinn-Phong 
+
+
+v0.1.x
+-------
+* Affichage pixmap en "temps réel" (idée abandonnée avec le souci GTK/MPI)
+* Algorithme basique de lancer de rayon (sans éclairement)
+* Intersection sphères

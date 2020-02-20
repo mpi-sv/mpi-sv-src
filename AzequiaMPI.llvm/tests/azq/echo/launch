@@ -1,0 +1,5 @@
+#!/bin/sh
+#gnome-terminal
+#gnome-terminal
+./echo 0 1 2 > /dev/pts/1 &
+./echo 0 0 2 > /dev/pts/1 &

@@ -1,0 +1,63 @@
+Azequia 1.5.2
+ Objetivo principal: Que sirva de soporte para AZQMPI
+
+----------------------------------------------------------------------------------------------------
+
+**********************************************************************
+PARA PROXIMAS VERSIONES:
+
+- Interfaz GC. ¿Request de usuario o internas?. Probar radiator.
+- Probar el resto de facilidades de COM: RRV, SLM, Test*, Probe, cancel, free.
+- RQST_PERSISTENT: ¿eliminar?. 
+- Desindexacion en macros de rqst.h (?)
+- Tags
+- Bug Azequia en remoto
+
+**********************************************************************
+
+
+Azequia_v1.5.3_081012_linux_dev_0
+
+Añadida la comunicación persistente
+
+
+Azequia_v1.5.3_081014_linux_dev_0
+
+Comprobado en el PC de Juan Luis durante horas con radiator (64,64,8) varias pruebas y todo OK.
+
+
+Azequia_v1.5.3_081029_linux_dev_0
+
+Soporta bienlos envíos con buffering (bsend e ibsend) de AZQMPI. 
+
+Azequia_v1.5.3_081029_linux_dev_1
+
+Añadida nueva interfaz para soporte de mensajes RRV.
+
+Azequia_v1.5.3_081029_linux_dev_2
+
+Soporte para comunicacion persistente con RRV y sin RRV.
+
+Azequia_v1.5.3_081029_linux_dev_3
+
+Comprobado la recepción asincrona y persistente.
+
+Azequia_v1.5.3_081029_linux_dev_4
+
+Modificación de cancel. POR PROBAR
+
+
+Azequia_v1.5.3_081030_linux_dev_1
+
+Todas las variantes de wait terminadas. wait() toma un puntero a una request, mientras que el resto de variantes toman un
+puntero a puntero, porque toman un array. Sin embargo no vale la dirección del array, si no un puntero a puntero.
+ESTO HAY QUE REVISARLO.
+
+Azequia_v1.5.3_081030_linux_dev_2
+
+Test y variantes.
+
+
+Azequia_v1.5.3_081031_linux_dev_0
+
+Todas las variantes de wait y test hechas. El modelo que siguen las funciones es tomar un array de punteros.

@@ -1,0 +1,2391 @@
+#LyX 1.6.2 created this file. For more info see http://www.lyx.org/
+\lyxformat 345
+\begin_document
+\begin_header
+\textclass report
+\begin_preamble
+\usepackage{fullpage}
+\end_preamble
+\use_default_options false
+\language french
+\inputencoding auto
+\font_roman default
+\font_sans default
+\font_typewriter default
+\font_default_family default
+\font_sc false
+\font_osf false
+\font_sf_scale 100
+\font_tt_scale 100
+
+\graphics default
+\float_placement H
+\paperfontsize 12
+\spacing single
+\use_hyperref false
+\papersize a4paper
+\use_geometry false
+\use_amsmath 1
+\use_esint 1
+\cite_engine basic
+\use_bibtopic false
+\paperorientation portrait
+\secnumdepth 3
+\tocdepth 3
+\paragraph_separation skip
+\defskip medskip
+\quotes_language english
+\papercolumns 1
+\papersides 1
+\paperpagestyle default
+\tracking_changes false
+\output_changes false
+\author "" 
+\author "" 
+\end_header
+
+\begin_body
+
+\begin_layout Title
+Manuel d'utilisation de 
+\begin_inset Newline newline
+\end_inset
+
+KF-Ray 1.0.1, raytracer paralléle
+\end_layout
+
+\begin_layout Author
+Karin Aït-Si-Amer & Florian DANG
+\end_layout
+
+\begin_layout Date
+Mai 2009
+\end_layout
+
+\begin_layout Paragraph
+Vous êtes en possession de KF-Ray un programme qui permet de générer des
+ images de synthèse au rendu 3D impressionnant utilisant la méthode du lancer
+ de rayon (raytracing).
+ Devant la complexité d'utilisation de POV-Ray, la multitude de raytracers
+ peu documentés, pas assez complets, obsolètes, trop personnalisés, nous
+ avons jugé intéressant de développer un raytracer actuel, KF-Ray avec une
+ vision altruiste.
+\end_layout
+
+\begin_layout Paragraph
+KF-Ray se veut être se veut être simple d'utilisation en incluant une interface
+ graphique, tout en ayant à disposition des fonctionnalités puissantes et
+ avancées en particulier sur le parallélisme.
+ KF-Ray a un code explicite documenté par Doxygen et se montre donc didactique
+ pour tout curieux souhaitant programmer.
+ Vous avez à disposition dans la sous-section 1.1.3 les features de KF-Ray.
+\end_layout
+
+\begin_layout Paragraph
+Ce manuel d'utilisation va vous permettre de prendre en main rapidement
+ KF-Ray et de vous faire découvrir toutes les options qu'il propose telle
+ que la parallélisation sur plusieurs machines.
+\end_layout
+
+\begin_layout Paragraph
+Tout d'abord, après avoir compiler KF-Ray, vous allez pour une première
+ approche lancer le programme sans option pour générer votre première image
+ 3D.
+ Ensuite, vous allez apprendre à écrire des fichiers de scènes KFR pour
+ réaliser vos propres scènes.
+ Enfin vous pourrez générer leur rendu 3D avec le programme en console ou
+ tout simplement avec l'interface graphique.
+ Nous allons tout au long de ce manuel, montrer des exemples avec les deux
+ méthodes.
+\end_layout
+
+\begin_layout Paragraph
+Le programme étant encore supporté, vous pouvez vous reportez sur le site
+ http://kf-ray.googlecode.com/ pour être à jour sur l'avancement du projet.
+ Il existe également un site français dédié au programme sur http://kfray.free.fr.
+ N'hésitez pas à nous contacter si besoin.
+\end_layout
+
+\begin_layout Standard
+\begin_inset CommandInset toc
+LatexCommand tableofcontents
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Chapter
+Première approche de KF-Ray
+\end_layout
+
+\begin_layout Standard
+Ce chapitre va vous initier à l'utilisation de KF-Ray.
+\end_layout
+
+\begin_layout Section
+Présentation succinte de KF-Ray
+\end_layout
+
+\begin_layout Subsection
+KF-Ray un raytracer paralléle
+\end_layout
+
+\begin_layout Standard
+KF-Ray est un programme qui utilise la méthode du lancer de rayon (raytracing)
+ afin de générer une image 3D très réaliste à partir d'un fichier de description
+ de scène.
+\end_layout
+
+\begin_layout Standard
+Les fichiers de descriptions sont des fichiers textes dont la syntaxe est
+ personnalisée et propre à KF-Ray.
+ Leur écriture est très simple et est expliquée au cours de ce manuel.
+ Des exemples de ces fichiers sont disponibles dans les sources ou sur le
+ site.
+ Ces fichiers permettent de représenter la scène en trois dimensions en
+ renseignant l'emplacement des objets (sphères, plans), des sources de lumières
+ ainsi que leur caractéristique (couleur, intensité, texture...).
+\end_layout
+
+\begin_layout Standard
+Une fois ce fichier créé, l'utilisateur peut lancer un rendu de la scène
+ qu'il a imaginé grâce à KF-Ray.
+ La sortie est une image au format PPM.
+\end_layout
+
+\begin_layout Subsection
+Features
+\end_layout
+
+\begin_layout Standard
+Voici un rappel des possibilités qu'offre KF-Ray v1.0.x :
+\end_layout
+
+\begin_layout Itemize
+Manipule les sphères et les plans
+\end_layout
+
+\begin_layout Itemize
+Admet plusieurs sources de lumières ponctuelles
+\end_layout
+
+\begin_layout Itemize
+Gère les réflexions, les ombrages, les réfractions (en cours transparence
+ uniquement pour v1.0.x)
+\end_layout
+
+\begin_layout Itemize
+Choix de différents modèles d'éclairement diffus, spéculaire (Lambert, Phong...)
+\end_layout
+
+\begin_layout Itemize
+Gère des textures procédurales (damier, bruit de Perlin...)
+\end_layout
+
+\begin_layout Itemize
+Effet de perspective, liberté de caméra
+\end_layout
+
+\begin_layout Itemize
+Fonctionne avec le repère cartésien usuel (right handed coordinates)
+\end_layout
+
+\begin_layout Itemize
+Fonctionne en parallèle sur plusieurs ordinateurs
+\end_layout
+
+\begin_layout Itemize
+Fichiers de descriptions de scènes 3D à syntaxe simple
+\end_layout
+
+\begin_layout Itemize
+Interface graphique intuitive
+\end_layout
+
+\begin_layout Itemize
+Nécessite peu de librairies
+\end_layout
+
+\begin_layout Itemize
+Code documenté avec Doxygen, facilement suivable et reprenable
+\end_layout
+
+\begin_layout Itemize
+Peut générer des images d'animation
+\end_layout
+
+\begin_layout Subsection
+Les fichiers sources
+\end_layout
+
+\begin_layout Standard
+Les sources comportent deux exécutables :
+\end_layout
+
+\begin_layout Itemize
+le programme principal KF-Ray 
+\begin_inset Quotes eld
+\end_inset
+
+back-end
+\begin_inset Quotes erd
+\end_inset
+
+ qui s'utilise en ligne de commande et peut suffire à lui seul ;
+\end_layout
+
+\begin_layout Itemize
+l'interface graphique KF-Ray GUI 
+\begin_inset Quotes eld
+\end_inset
+
+front-end
+\begin_inset Quotes erd
+\end_inset
+
+ qui permet une utilisation plus facile et intuitive du logiciel.
+\end_layout
+
+\begin_layout Standard
+Libre à vous de choisir la manière dont vous utilisez le programme.
+ La méthode la plus 
+\begin_inset Quotes eld
+\end_inset
+
+sûre
+\begin_inset Quotes erd
+\end_inset
+
+ et flexible est de se passer de l'interface graphique.
+ Cependant, si vous voulez vous familiariser facilement avec KF-Ray, si
+ vous êtes un utilisateur peu habitué ou réticent face aux lignes de commandes,
+ l'interface graphique se révèle être un choix judicieux.
+ Même pour un utilisateur avancé, l'interface propose quelques options intéressa
+ntes inédites telles que la génération automatique d'une liste d'images.
+ Finalement, il peut être avantageux d'utiliser soit l'une soit l'autre
+ des méthodes, dépendant de vos besoins.
+\end_layout
+
+\begin_layout Section
+Lancer le programme pour la première fois
+\end_layout
+
+\begin_layout Standard
+Disponible dans le fichier README.
+\end_layout
+
+\begin_layout Subsection
+Système
+\end_layout
+
+\begin_layout Standard
+Vous devez disposer d'une (ou plusieurs) machines fonctionnant sur Unix/Linux
+ à jour.
+ Nous avions en effet à disposition un réseau d'ordinateurs fonctionnant
+ sur Scientific Linux.
+ Le programme a aussi été testé sur les distributions Linux Debian/Ubuntu
+ ainsi que sur MAC OS.
+\end_layout
+
+\begin_layout Standard
+La portabilité sur Windows n'est pas géré mais doit rester possible étant
+ donné que la majorité des librairies utilisées y sont disponibles (LAM/MPI
+ et OpenMPI font défauts à voir du côté de MP-MPICH).
+ Il est même possible qu'une version Windows voit le jour.
+\end_layout
+
+\begin_layout Subsection
+Requis
+\end_layout
+
+\begin_layout Standard
+KF-Ray a été écrit directement en C par souci de rapidité, d'optimisation,
+ de simplicité (pas au niveau de la programmation mais au niveau des outils
+ nécessaires à son fonctionnement).
+ En effet, KF-Ray fait appel à peu de librairies et n'utilise pas de librairie
+ graphique par exemple.
+\end_layout
+
+\begin_layout Standard
+Pour la version de base, vous devez disposer seulement des outils de compilation
+ élémentaires : un compilateur GCC (GNU Compiler Collection) à jour et les
+ utilitaires qui vont avec (Make).
+\end_layout
+
+\begin_layout Standard
+Pour utiliser l'interface graphique, il vous faudra ajouter :
+\end_layout
+
+\begin_layout Itemize
+GTK+ 2.x
+\end_layout
+
+\begin_layout Standard
+Pour le parser, l'interprétation du fichier de description de scène (optionnel)
+ :
+\end_layout
+
+\begin_layout Itemize
+Lexx et Yacc (Flex et Bison ont été utilisé)
+\end_layout
+
+\begin_layout Standard
+Optionnellement, vous pouvez rajouter : 
+\end_layout
+
+\begin_layout Itemize
+ImageMagick qui permet d'utiliser l'option -d display affichant l'image
+ à la fin du rendu.
+\end_layout
+
+\begin_layout Standard
+Pour pouvoir gérer les calculs en paralléle (optionnel), il vous faudra
+ des librairies MPI (Message Passing Interface).
+ Voici celles qui ont été utilisées et testées :
+\end_layout
+
+\begin_layout Itemize
+OpenMPI
+\end_layout
+
+\begin_layout Itemize
+LAM/MPI
+\end_layout
+
+\begin_layout Subsection
+Instructions
+\end_layout
+
+\begin_layout Standard
+Télécharger la dernière version à jour (et ne regardez plus ce manuel s'il
+ y en a un nouveau) disponible sur : http://kfray.free.fr/download/
+\end_layout
+
+\begin_layout Standard
+Ouvrez une console, placez-vous dans le répertoire où se trouve l'archive
+ kfray-1.0.1.tar.gz et tapez 
+\shape italic
+tar -xvvzf kfray-1.0.1.tar.gz
+\shape default
+ pour l'extraire.
+\begin_inset Newline newline
+\end_inset
+
+Une fois extraite, placez vous dans le répertoire du programme en saisissant
+ 
+\shape italic
+cd kfray-1.0.1/
+\shape default
+.
+\begin_inset Newline newline
+\end_inset
+
+Tapez 
+\shape italic
+sh autogen.sh
+\shape default
+ pour générer les fichiers de configurations et Makefiles.
+\begin_inset Newline newline
+\end_inset
+
+Ensuite tapez 
+\shape italic
+make
+\shape default
+ pour compiler les fichiers sources.
+\begin_inset Newline newline
+\end_inset
+
+Tapez 
+\shape italic
+./kfray -d
+\shape default
+ et observez le résultat ! 
+\end_layout
+
+\begin_layout Standard
+Vous avez obtenu votre premier rendu d'image 3D avec KF-Ray en toute simplicité
+ !
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename kfraygui_backend.png
+	scale 60
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+KF-Ray en lignes de commande (back-end)
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Note : si vous n'avez pas installé ImageMagick, vous pourrez toujours voir
+ l'image générée dans scenes/scene1.ppm avec un autre logiciel comme GIMP
+ par exemple.
+\end_layout
+
+\begin_layout Standard
+Regardez dans le répertoire scenes/, vous trouverez des fichiers au format
+ KFR.
+ Chacun de ces derniers décrit une scène 3D qui peut être interprété par
+ KF-Ray.
+ Tapez
+\shape italic
+ ./kfray -i scene4.kfr -d
+\shape default
+ par exemple pour avoir un rendu de la scène 4 !
+\end_layout
+
+\begin_layout Section
+Utiliser les arguments de KF-Ray
+\begin_inset Newline newline
+\end_inset
+
+(en console 
+\begin_inset Quotes eld
+\end_inset
+
+back end
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Standard
+Comme tout programme Unix qui se respecte, KF-Ray gère différentes options
+ et arguments pour son fonctionnement.
+\end_layout
+
+\begin_layout Standard
+Ci-dessous un aperçu de ces options.
+ Certaines options ne sont pas forcément nécessaires lors des premières
+ exécutions.
+ Vous pourrez vous y référer quand bon vous semblera.
+\end_layout
+
+\begin_layout Subsection
+L'option -h (help)
+\end_layout
+
+\begin_layout Standard
+Vous avez un récapitulatif rapide des options utilisables par KF-Ray en
+ rentrant simplement 
+\shape italic
+./kfray -h
+\shape default
+ dans la console.
+\end_layout
+
+\begin_layout Standard
+Cette option ne prend pas d'argument.
+\end_layout
+
+\begin_layout Subsection
+L'option -i (input)
+\end_layout
+
+\begin_layout Standard
+Permet à l'utilisateur de choisir un fichier de description de scène.
+ Le programme, si l'on ne donne pas le chemin complet du fichier, regarde
+ dans le dossier scenes/ si le fichier existe et procède à son rendu.
+\end_layout
+
+\begin_layout Standard
+Si l'option n'est pas activée, une scène par défaut inclu dans le code source
+ est rendu (équivalent à scene1.kfr).
+\end_layout
+
+\begin_layout Standard
+Exemples d'utilisation : 
+\shape italic
+./kfray -i scene1
+\shape default
+ ; 
+\shape italic
+./kfray -i scene2.kfr
+\end_layout
+
+\begin_layout Subsection
+L'option -o (output)
+\end_layout
+
+\begin_layout Standard
+Permet à l'utilisateur de donner un nom à l'image au format PPM rendue par
+ le programme et si l'on ne donne pas de chemin complet, l'enregistre dans
+ le dossier scenes/.
+\end_layout
+
+\begin_layout Standard
+Par défaut, l'image a pour nom le nom du fichier de description si l'option
+ n'est pas activé.
+\end_layout
+
+\begin_layout Standard
+Exemples d'utlisation : 
+\shape italic
+./kfray -i scene2 -o img2
+\shape default
+ ; 
+\shape italic
+./kfray -o image1.ppm
+\end_layout
+
+\begin_layout Subsection
+L'option -c (clean)
+\end_layout
+
+\begin_layout Standard
+Efface les images de format PPM dans le dossier scenes/ (équivalent à la
+ commande rm scenes/*.ppm).
+\end_layout
+
+\begin_layout Standard
+Cette option ne prend pas d'argument.
+\end_layout
+
+\begin_layout Standard
+Utlisation : 
+\shape italic
+./kfray -c
+\end_layout
+
+\begin_layout Subsection
+L'option -d : requiert ImageMagick
+\end_layout
+
+\begin_layout Standard
+Affiche à la fin du rendu l'image généré par KF-Ray grâce à ImageMagick.
+ S'il n'est pas installé le programme le fait juste remarquer et l'image
+ peut être récupéré dans scenes/.
+\end_layout
+
+\begin_layout Standard
+Cette option ne prend pas d'argument.
+\end_layout
+
+\begin_layout Subsection
+L'option -b (brdf)
+\end_layout
+
+\begin_layout Standard
+Choisis le modèle d'éclairement à utiliser.
+ Voici les différents types d'éclairement possibles :
+\end_layout
+
+\begin_layout Itemize
+0 : Visualisation simple (sans nuance) utilisé pour un aperçu hypra rapide
+ de la scène ;
+\end_layout
+
+\begin_layout Itemize
+1 : Modèle de Lambert - éclairement ambiant et diffus ;
+\end_layout
+
+\begin_layout Itemize
+2 : Modèle de Phong - éclairement spéculaire ;
+\end_layout
+
+\begin_layout Itemize
+3 : Modèle de Blinn-Phong - amélioration du modèle de Phong.
+\end_layout
+
+\begin_layout Standard
+A noter que le le modèle de Phong et Blinn-Phong utilise tous deux le modèle
+ de Lambert.
+\end_layout
+
+\begin_layout Standard
+Par défaut, le modèle de Blinn-Phong est utilisé.
+\end_layout
+
+\begin_layout Standard
+Exemples d'utlisation : 
+\shape italic
+./kfray -i scene1
+\shape default
+ -b 2
+\shape italic
+ ; ./kfray
+\shape default
+ -b 0
+\end_layout
+
+\begin_layout Subsection
+L'option -v (view)
+\end_layout
+
+\begin_layout Standard
+Attribue une valeur pour changer l'emplacement de la caméra.
+ Dans la version actuelle l'option ajoute l'argument passé aux coordonnées
+ z de la caméra.
+\end_layout
+
+\begin_layout Standard
+Cette option est utilisée pour le générateur d'images afin de créer des
+ animations.
+\end_layout
+
+\begin_layout Standard
+Valeur à 0 par défaut.
+\end_layout
+
+\begin_layout Standard
+Exemples d'utlisation : 
+\shape italic
+./kfray -i scene2
+\shape default
+ -v 200.0 ; 
+\shape italic
+./kfray
+\shape default
+ -v -2000.0
+\end_layout
+
+\begin_layout Subsection
+L'option -t (texture)
+\end_layout
+
+\begin_layout Standard
+Désactive les textures procédurales (damier, bruit de Perlin dont bump mapping).
+ Accélère nettement le rendu quand cette option est désactivée.
+\end_layout
+
+\begin_layout Standard
+Activé par défaut.
+\end_layout
+
+\begin_layout Standard
+Cette option ne prend pas d'argument.
+\end_layout
+
+\begin_layout Subsection
+L'option -a (anti-aliasing)
+\end_layout
+
+\begin_layout Standard
+Active l'anti-aliasing par méthode de sur-échantillonage (supersampling).
+ Cette fonction doit être améliorée dans les prochaines versions.
+\end_layout
+
+\begin_layout Standard
+Désactivé par défaut.
+\end_layout
+
+\begin_layout Standard
+Cette option ne prend pas d'argument.
+\end_layout
+
+\begin_layout Subsection
+L'option -l (lines) : version paralléle uniquement
+\end_layout
+
+\begin_layout Standard
+Permet de choisir le nombre de lignes de l'image à calculer par chaque processus
+ esclave/ouvrier pour un travail donné.
+\end_layout
+
+\begin_layout Standard
+Imposé à 10 par défaut.
+\end_layout
+
+\begin_layout Section
+Utiliser l'interface graphique KF-Ray GUI 
+\begin_inset Newline newline
+\end_inset
+
+(
+\begin_inset Quotes eld
+\end_inset
+
+front end
+\begin_inset Quotes erd
+\end_inset
+
+)
+\end_layout
+
+\begin_layout Standard
+Ici peu d'explications sont nécessaires étant donné que l'interface graphique
+ choisit les options à lancer à votre place.
+ Amusez-vous à tester les différentes options et voir ensuite le résultat
+ !
+\end_layout
+
+\begin_layout Standard
+Il vous suffit donc choisir votre fichier de scène, de cocher les bonnes
+ options pour obtenir votre rendu.
+\end_layout
+
+\begin_layout Standard
+Ci-dessous un aperçu des éléments de l'interface.
+\end_layout
+
+\begin_layout Standard
+\begin_inset Float figure
+wide false
+sideways false
+status open
+
+\begin_layout Plain Layout
+\noindent
+\align center
+\begin_inset Graphics
+	filename kfraygui.png
+	scale 80
+
+\end_inset
+
+
+\begin_inset Caption
+
+\begin_layout Plain Layout
+\noindent
+\align center
+Interface graphique GUI
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\end_inset
+
+
+\end_layout
+
+\begin_layout Standard
+Si vous appuyez sur Start ! sans rien avoir touché au préalable, vous devriez
+ obtenir la même image que la première.
+\end_layout
+
+\begin_layout Standard
+Il se peut que l'interface graphique possède quelques bugs sur certaines
+ distributions ou configurations de Linux.
+ Merci de le reporter.
+\end_layout
+
+\begin_layout Chapter
+Créer des scènes personnalisées
+\end_layout
+
+\begin_layout Section
+Conseils préalables
+\end_layout
+
+\begin_layout Subsection
+L'algorithme de ray tracing
+\end_layout
+
+\begin_layout Standard
+Afin de réaliser au mieux votre fichier de description de scène, il est
+ recommandé d'avoir des notions élémentaires sur la méthode du lancer de
+ rayon (raytracing).
+ Vous pouvez vous référer à notre rapport ou regarder sur Internet, les
+ sites didactiques ne manquent pas.
+\end_layout
+
+\begin_layout Subsection
+Conseils sur les coefficients à utiliser
+\end_layout
+
+\begin_layout Standard
+Les valeurs, l'échelle des coefficients sont spécifiques à KF-Ray.
+ Afin d'obtenir l'image de vos rêves, il va falloir vous familiariser avec
+ l'outil et accepter les effets rendus (à moins de changer le code source).
+ Si vous avez une idée très précise de ce que vous voulez, le mieux consiste
+ à tester, changer en tâtonnant plusieurs coefficients jusqu'à obtenir le
+ rendu souhaité.
+\end_layout
+
+\begin_layout Standard
+N'hésitez pas si vous voulez aller plus loin, à vous référer à la documentation
+ du programme afin de mieux comprendre le fonctionnement du raytracer sur
+ http://kfray.free.fr/doxygen/.
+ Vous pouvez même modifier dans le code source, quelques formules pour que
+ votre fichier de description possède des coefficients à votre goût.
+\end_layout
+
+\begin_layout Section
+Le fichier de description KFR
+\end_layout
+
+\begin_layout Standard
+Avec KF-Ray, il est possible de décrire votre scène 3D.
+ Dans la version actuelle, il est possible de placer des sources de lumières,
+ des sphères et des plans.
+ Vous pouvez personnaliser le matériau constitué par ces deux derniers.
+ Ainsi, vous pouvez attribuer couleurs, textures, coefficients de réflexion,
+ réfraction, spéculaire ainsi que divers effets...
+\end_layout
+
+\begin_layout Standard
+Pour cela, il faut vous munir d'un éditeur de texte et écrire les fichiers
+ au format .kfr dans le dossier scenes/.
+ Il est conseillé de prendre exemple sur les fichiers sceneX.kfr déjà existant
+ dans le répertoire.
+\end_layout
+
+\begin_layout Standard
+Etant donné que KF-Ray utilise son propre interpréteur de fichier (parser),
+ la lecture du fichier n'est pas encore très flexible.
+ Il est conseillé de garder la même syntaxe que dans les exemples proposés.
+\end_layout
+
+\begin_layout Subsection
+Règles générales
+\end_layout
+
+\begin_layout Standard
+La syntaxe est très simple.
+ Les cinq objets principaux d'un fichier KFR sont : une scène (scene), des
+ sphères (sphere), des plans (plane), des matériels (material) et des sources
+ de lumière (light).
+ Il est conseillé d'écrire tout en minuscule, vous pouvez cependant, dans
+ la version actuelle, écrire la première lettre de chaque identifiant en
+ majuscule.
+\end_layout
+
+\begin_layout Standard
+Ces objets possèdent des délimiteurs sous forme d'accolades.
+ Les commentaires classiques en C // ...
+ et /* [...] */ sont possibles et non interprétés par KF-Ray.
+\end_layout
+
+\begin_layout Quote
+
+\size scriptsize
+Scène{
+\end_layout
+
+\begin_layout Quote
+
+\size scriptsize
+// On précise la scène ici ...
+\end_layout
+
+\begin_layout Quote
+
+\size scriptsize
+}
+\end_layout
+
+\begin_layout Standard
+Chaque objet possède plusieurs caractéristiques qui eux mêmes possèdent
+ des valeurs/attributs.
+\end_layout
+
+\begin_layout Standard
+Chaque caractéristique et les attributs qui leur sont associé peut être
+ défini de plusieurs manières.
+ Voici des exemples qui définissent la couleur RVB d'un matériau.
+ Vous pouvez changer les styles d'écritures :
+\end_layout
+
+\begin_layout Quote
+
+\size scriptsize
+rgb 0.0 255.0 255.0 est correct
+\end_layout
+
+\begin_layout Quote
+
+\size scriptsize
+RGB = 0.0, 255.0, 255.0 est corret.
+\end_layout
+
+\begin_layout Quote
+
+\size scriptsize
+Rgb := 0.0 ; 255.0 ; 255.0 est correct.
+\end_layout
+
+\begin_layout Standard
+Vous avez un exemple complet de fichier KFR dans la sous-section 3.1.1.
+\end_layout
+
+\begin_layout Subsection
+Créer la scène
+\end_layout
+
+\begin_layout Standard
+Une scène est définit par :
+\end_layout
+
+\begin_layout Itemize
+la résolution de l'image
+\end_layout
+
+\begin_layout Itemize
+le nombre et sa liste de sphères, de plans, et de sources de lumières
+\end_layout
+
+\begin_layout Itemize
+la position de la caméra et son point de fuite (vers lequel converge notre
+ vision)
+\end_layout
+
+\begin_layout Standard
+Exemple :
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\size scriptsize
+scene{
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\size scriptsize
+width = 1024
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\size scriptsize
+height = 768
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\size scriptsize
+materials = 7
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\size scriptsize
+planes = 1
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\size scriptsize
+spheres = 6
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\size scriptsize
+lights = 2
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\size scriptsize
+camera = 0.0, 0.0, -600.0
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\size scriptsize
+distview = 1000.0
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\size scriptsize
+}
+\end_layout
+
+\begin_layout Subsection
+Créer une sphère
+\end_layout
+
+\begin_layout Standard
+Une sphère est définit par :
+\end_layout
+
+\begin_layout Itemize
+son centre,
+\end_layout
+
+\begin_layout Itemize
+son rayon,
+\end_layout
+
+\begin_layout Itemize
+son matériau.
+ 
+\end_layout
+
+\begin_layout Standard
+Exemple :
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\size scriptsize
+sphere{
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\size scriptsize
+center = 220.0, 350.0, 160.0
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\size scriptsize
+radius = 180.0
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\size scriptsize
+material = 2
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\size scriptsize
+}
+\end_layout
+
+\begin_layout Subsection
+Créer un plan
+\end_layout
+
+\begin_layout Standard
+Un plan est définit par :
+\end_layout
+
+\begin_layout Itemize
+sa distance par rapport au point d'origine
+\end_layout
+
+\begin_layout Itemize
+un vecteur normal,
+\end_layout
+
+\begin_layout Itemize
+son matériau 
+\end_layout
+
+\begin_layout Standard
+Exemple :
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\size scriptsize
+plane{
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\size scriptsize
+normal = 0.0, -1.0, 0.05
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\size scriptsize
+distance = 20.0
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\size scriptsize
+material = 7
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\size scriptsize
+}
+\end_layout
+
+\begin_layout Subsection
+Créer un matériel
+\end_layout
+
+\begin_layout Standard
+Un matériel est définit par :
+\end_layout
+
+\begin_layout Itemize
+son numéro d'identification
+\end_layout
+
+\begin_layout Itemize
+son type (normal ou avec texture procédurale en marbre, bois, turbulence...),
+\end_layout
+
+\begin_layout Itemize
+sa couleur en format RVB (chaque flottant est compris entre 0 et 255.0),
+\end_layout
+
+\begin_layout Itemize
+son coefficient de réflexion (compris entre 0.0 et 1.0 exclu),
+\end_layout
+
+\begin_layout Itemize
+son coefficient de réflexion spéculaire (compris entre 0.0 et 2.0),
+\end_layout
+
+\begin_layout Itemize
+son coefficient de rugosité (compris entre 0.0 et 1000.0),
+\end_layout
+
+\begin_layout Itemize
+son coefficient de bruit de Perlin (compris entre 0.0 et 2.0 : 1.0 par défaut),
+ 
+\end_layout
+
+\begin_layout Itemize
+son coefficient de bump mapping (compris entre 0.0 et 5.0 : 0.0 par défaut),
+\end_layout
+
+\begin_layout Itemize
+sa densité (compris entre 1.0 et 2.0 : 1.0 par défaut),
+\end_layout
+
+\begin_layout Itemize
+son coefficient réfraction (compris entre 0.0 et 1.0 : 0.0 par défaut).
+\end_layout
+
+\begin_layout Standard
+A noter que les coefficients qui possèdent des valeurs par défaut sont optionnel
+s et ne sont doivent pas être obligatoirement être initialisés.
+ KF-Ray s'en charge ce qui facilite l'édition de fichiers.
+\end_layout
+
+\begin_layout Standard
+Exemple :
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\size scriptsize
+material{
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\size scriptsize
+id = 2
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\size scriptsize
+type = normal
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\size scriptsize
+rgb = 0.0, 0.0, 255.0
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\size scriptsize
+reflection = 0.0
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\size scriptsize
+specular = 0.8
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\size scriptsize
+roughness = 1000.0
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\size scriptsize
+perlin = 1.25
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\size scriptsize
+bump = 0.0
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\size scriptsize
+}
+\end_layout
+
+\begin_layout Subsection
+Créer une source de lumière
+\end_layout
+
+\begin_layout Standard
+Une source lumineuse est définit par :
+\end_layout
+
+\begin_layout Itemize
+le point d'origine de sa source lumineuse,
+\end_layout
+
+\begin_layout Itemize
+son intensité lumineuse.
+ 
+\end_layout
+
+\begin_layout Standard
+Exemple :
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\size scriptsize
+light{
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\size scriptsize
+position = 800.0, 300.0, 600.0
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\size scriptsize
+intensity = 0.4, 0.4, 0.4
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.2
+\noindent
+
+\size scriptsize
+}
+\end_layout
+
+\begin_layout Chapter
+Utilisation de KF-Ray basique et avancée
+\end_layout
+
+\begin_layout Section
+Exemple de rendu 3D avec KF-Ray
+\end_layout
+
+\begin_layout Subsection
+Fichier complet de description de scène
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Scene{
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Width = 640;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Height = 480;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Materials = 3;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Planes = 0;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Spheres = 3;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Lights = 2;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Camera = 0.0, 0.0, -110.0; 
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+}
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+//Mat jaune
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Material{
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Id = 1;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Type = turbulence;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+RGB = 255.0, 255.0, 0.0;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Reflection = 0.5;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Specular = 1.0;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Roughness = 60.0;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Perlin = 1.0;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Bump = 0.0;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+}
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+//Mat Cyan
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Material{
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Id = 2;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Type = marbel;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+RGB = 0.0, 255.0, 255.0;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Reflection = 0.5;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Specular = 1.0;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Roughness = 60.0;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Perlin = 1.0;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Bump = 0.0;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+}
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+//Mat Magenta
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Material{
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Id = 3;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Type = wood;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+RGB = 255.0, 0.0, 255.0;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Reflection = 0.5;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Specular = 1.0;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Roughness = 60.0;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Perlin = 1.0;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Bump = 0.0;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+}
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Sphere{
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Center = 260.0, 290.0, 0.0;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Radius = 100.0;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Material = 1;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+}
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Sphere{
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Center = 440.0, 290.0, 0.0;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Radius = 100.0;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Material = 2;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+}
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Sphere{
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Center = 350.0, 140.0, 0.0;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Radius = 100.0;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Material = 3;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+}
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Light{
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Position = 640.0, 240.0, -10000.0; 
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Intensity = 0.5, 0.5, 0.5;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+}
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Light{
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Position = 0.0, 240.0, -100.0;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+Intensity = 0.2, 0.2, 0.2;
+\end_layout
+
+\begin_layout Quote
+\paragraph_spacing other 0.3
+\noindent
+
+\family sans
+\shape italic
+\size scriptsize
+}
+\end_layout
+
+\begin_layout Subsection
+En ligne de commandes
+\end_layout
+
+\begin_layout Standard
+Vous venez d'éditer et enregistrer votre fichier de description dans scenes/masc
+ene.kfr.
+\end_layout
+
+\begin_layout Standard
+Nous pouvons maintenant rendre votre scène grâce à KF-Ray.
+\end_layout
+
+\begin_layout Standard
+Vous pouvez utiliser simplement la commande : ./kfray -i mascene -d
+\end_layout
+
+\begin_layout Standard
+Vous pouvez préciser des options et les changer comme bon vous semble :
+\end_layout
+
+\begin_layout Standard
+./kfray -i mascene -o monimage -b 2 -t -a -d
+\end_layout
+
+\begin_layout Subsection
+Avec l'interface graphique
+\end_layout
+
+\begin_layout Standard
+Il suffit de sélectionner votre fichier de scène avec le bouton 
+\begin_inset Quotes eld
+\end_inset
+
+Open
+\begin_inset Quotes erd
+\end_inset
+
+.
+ Vous devrez apercevoir le texte de votre fichier dans la fenêtre Scène
+ 3D.
+\end_layout
+
+\begin_layout Standard
+Choisissez les options voulus, l'image de sortie (tout est optionnel), et
+ appuyer sur Start !
+\end_layout
+
+\begin_layout Section
+Parallélisation avec MPI
+\end_layout
+
+\begin_layout Standard
+Le but du parallélisme avec MPI est de faire travailler plusieurs processeurs/or
+dinateurs afin de diminuer le temps de calcul et donc générer des images
+ plus rapidement.
+\end_layout
+
+\begin_layout Subsection
+Requis
+\end_layout
+
+\begin_layout Standard
+OpenMPI et LAM/MPI sur plusieurs ordinateurs.
+ Vous pouvez utilisez d'autres versions mais nous illustrons nos exemples
+ en utilisant ces librairies.
+\end_layout
+
+\begin_layout Standard
+KF-Ray utilise une méthode d'équilibrage de charge dynamique suivant le
+ modèle Maître/Ouvriers.
+ L'ordinateur où vous allez lancer votre programme sera le processus maître
+ et se chargera de renvoyer et récupérer les travaux de calcul d'images
+ envoyés aux ouvriers.
+\end_layout
+
+\begin_layout Standard
+Seul l'ordinateur maître a besoin du programme KF-Ray.
+ Pour activer la parallélisation il faut compiler KF-Ray avec MPICC au lieu
+ de GCC.
+ Il faut donc taper à la racine du répertoire kfray :
+\end_layout
+
+\begin_layout Standard
+./configure CC=mpicc puis make dans le dossier racine de kfray.
+\end_layout
+
+\begin_layout Standard
+Vous pouvez maintenant utiliser MPI.
+\end_layout
+
+\begin_layout Standard
+Si vous voulez revenir à GCC tapez simplement :
+\end_layout
+
+\begin_layout Standard
+./configure 
+\end_layout
+
+\begin_layout Subsection
+Configurer MPI
+\end_layout
+
+\begin_layout Standard
+Vérifiez que vous avez un accès SSH sur les tous les ordinateurs qui vont
+ être utilisés.
+ Remplissez dans un fichier nommé bhost par exemple l'adresse des différentes
+ machines utilisés.
+ L'adresse de l'ordinateur maître doit être sur la première ligne du fichier.
+ 
+\end_layout
+
+\begin_layout Standard
+Exemple :
+\end_layout
+
+\begin_layout Quote
+
+\shape italic
+#Fichier bhost réseau local
+\begin_inset Newline newline
+\end_inset
+
+127.0.0.1 #PC principal où on lance KF-Ray
+\begin_inset Newline newline
+\end_inset
+
+127.0.0.1 #Pour que le maître travaille également
+\begin_inset Newline newline
+\end_inset
+
+192.168.0.246 # PC portable de Karin
+\begin_inset Newline newline
+\end_inset
+
+192.168.0.240 # PC portable de Florian
+\end_layout
+
+\begin_layout Standard
+Enfin voici les étapes pour faire comprendre ce fichier avec LAM/MPI ci-dessous.
+\end_layout
+
+\begin_layout Standard
+Pour vérifier le fichier bhost :
+\end_layout
+
+\begin_layout Standard
+
+\shape italic
+recon -v bhost
+\end_layout
+
+\begin_layout Standard
+Pour lancer une sessin LAM :
+\end_layout
+
+\begin_layout Standard
+
+\shape italic
+lamboot -v bhost
+\end_layout
+
+\begin_layout Standard
+A la fin de l'utilisation de KF-Ray, il faut penser à désactiver LAM :
+\end_layout
+
+\begin_layout Standard
+
+\shape italic
+lamwipe -v bhost
+\end_layout
+
+\begin_layout Subsection
+Rendre une image avec MPI
+\end_layout
+
+\begin_layout Standard
+Voici la commande générale permettant d'utiliser KF-Ray en parallèle sur
+ les différents ordinateurs du bhost.
+\end_layout
+
+\begin_layout Standard
+
+\shape italic
+mpirun -v -c [nombre processus] kfray [-options] [arguments]
+\end_layout
+
+\begin_layout Standard
+Exemples d'utilisation : 
+\shape italic
+mpirun -v -c 10 kfray -i scene4.kfr -d -l 14
+\end_layout
+
+\begin_layout Standard
+Vous pouvez également utiliser l'interface graphique en cochant la case
+ 
+\begin_inset Quotes eld
+\end_inset
+
+Parallélisme
+\begin_inset Quotes erd
+\end_inset
+
+ et en précisant le nombre de processus (vous ne pourrez pas en revanche
+ préciser le nombre de lignes calculés par chaque processus).
+\end_layout
+
+\begin_layout Section
+Options avancées
+\end_layout
+
+\begin_layout Subsection
+Gagner du temps lors d'une création de scène
+\end_layout
+
+\begin_layout Standard
+Pour un utilisateur souhaitant créer une scène importante sans avoir à perdre
+ du temps lors de la génération de l'image, il est possible d'utiliser l'éclaira
+ge simple -b 0 (Menu -> Eclairement -> Sans pour l'interface graphique)
+ pour avoir une vision très rudimentaire de l'image où l'éclairement n'est
+ pas pris en compte on se contente d'envoyer des rayons qui retournent directeme
+nt la couleur du matériel s'il y a intersection.
+ Il est également possible pour avoir une image un peu plus réaliste de
+ désactivé les textures qui demandent un temps considérable de calcul.
+\end_layout
+
+\begin_layout Standard
+Avec ces options à chaque aperçu de la scène, ajuster les valeurs lorsqu'on
+ édite une scène devient plus agréable.
+\end_layout
+
+\begin_layout Subsection
+Anti-aliasing
+\end_layout
+
+\begin_layout Standard
+Afin de lutter contre les phénomènes d'aliassage (dus à un échantillonage
+ insuffisant de l'image) se manifestant sous les formes suivantes :
+\end_layout
+
+\begin_layout Itemize
+présence de marches d'escaliers sur les contours,
+\end_layout
+
+\begin_layout Itemize
+présence de moirés sur les textures (damier entre autre)
+\end_layout
+
+\begin_layout Itemize
+petis objets entièrement ou partiellement cachés
+\end_layout
+
+\begin_layout Standard
+La fonction antialiassage implémentée dans KF-Ray utilise la méthode de
+ supersampling mais n'est pas encore très convaincante.
+ Vous pouvez toujours l'utiliser le programme essayera de rendre une image
+ plus précise.
+ Elle sera améliorée dans les versions à venir.
+\end_layout
+
+\begin_layout Section
+Créer des animations
+\end_layout
+
+\begin_layout Subsection
+Utiliser le générateur d'images avec le GUI
+\end_layout
+
+\begin_layout Standard
+Un des points forts de KF-Ray est de pouvoir générer plusieurs images grâce
+ à l'interface graphique.
+ Cette génération est simple et modifie le point de vue de la caméra suivant
+ le rang de l'image généré.
+ Actuellement, cette version de KF-Ray ne peut que faire des translations
+ simples avec la caméra.
+ Cela reste suffisant pour produire des animations impressionnantes !
+\end_layout
+
+\begin_layout Standard
+Voici comment procéder.
+ Après avoir choisi les différentes options de votre rendu avec l'interface
+ graphique cochez 
+\shape italic
+Générateur activé
+\shape default
+ et choisissez le nombre d'images à produire (ayez dans l'esprit que 10/20
+ images est un bon ordre de grandeur).
+ Cliquez sur Start ! et le programme va commencer à générer une succession
+ d'images sous le nom de anim[rang].png où rang est un nombre à 3 chiffres
+ indiquant le rang de l'image générée.
+\end_layout
+
+\begin_layout Standard
+Une fois les images générées, placez-vous dans le répertoire où les images
+ ont été générés et tappez (nécessite ImageMagick) :
+\end_layout
+
+\begin_layout Standard
+
+\shape italic
+animate -delay 10 anim*.ppm
+\end_layout
+
+\begin_layout Standard
+Faites attention à ne pas utiliser cette commande si le nombre d'images
+ est trop important.
+ Passez directement à l'encodage vidéo.
+\end_layout
+
+\begin_layout Standard
+
+\shape italic
+convert *.ppm *.jpeg
+\end_layout
+
+\begin_layout Subsection
+Pour créer une vidéo
+\end_layout
+
+\begin_layout Standard
+Vous pouvez installer un encoder mpeg2enc pour l'utiliser avec ImageMagick
+ et faire un convert -delay 10 anim*.ppm kfray.mpeg par exemple.
+ Le problème de cette méthode est qu'elle n'est pas approriée pour un nombre
+ très important d'images et est peu perfomante.
+\end_layout
+
+\begin_layout Standard
+Le meilleur choix consiste à utiliser mencoder de MPlayer.
+ Il est par contre indispensable de convertir les images en format JPEG.
+ On pourra utiliser : 
+\shape italic
+convert *.ppm *.jpeg
+\shape default
+ par exemple (toujours avec ImageMagick).
+\end_layout
+
+\begin_layout Standard
+Note : Une commande utile est rename qui permet de renommer un groupe de
+ fichiers.
+\end_layout
+
+\begin_layout Standard
+Une fois les images générées, pour créer une vidéo, dans le répertoire des
+ images jpeg à utiliser, vous pourrez tapper :
+\end_layout
+
+\begin_layout Standard
+
+\shape italic
+mencoder "mf://*.jpeg" -mf fps=20 -o kfray.avi -ovc lavc -lavcopts vcodec=msmpeg4v
+2:vbitrate=800
+\end_layout
+
+\begin_layout Standard
+Reportez-vous au manuel de mencoder pour plus d'informations sur les options.
+ Vous pouvez changer les codecs utilisés, le fps...
+\end_layout
+
+\begin_layout Section*
+Les prochaines versions de KF-Ray...
+\end_layout
+
+\begin_layout Standard
+Voilà vous venez d'apprendre à utiliser les différentes fonctionnalités
+ de KF-Ray.
+ Le programme est toujours en développement donc n'hésitez pas à regarder
+ l'avancement du projet sur http://kf-ray.googlecode.com.
+ Vous y avez notamment dans le wiki les listes des futures fonctionnalités
+ de KF-Ray.
+\end_layout
+
+\end_body
+\end_document

@@ -1,0 +1,156 @@
+/* Fichier de description KFR		 */
+/* par Karin Ait-Si-Amer Florian Dang	*/
+/* Scène 4 de l'animation		*/
+
+scene{
+	width = 1024
+	height = 768
+	materials = 7
+	planes = 1
+	spheres = 6
+	lights = 2
+	camera = 0.0, 0.0, -600.0
+	distview = 1000.0
+}
+
+
+// mat jaune
+material{
+	id = 1
+	type = normal
+	rgb = 255.0, 255.0, 0.0
+	reflection = 0.4
+	specular = 0.1
+	roughness = 600.0
+	perlin = 1.25
+	bump = 0.3
+}
+
+
+// mat bleu
+material{
+	id = 2
+	type = normal
+	rgb = 0.0, 0.0, 255.0
+	reflection = 0.8
+	specular = 0.8
+	roughness = 1000.0
+	perlin = 1.25
+	bump = 0.0
+}
+
+// mat vert
+material{
+	id = 3
+	type = wood
+	rgb = 0.0, 255.0, 0.0
+	reflection = 0.2
+	specular = 0.2
+	roughness = 100.0
+	perlin = 1.25
+	bump = 0.0
+}
+
+// mat magenta
+material{
+	id = 4
+	type = checker
+	rgb = 255.0, 0.0, 255.0
+	reflection = 0.8
+	specular = 0.8
+	roughness = 1000.0
+	perlin = 1.0
+	bump = 0.0
+}
+
+// mat cyan
+material{
+	id = 5
+	type = turbulence
+	rgb = 0.0, 255.0, 255.0
+	reflection = 0.5
+	specular = 0.2
+	roughness = 60.0
+	perlin = 1.25
+	bump = 0.0
+}
+
+// mat rouge
+material{
+	id = 6
+	type = marbel
+	rgb = 255.0, 0.0, 0.0
+	reflection = 0.1
+	specular = 1.0
+	roughness = 60.0
+	perlin = 1.25
+	bump = 0.0
+}
+
+// mat plan
+material{
+	id = 7
+	type = checker
+	rgb = 0.0, 0.0, 255.0
+	reflection = 0.8
+	specular = 0.6
+	roughness = 60.0
+	perlin = 1.25
+	bump = 0.0
+}
+
+
+sphere{
+	center = 60.0, 180.0, 60.0
+	radius = 100.0
+	material = 1
+}
+
+//Bleu
+sphere{
+	center = 220.0, 350.0, 160.0
+	radius = 100.0
+	material = 2
+}
+
+//Vert
+sphere{
+	center = 480.0, 480.0, 80.0
+	radius = 100.0
+	material = 3
+}
+
+sphere{
+	center = 800.0, 300.0, 400.0
+	radius = 180.0
+	material = 4
+}
+
+sphere{
+	center = 850.0, 700.0, 1000.0
+	radius = 180.0
+	material = 5
+}
+
+sphere{
+	center = 1000.0, 350.0, 90.0
+	radius = 80.0
+	material = 6
+}
+
+plane{
+	normal = 0.0, -1.0, 0.05
+	distance = 20.0
+	material = 7
+}
+
+light{
+	position = 800.0, 300.0, 600.0
+	intensity = 0.4, 0.4, 0.4
+}
+
+light{
+	position = 100.0, 400.0, -1200.0
+	intensity = 0.6, 0.6, 0.6
+}
+

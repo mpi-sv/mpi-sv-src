@@ -1,0 +1,42 @@
+#!/bin/bash
+
+#PBS -N workload
+#PBS -l walltime=12:00:00
+#PBS -l select=3:ncpus=4:mpiprocs=4
+#PBS -j oe
+
+cd $PBS_O_WORKDIR
+
+if [ ! -f ./static_mpi ] || [ ! -f ./dynamic_mpi ]
+then
+	echo "Program not compiled! Attempting to make..."
+	make
+	if [ $? -ne 0 ]; then
+		echo "Could not make."
+		exit 1
+	fi
+fi
+
+echo "Beginning job..."
+
+echo "### STATIC BALANCERS ###"
+
+for i in {1..6}
+do
+	q=$((i * 2))
+	echo -e "\nRunning static balancer with $q workers"
+	mpirun -np $q ./static_mpi
+done
+
+echo "### DYNAMIC BALANCERS ###"
+
+for i in {1..6}
+do
+	q=$((i * 2))
+	p=$((q + 1))
+	echo -e "\nRunning dynamic balancer with $q workers"
+	mpirun -np $p ./dynamic_mpi
+done
+
+echo -e "\nDone."
+

@@ -1,0 +1,1 @@
+lib_libazqmpi_a_HEADERS += arch/include/arch.h    

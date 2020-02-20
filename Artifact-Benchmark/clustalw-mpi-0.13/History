@@ -1,0 +1,7 @@
+clustalw-mpi-0.12
+
+1. Fixed a bug that would hang the program when using "mpirun -np 2 ./clustalw-mpi".
+
+clustalw-mpi-0.11
+
+1. Fixed a bug that would hang the program when using "mpirun -np 1 ./clustalw-mpi".

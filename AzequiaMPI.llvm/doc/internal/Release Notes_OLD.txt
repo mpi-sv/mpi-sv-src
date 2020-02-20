@@ -1,0 +1,929 @@
+﻿Azequia 1.0.8.  Juan Antonio (27 Octubre 2005)
+----------------------------------------------
+
+Primera versión conjunta (al menos de Juan Carlos y de Juan Antonio). Se cierra la versión con los SDB funcionando sobre el núcleo 772. 
+Este nivel supone el inicio de un esfuerzo para construir un Azequia utilizable por el usuario, de forma que este pueda enlazar sus programas con las librerías que le proporcionemos y ejecutar sobre diferentes arquitecturas de red sin recompilar ninguna parte de Azequia.
+
+La configuración de usuario sobre los niveles NET y LNK se reduce a especificar una tabla de "enrutamiento" que debe ser especificada de una forma poco natural (hay que cambiarla) y que solo acepta un anillo. Para usar un único procesador DESCOMENTAR el código adecuado y para usar un anillo de 2 o mas procesadores DESCOMENTAR lo necesario.
+
+La versión 1.0.8 est� cerrada por necesidad pero esta en proceso de desarrollo que continuar� en la 1.0.9:
+- Cambio de los niveles de red para que el usuario puede configurar la red mediante una tabla de enrutamiento, que solo permite el uso de un dispositivo a la vez para comunicar 2 procesadores pero permite m�s tipos de configuración que un simple anillo
+- El nivel NET tiende a unificarse y ser el mismo para todos los dispositivos
+- El nivel LNK actualmente se reduce a SDB y memoria compartida, puesto que CP y McBSP están pendientes de pruebas y serán a�adidos en posteriores versiones. Este nivel se ha simplificado y optimizado y ha cambiado la interfaz.
+- Se trata de establecer una interfaz clara entre KNL y NET de forma que el usuario puede construirse su propio nivel NET
+
+Se incluye en esta distribución el registro de operadores. Se rellena la tabla de operadores 
+  (OPERADOR, FXN, StackSize)
+en tiempo de ejecución, y los archivos:
+    opr_linked.h
+    opr_proto.h
+    opr_names.h
+ya no pertenecen al nucleo, si no que debe proporcionarlos el usuario, que llamando a OPR_register(&tabla) realiza el registro.
+
+
+nota a los desarrolladores: 
+  Los archivos del proyecto auto.pjt suelen ser propios de cada uno por lo que se recomienda que al recibir la distribución se incorporen los de la versión anterior "uno a uno" encima de los de la actual
+
+
+
+Azequia 1.0.9.  Juan Antonio (- 2005)
+----------------------------------------------
+
+1. Para cambiar de configuración de red y ejecutar una aplicación en un monoprocesador o en multiprocesador solo hay que especificar una TABLA DE "ENRUTAMIENTO" y el PROCESSOR_NR en el archivo [routab.c], y especificar donde corren los procesos en el archivo [group_user.c] (hay que especificarlo correctamente porque si se ponen m�quinas que no existen falla. Se va a evitar esto m�s adelante)
+Se ha conseguido pues, en parte, recompilar Azequia para cambiar de red. 
+La restricción es que ahora mismo solamente funciona con SDB y en anillo simple.
+
+2. NOTA IMPORTANTE:
+Para que funcionen los comports con cables FMS hay que desactivar los hardWired comports con los quick switches de Diamond por ejemplo.
+
+
+
+
+Azequia 1.0.10.  Juan Antonio  (2 Enero 2006)
+---------------------------------------------
+
+ESTA ES UNA VERSION "PARCIAL", EN LA QUE SOLAMENTE ES OPERATIVA CIERTA FUNCIONALIDAD QUE SE DETALLA A CONTINUACI�N. LA INTRODUCCI�N DEL SERVICIO PMP HACE QUE ALGUNOS SERVIDORES DE USUARIO NO FUNCIONEN Y EST�N POR TERMINAR (XLOG, EXS, ETC). NO EJECUTA EL NUCLEO EN VARIOS PROCESADORES, TAN SOLO EN 1 PROCESADOR CON MEMORIA COMPARTIDA Y EN MODO LOOPBACK CON DISPOSITIVO SDB.
+
+
+Esta versión incluye:
+
+
+* HCS
+-----
+
+Es un driver para comunicación con el host. Ha cambiado mucho desde la versión anterior y est� operativo, aunque aun arrastra problemas a solucionar como:
+
+- Hacerla multihilo
+- Tama�o de la memoria Shared RAM no es el correcto
+- Es muy lento (hasta unos 730Kb/s recibiendo mensajes de 256 float). Parece suficiente para Audio pero se aleja mucho del tratamiento de video. Puede ser por los commports y se podr�a pensar en usar solamente la memoria compartida pero necesitamos una linea de interrupción. Esto est� pendiente mientras se decide si seguir por aqu� o estudiar la construcción de nuestro propio driver que explote las caracter�sticas del PCI. 
+- Los accesos a comports y las transferencias de memoria se hacen por "polling"
+
+Junto con HCS existe DCS, que es su versión para el Host. Permite la comunicación con el host. Su interfaz y algunas aplicaciones de ejemplo se encuantran en el directorio vazequia. Se recomienda abrir con VisualC++ el proyecto vAzequia\vclib\AzqSundance.dsw y tendremos:
+- AzqDCS (esta biblioteca).
+- AzqSundace: Biblioteca JNI que se puede invocar desde JAVA
+- CTest: Prueba en C del uso de DCS que incluye un ejemplo en el programa principal muy sencillo.
+
+El programa Java que invoza la librer�a generada por AZQSundance se encuantra en vAzequia y consiste en un entorno gr�fico muy sencillo en el que se muestra información sobre las placas detectadas y se pueden crear grupos en el DSP.
+
+
+* EXS
+-----
+
+EXS es un servidor de ejecución y se encarga de escuchar desde el host las peticiones que llegan para crear un grupo y lo lanza. Su interface es:
+
+int  EXS_exec  (int groupId);
+
+groupId es un numero de grupo que se establece en una tabla definida en grp_linked.c, archivo que est� en el mismo proyecto.
+El servidor RPC de EXS (que est� por terminar) ejecuta en principio solamente en la m�quina 0.
+
+La idea puede ser extender su uso para crear grupos desde el host y desde el propio sistema operativo Azequia, de forma que EXS ejecutar� en la m�quina 0 (o en todas, esto est� por decidir) y acepta peticiones RPC con los datos necesarios para crear un grupo. Estos datos son entre otros:
+- Las matrices inCh y outCh si usa canales.
+- Numero de operadores y nombre
+- etc.
+Y EXS se encarga de crear un gix, un grupo y lanzarlo a ejecución. 
+Para las peticiones que llegan del host se crea un demonio que escucha en la m�quina 0 y hace RPC al EXS.
+De esta forma desaparecer� el archivo group_user.c.
+
+Otra funcionalidad que puede tener este servidor es la numeración de procesadores aunque parece que en principio esto es de m�s bajo nivel puesto que la numeración de procesadores ocurre antes de inicializar Azequia.
+
+
+* XLOG
+------
+
+XLOG es un servidor que hace uso de HCS para enviar mensajes al host y que se puedan imprimir en pantalla. Est� medio terminado y ha estado funcionando pero con la nueva versión de PORTMAP est� deshabilitado por el momento.
+
+
+IDSP
+----
+
+Incluye la versión 8.8.1 de IDSP, que ejecuta en un solo procesador. Esta versión incluye un servicio denominado PMP (portmap). Este servicio mantiene GIXs de servicios. Un servicio escucha en un puerto bien conocido PORT, pero como puede estar replicado en diferentes m�quinas con diferentes GIX pues se solicita este servicio (GIX en particular) invocando PMP_get. Este PMP_get no funciona bien y no se porqu�, por eso se han deshabilitado EXS y XLOG que lo usan. Adem�s no funciona en varios procesadores.
+Cuando soluciones este bug quedarón los servidores activos y se podr� probar en varios procesadores.
+
+Queda pendiente la implementación de un broadcast a bajo nivel que podr� localizar servicios basado en puertos por el sistema. 
+Tambión queda pendiente la posibilidad de un broadcast de usuario (dirigido a los operadores de un grupo) que se podr�a incluir en el n�cleo. En eMPI ya se ha implementado uno pero no sabemos si es �ptimo para una configuración en anillo que es la m�s habitual en los DSP.
+
+
+NET
+---
+
+El nivel de red se reduce a 2 dispositivos: SDB y Memoria compartida.
+Los comports no estan actualizados y he decidido dejarlos de lado por el momento, no parece que tengamos que invertir tiempo en una red tan lenta.
+
+Para usar SDB (modo loopback), en el proyecto LNK hay que incluir los archivos:
+
+edma_isr.c
+lnk_buffer.c
+lnk_sdb.c
+sundance.c
+xdma_edma.c
+
+(Ha desaparecido el proyecto xdma.c). lnk_buffer.c es el mismo para todas las redes.
+Aparece una tabla de routting (mal nombre puesto que no es exactamente esto). En esta tabla se establecen 3 cosas por ahora:
+
+- Numero de procesadores:
+#define PROCESSOR_NR  1
+int MACHINE_MAX = PROCESSOR_NR;
+
+- Tipo de dispositivo o red a usar
+int DEVICE = SDB;
+
+- Tabla de conexiones entre procesadores. Por ejemplo, la siguiente estable el modo loopback para SDB
+
+int Routed_Send[PROCESSOR_NR*PROCESSOR_NR] = 
+
+                /*    P0    
+                     ----   */
+       /* P0 */  {   SDB   }; 
+
+Esta establece una red en anillo para SDB
+
+int Routed_Send[PROCESSOR_NR*PROCESSOR_NR] = 
+
+            /*    P0       P1       P2     
+                 ----     ----     ----    */
+             {   SHM,     SDB0,    SDB0,     
+                 SDB0,    SHM,     SDB0,   
+                 SDB0,    SDB0,    SHM,    }; 
+
+Se puede configurar cualquier tipo de red fisicamente conectable.
+En la tabla solo se establecen los caminos de envio de mensajes. Los mensajes pueden entrar por cualquiera de los dispositivos (SDB0 o SDB1 en el caso de SDB) y el nivel de red escucha en todos los posibles).
+
+
+Para usar un procesador con memoria compartida, los archivos del proyecto LNK cambiarón:
+
+- edma_isr.c
+- sundance.c
+- lnk_none.c
+
+en la tabla de routting:
+
+int Routed_Send[PROCESSOR_NR*PROCESSOR_NR] = 
+
+                /*    P0    
+                     ----   */
+       /* P0 */  {   SHM   }; 
+
+
+eMPI
+----
+
+No esta compilado para esta versión de Azequia.
+
+
+
+
+Azequia 1.0.11.  Juan Antonio  ( Enero 2006)
+---------------------------------------------
+
+Incluye el kernel 8.1.2 (liberado por JC el 11 enero 2006)
+
+NET
+---
+
+
+C1:
+La constante FRAGMENT_MAX que indica el tama�o de los datos en bytes de un fragmento de mensaje pasa a llamarse FRAGMENT_SIZE.
+FRAGMENT_SIZE = SIZE_OF_DATA * sizeof(int)
+SIZE_OF_DATA = 128
+El mensaje consta de 16 enteros de cabecera m�s 128 enteros de datos. Este fragmento es el que se env�a siempre. Si el mensaje es menor de 128 ints se envia un fragmento completo (con basura en lo que no se usa), si el mensaje es mayor se trocea en fragmentos de este tama�o.
+
+
+C2: 
+La tabla Routed_Send definida en routtab.c no era tal. Era un array y no una matriz. Se ha convertido en una matriz en cada procesador al hacer NET_init() toma de esta tabla la fila que le corresponde. 
+Este mecanismo debe mejorarse en posteriores versiones. Por ahora queda como en los siguientes ejemplos:
+
+int Routed_Send[PROCESSOR_NR*PROCESSOR_NR] = 
+
+                /*    P0    
+                     ----   */
+       /* P0 */  {   SHM   };
+
+int Routed_Send[PROCESSOR_NR][PROCESSOR_NR] = 
+
+            /*    P0       P1      
+                 ----     ----    */
+           {   SHM,     SDB0,      
+               SDB0,    SHM     }; 
+
+
+EXS
+---
+
+EXS es ahora un verdadero servidor RPC con capacidad de crear un grupo. Para crearlo invoca al servidor de grupos tambión por RPC.
+
+Este servidor consta de 2 grupos de un solo operador:
+- El servidor que corre el EXS_Service_loop
+- Un demonio que se bloquea esperando peticiones del host para invocar el servicio RPC. Este demonio debe correr en la m�quina 0 para escuchar del host, por lo tanto el servidor RPC debe correr tambión en la m�quina 0. El servidor se podr�a usar desde un operador del multicomputador para crear una aplicación.
+
+
+DCS
+---
+
+El driver cambia. El usuario no tiene que crear expl�citamente mediante DCS_create las estructuras para EXS. DSC crea grupos en el DSP y se comunica con ellos. Para crear un grupo se debe poner en contacto con el servidor EXS en el DSP, pero esto lo hace de forma transparente al usuario. 
+
+La interfaz queda de la siguiente forma:
+
+int  DCS_init            ();
+int  DCS_delete          ();
+
+int  DCS_create          (DCS_Handle_t *handle, int   size,   int *name,  int *mchn, int *prio,
+		                        void **param, int *paramSize, 
+					int  *inCh,   int *outCh);
+int  DCS_write           (DCS_Handle_t  handle, void *buffer, int nWords32);
+int  DCS_read            (DCS_Handle_t  handle, void *buffer, int nWords32);
+int  DCS_close           (DCS_Handle_t  handle);
+
+DCS_init() crea una conexión con el EXS server que debe ser lanzado en el DSP.
+DCS_create(...) crea un grupo en el DSP y devuelve un manejador que puede ser usado para enviarle datos y recibir datos desde el grupo.
+
+DCS_write(handle, buf, cnt);
+DCS_read (handle, buf, cnt);
+
+El grupo se crea din�micamente a partir de operadores enlazados en .out que corre en el DSP, por lo que opr_names.h debe estar en la ruta de los include de la aplicación del host. El resto (prioridades, canales, parametros, maquinas en las que corre y el numero de operadores y los operadores que forman parte del grupo) es configurable. 
+El grupo se lanza "en caliente" en el DSP lo que es un avance respecto a lo que ofrecen otros sistemas como Diamond.
+
+El usuario de DCS no puede comunicarse con servidores ni grupos del host que no haya creado �l, y adem�s el usuario ni siquiera tiene acceso al Gix de los grupos que crea, que queda oculto tras el manejador o DCS_handle.
+
+
+
+Azequia 1.0.12.  Juan Antonio  ( 2 Febrero 2006)
+------------------------------------------------
+
+Incluye el kernel 8.1.7 (liberado por JC el 1 Febrero 2006)
+
+
+Broadcast de sistema
+--------------------
+
+Se ha implementado un broadcast transparente al usuario que act�a a nivel de red y que se hace punto a punto. Este broadcast sirve para que dos servicios de sistema puedan trabajar:
+- PMP: Hace el broadcast y espera una respuesta. El GIX del servidor que provee el servicio solicitado y la m�quina donde est�
+- LOAD: Hace un broadcast y espera la respuesta de todas las m�quinas y devuelve la m�quina menos cargada.
+Estos servidores se van a fundir en un solo servidor con dos servicios:
+- Portmapper
+- Averiguar la m�quina menos cargada del sistema
+
+El msg se ha aumentado con dos nuevos campos: BcastNr (numero de broadcast) y mode (que lleva si es modo BCAST y cuantas respuestas espera). Esto hace que la estructura sea demasiado grande y se haya reducido el CHUNK_MAX a 1 (que es realmente lo que se utiliza en C64x). Queda pendiente incorporar McBSP al sistema y entonces habr� que cambiar esto.
+
+La versión se libera con plena funcionalidad, pero con algunas modificaciones pendientes para la siguiente. La razón es que JC pueda tomar esta versión lo antes posible para trabajar con el DSK.
+
+
+
+
+Azequia 1.0.13.  Juan Antonio  (2 Febrero 2006)
+------------------------------------------------
+
+Incluye el kernel 8.1.8 (liberado por JA el 2 Febrero 2006)
+
+
+El cambio fundamental es incluir el servicio de LOAD en el PMP. LOAD desaparece y ya solamente existe como un servicio del servidor de PMP.
+
+El resto de cambios se reducen a limpiar el c�digo y los archivos antiguos e inservibles.
+
+
+
+Azequia 1.0.15.  Juan Antonio  (27 Marzo 2006)
+------------------------------------------------
+
+Incluye el kernel 8.1.8 (liberado por JC el 2 Febrero 2006)
+
+
+- Solucionado el bug que impide crear los operadores que forman parte de la aplicación de los trapezios. 
+Falla porque no est� configurada correctamente la memoria (en este caso interna)
+En Azequia tendremos 2 archivos .cmd:
+Azequia.cmd: Pone la "cbsect" en memoria interna. Esta sección contiene el buffer c�clico
+user.cmd: Este es el generado por el .cdb. Este archivo debe generarse con la sección .far en RAM interna y con un Heap en memoria interna de un tama�o adecuado. Todo esto se configura en .cdb desde Code Composer Studio.
+
+
+- NET
+Se ha cambiado el interfaz. De esta forma queda mucho m�s simple al eliminar lo par�metros "local" o "syncmode". Esto par�metros en NET_send y en la upcall de NET_install nos indicaban si el mensaje enviado o recibido se envia o recibe en la m�quina local y entonces hacer un verdadero env�o sincrono (rendezvous). Ahora este flag se ha incluido en el campo "mode" del mensaje:
+
+int  NET_init      (int    *cpuId);
+void NET_install   (int    (*upcall)(Msg_t msg));
+int  NET_send      (Msg_t  msg);
+int  NET_broadcast (Msg_t  msg);
+
+Los cambios en la interfaz han provocado modificaciones en algunos archivos del nucleo. Concretamente:
+[com.c] -> Consulta msg->Mode en vez del par�metro "local" de NET_send()
+[thr_dptr.h] -> Me ahorro un campo en la estructura MsgSlot.
+
+
+- LNK
+Se ha eliminado el uso de la EXT_INT4 que se usaba para sincronizar el EDMA en el env�o de forma que al terminar el env�o se levantaba un sem�foro para indicarlo. Esto era un ERROR porque no necesito una EXT_INT para esto si no cualquier canal de EDMA. Los canales que se usan definitivamente en SDB son el EXT_INT5 y el EXT_INT6 apra recibir por cualquiera de los dos SDBs. Esto no se puede cambiar porque los canales 5 y 6 del EDMA atienden a cada uno de los SDB y cuando se recibe un evento en estas lineas se lanza la transferencia autom�ticamente. No se puede usar la misma EXT_INT para los dos por este motivo, habr�a que lanzar una ISR, esta ver�a cual de los SDB ha provocado la interrupción y luego lanzar�a el canal de EDMA para recoger los datos de la dirección del SDB. Parece que esto �ltimo ser�a m�s lento aunque ahorrar�a lóneas de interrupcion externas (EXT_INT). Ser�a algo interesante por probar y medir rendimiento. 
+FALTA: El usuario debe saber que EXT_INTs puede usar y cuales estón ocupadas, si no autom�ticamente, si hay que decirselo por lo que lo mejor es coger la EXT_INT6 y la EXT_INT7 y dejar libres las primeras.
+
+- eMPI
+Esta versión de Azequia incluye la versión 1.0.2 de la biblioteca eMPI compilada.
+
+
+
+Azequia 1.0.16.  Juan Antonio  (15/05/2006)
+------------------------------------------------
+
+Incluye el kernel 8.1.8 (liberado por JC el 2 Febrero 2006)
+
+
+- IDSP
+
+En RQST_open() ha solucionado un bug que se detecta al intentar portar Azequia a Linux y que se da cuando en send() se llama a esta función con addr=NULL y se accede a esa memoria.
+
+Se ha eliminado completamente el uso de "local" en [com.c].
+
+- eMPI
+
+Exist�a un error grave en la creación de aplicaciones eMPI. 
+Se incluye un servidor RPC denominado ACM (Application and Communication Manager) que se encarga por el momento de crear las estructuras necesarias para soportar una aplicación distribuida MPI en diferentes m�quinas al estilo del servidor GRP. Tambión es el encargado de lanzar el grupo Azequia invocando al servidor GRP. De esta forma para crear una aplicación eMPI se hace invocando a una función:
+
+int ACM_create(int maxComms, int size, int *name, int *mchn, int *prio, 
+               void **param, int *paramSize, int *gix);
+
+que es una función implementada como stub y que realiza las siguientes acciones:
+1. Toma un nuevo GIx y crea un grupo. (GRP_newGix y GRP_create)
+2. Crea cada uno de los operadores que forman parte del grupo (GRP_join)
+3. Reserva recursos en las maquinas implicadas mediante la invocación del servidor ACM en cada una
+4. Lanza la aplicación (GRP_start)
+
+Este servicio se lanza en MPI_init(), la función inicial de la biblioteca (no del estandar)
+
+
+Bug en MPI_Recv y alguna otra función que actualiza status sin comprobar que sea != NULL. En linux no funciona. Solucionado.
+
+
+- LNK
+
+Solucionado un bug en LNK_recv_start() que env�a como par�metro Cyclic_Buffer al XDMA y no bcdata->Buffer (para diferentes dispositivos)
+
+
+- EXS
+
+solucionado bug en [exs_stub.c] que pone param[i]=NULL cuando paramSize[i]=0. Esto en Linux no funciona.
+
+
+
+Azequia 1.0.17.  Juan Antonio  (2006)
+------------------------------------------------
+
+Incluye el kernel 8.1.8 (liberado por JC el 2 Febrero 2006)
+
+
+Azequia 1.0.18. Perogil (2007)
+------------------------------------------------
+
+thr.h
+-----
+A�adir MASK_ON y MASK_OFF
+A�adir a la API THR_self(...) y THR_setMask(...)
+
+thr_dptr.h
+----------
+A�adir los estados STARTED, SIGPEND y SIGMASK
+Cambiar el estado ENABLED por SIGNALED (ENABLED=~SIGNALED)
+Cambiar los valores de estas constantes
+
+thr.c
+-----
+A�adir la implementación de THR_setMask(...)
+
+Comentarios
+-----------
+1. Este m�todo deber�a ser llamado solamente por el propio thread,
+   no por terceros.
+
+   MENTIRA. Hay un caso en que THR_setMask es llamado por un tercero.
+   Entonces puede darse el caso de que yo est� ~READY y me tengan que
+   poner READY.
+
+2. Se deber�a comprobar por seguridad si el thread est� ALLOCATED.
+
+   VALE. Pero tiene que haber un compromiso entre eficiencia y seguridad.
+
+A�adir la implementación de THR_self(...)
+
+Comentarios
+-----------
+Ninguno.
+
+
+En THR_create(...) no se activa el flag ENABLED porque ya no existe
+y no tiene sentido.
+
+Comentarios
+-----------
+Ninguno.
+
+
+En THR_kill(...) se cambia todo su comportamiento por el nuevo.
+
+Comentarios
+-----------
+Ninguno.
+
+
+En la funcion interna free se toca el mensaje de panico cuando no
+esta el thread ALLOCATED.
+
+Comentarios
+-----------
+Deberia cambiarle el nombre de free a thrFree.
+
+
+En THR_start(...) una vez creada la tarea con TSK_create(...) debo
+activar el flag STARTED de la misma.
+
+Comentarios
+-----------
+El flag se lo cambio DESPUES de la creacion del thread, porque si
+la creacion falla se quedaria como STARTED.
+
+
+com.c
+-----
+En el m�todo MON_wait(...) se comprueba al final si estoy moribundo, y si es
+as�, dejo de estar moribundo pero elevo una excepción DISABLED.
+
+Comentarios
+-----------
+Deber�a comentarselo a JC.
+
+
+En el m�todo send(...) se comprueba al principio que no estoy moribundo. Si es as�
+elevo una excepción DISABLED.
+
+Comentarios
+-----------
+Ninguno.
+
+En el m�todo recv(...) se comprueba al principio que no estoy moribundo. Si es as�
+elevo una excepción DISABLED.
+
+Comentarios
+-----------
+Ninguno.
+
+En el m�todo send(...) se elimina el bug para el RPC, simplemente quitando el salto
+incondicional a la etiqueta ENVIO. Eso implica que no debo ejecutar la llamada GRP_getMchn(...)
+sino que solamente se hace cuando se trata de mensajes de grupos. Se pone un if.
+
+Comentarios
+-----------
+Ninguno.
+
+En el m�todo send(...) se deben hacer nuevas comprobaciones al principio, en relación a si
+no estoy enmascarado y me moribundo tengo que elevar una excepción COM_E_DISABLED.
+
+Comentarios
+-----------
+Deber�a cambiar las DISABLED por SIGNALED.
+
+En el m�todo recv(...) se deben hacer nuevas comprobaciones al principio, en relación a si
+no estoy enmascarado y me moribundo tengo que elevar una excepción COM_E_DISABLED.
+
+Comentarios
+-----------
+Deber�a cambiar las DISABLED por SIGNALED.
+
+rpc.h
+-----
+Se a�aden los dos nuevos modos de operación, a saber, RPC_HALF y RPC_FULL.
+
+Comentarios
+-----------
+Ninguno.
+
+Se a�ade el campo Mode a la estructura Hdr y por consiguiente, modificas el tama�o del campo
+de datos de la misma estructura.
+
+Comentarios
+-----------
+Ninguno.
+
+rpc.c
+-----
+En el m�todo RPC_recv(...) se determina tambión el modo de operación para el send(...) de COM.
+Los dos recv(...) deben llevar su mode puesto.
+
+Comentarios
+-----------
+Ninguno.
+
+El el m�todo RPC_trans(...) me tengo ahora que enmascarar al principio y desenmascarme al final.
+Para ello necesito saber quien soy yo ==self==. Adem�s debo a�adir el comportamiento de los nuevos
+modos de operación (si RPC_HALF => no espero a recibir). Adem�s los recv(...) deben llevar los modes.
+
+Eso conlleva la inclusión de la librer�a thr.h.
+
+Comentarios
+-----------
+Lo he compilado y se queda colgado en GRP_JOIN, PMP_GET, CHN_ENV_CREATE, Chn_setInChn.
+
+grp_stub.c
+----------
+Se a�aden el modo RPC_FULL a las cabeceras de los mensajes de las funciones:
+GRP_create(...), GRP_kill(...), GRP_join(...) y GRP_start(...).
+La función wait no est� implementada por lo que no puedo tocar.
+
+tampoco puedo tocar pq no existe la función RPC_leave(...). tendr�a que meter un RPC_HALF.
+
+Comentarios
+-----------
+Ninguno.
+
+chn_glb_stub.c
+--------------
+Se a�aden el modo RPC_FULL a las cabeceras de los mensajes de las funciones:
+CHN_GLB_create(...), CHN_GLB_getInChn(...), CHN_GLB_setInChn(...), CHN_GLB_setOutChn(...) y
+CHN_GLB_envDestroy(...).
+
+Comentarios
+-----------
+Ya compila y ejecuta correctamente.
+
+TAREA: a�adir las funciones GRP_wait(...) y GRP_leave(...). Con la primera un hilo se queda
+bloqueado hasta que un determinado grupo es destruido. Con la segunda un thread puede abandonar
+un grupo cuando termina de hacer su trabajo.
+
+grp.h
+-----
+A�ado la especificación de GRP_wait(...).
+A�ado la especificación de GRP_destroy(...).
+A�ado la especificación de GRP_leave(...).
+Se define la constante GIX_ERROR a 0.
+
+grp.c
+-----
+A�ado el campo FatherWaiting en la estructura Group_t.
+A�ado la implementación de GRP_wait(...). 
+En GRP_kill(...) encamiso el bloque de c�digo en una comprobación de GIX_ERROR.
+A�ado la implementación de GRP_leave(...). 
+A�ado el campo Father en la estructura Group_t.
+A�ado la función getEnd(...).
+A�ado la función externa GRP_abandone(...).
+
+grp_stub.c
+----------
+A�ado el stub para la función GRP_wait(...).
+A�ado la función privada abandone(...).
+A�ado el stub para la función GRP_leave(...).
+
+grp_msg.h
+---------
+A�ado los mensajes GRP_wait y REPLY_GRP_WAIT.
+A�ado la definición de los mensajes GRP_wait y REPLY_GRP_WAIT.
+A�ado al UNION los dos tipos de mensajes anteriores.
+
+A�ado los mensajes GRP_destroy y REPLY_GRP_DESTROY.
+A�ado la definición de los mensajes GRP_destroy y REPLY_GRP_destroy.
+A�ado al UNION los dos tipos de mensajes anteriores.
+
+A�ado los mensajes GRP_leave y REPLY_GRP_leave.
+A�ado la definición de los mensajes GRP_leave y REPLY_GRP_leave.
+A�ado al UNION los dos tipos de mensajes anteriores.
+
+grp_skeleton.c
+--------------
+A�ado el skeleton para GRP_wait(...) y la llamada en el bucle de servicio a esta función.
+A�ado el skeleton para GRP_destroy(...) y la llamada en el bucle de servicio a esta función.
+A�ado el skeleton para GRP_leave(...) y la llamada en el bucle de servicio a esta función.
+Inicializo grp_dont_reply a FALSE.
+A�ado todas las referencias de GRP_dont_reply para que funcionen los RPC_HALF/RPC_FULL y el GRP_wait(...).
+
+
+grp_sk.h
+--------
+A�ado las dos macros GRP_wait(...) y GRP_destroy(...).
+A�ado la macro GRP_leave(...).
+
+thr.h
+-----
+A�ado la especificación de la función THR_client(...).
+
+thr.c
+-----
+A�ado la implementación de la función THR_client(...).
+A�ado la función privada wrapper(...).
+En THR_start(...), creo la tarea pasando un puntero a la función wrapper(...) con 
+par�metro void*.
+A�ado la implementacion de la funcion THR_exit(...).
+A�ado la implementacion de la funcion THR_instLeave(...).
+A�ado la variable privada leaveUpCall que es un puntero a una funcion. Usada por GRP para instalar una
+callback function.
+
+azq_main.c
+----------
+El hilo principal debe esperar a que la aplicación finalice. Para ello, se hace
+GRP_wait despu�s de create_adder(...).
+
+
+Compila bien, pero no llega a mostrar el mensaje despu�s del GRP_wait.
+
+
+grp.c
+-----
+En GRP_create(...) invoco a THR_client(...) para saber quien es padre del grupo.
+En GRP_init(...) instalo GRP_abandone(...) como funcion callback en el modulo THR. Para
+ello invoco a THR_instLeave(GRP_abandone).
+
+BUG GRP_LEAVE FIXED.
+
+
+source_operator.c
+-----------------
+Cambio la condición de salida para que genere hasta 5000 y as� pueda comprobar como muere.
+Elimino THR_leave(...) cuando el operador muere.
+
+adder_operator.c
+-----------------
+Cambio la condición de salida para que reciba hasta 5000 y as� pueda comprobar como muere.
+Elimino THR_leave(...) cuando el operador muere.
+
+pmp_stub.c
+----------
+En PMP_get(...) y concretamente en recv(...) paso el campo mode en vez de un 0.
+
+pmp_skeleton.c
+--------------
+Inicializo mode a MODE_RPC | MODE_SRV y lo paso en recv().
+
+check!!!
+fatherwaiting
+GRP_dont_reply
+GIX_ERROR
+
+
+�por qu� metes en la �ltima posición tu m�quina al enviar algunos mensajes?
+En GRP_leave quitar el size+1 por size.
+Habria que meditar bien si la estructura de grupo en cada servidor debiera estar protegida
+mediante un semaforo.
+
+
+grp_stub.c
+----------
+En GRP_wait() primero mandas los wait a las m�quinas implicadas y despu�s de haber recibido la
+contestación de todas mandas los respectivos destroy. Ojo: se cambia a RPC_HALF la llamada GRP_destroy.
+
+Para corregir el problema de la comunicación con el padre (comunicación entre grupos) necesito saber
+la información del mismo (gix,rank,machine). Para ello, cuando llegan los GRP_create, adem�s de crear
+el grupo en cuestión, a�ades una nueva entrada de grupo para el padre.
+
+A la hora de hacer GRP_leave y necesitas despertar a tu padre de la cita, ya tenemos la información
+�l en la estructura de grupo, de manera local.
+
+Azequia no est� pensado para comunicación intergrupo.
+
+
+thr.c
+-----
+Un thread que muere, antes de hacer TSK_exit debe liberar el sem�foro del n�cleo. As� se har� en la
+función thr_destroy2.
+
+
+grp.c
+-----
+BUG en GRP_leave. Solamente avisar� al padre, en el caso de que �ste estuviese esperando, cuando todos
+los hilos del grupo al c�al pertenezco y que corren en la misma m�quina que yo hayan muerto.
+
+*** Se ha incorporado el cargador de Llorente a Azequia ***
+
+com.h
+-----
+Se a�ade el nuevo modo COM_DIRECT y se inicializa a 10. Este modo se a�ade cuando queremos enviar
+un mensaje a un operador que no pertenece a mi propio grupo. Hasta ahora si se produc�a �sto el
+nivel COM no pod�a resolver la m�quina del destinatario del mensaje, ya que no hab�a información
+sobre su grupo en la tabla de grupos local.
+
+MODO DE EMPLEO:
+
+                                 0x    0 0 0 0    0 0 1 0
+                                      \-------/  \-------/
+                                       m�quina    modo op.
+                                       destino
+
+grp_stub.c
+----------
+Hacemos uso del nuevo modo de operación.
+
+
+com.c
+-----
+Lo retocamos para que considere COM_DIRECT y resuelva correctamente la máquina destinataria del mensaje.
+
+----------------------------
+- cómo configurar la placa -
+----------------------------
+Code Composer Setup -> platform =   xds510 emulator, board = C64xx XDS510 Emulator. Añades los 4 TIMS. Sobre la placa -> properties,
+Auto-generate board data file with extra configuration file -> C:\Archivos de programa\Sundance\SMT6012\Smt310on20.cfg. En connection properties cambias
+el valor I/O Port por 0xA400.
+
+=========================================================================================================================================================
+=========================================================================================================================================================
+=========================================================================================================================================================
+
+  _________________
+ /                 \
+|  Azequia v.1.2.0  |
+ \_________________/
+
++ Es la primera versión única de Azequia para distintas plataformas (véase dsp/bios, xilkernel y linux).
++ El código de Azequia ahora es totalmente independiente del sistema operativo.
+
++ Cada vez que se quiera recompilar azequia para alguna plataforma, hay que indicárselo a través del fichero: "azequia_v1.2.0/sys/spec/config.h".
+
+
+
+
++ Compilación para Linux
+  ----------------------
+1. Ir al directorio raíz de Azequia.
+2. Ejecutar "make clean".
+3. Ejecutar "make".
+
++ Compilación para DSP/BIOS
+  -------------------------
+1. Ir al directorio raíz de Azequia.
+2. Cargar con CCS el fichero azequia.wks.
+
+Comment added by: <fperduq@unex.es> on May 20, 2007.
+  _________________
+ /                 \
+|  Azequia v.1.2.1  |
+ \_________________/
+
+Es la próxima versión.
+
+
+
+
+=========================================================================================================================================================
+=========================================================================================================================================================
+=========================================================================================================================================================
+
+  _________________
+ /                 \
+|  Azequia v.1.2.3  |
+ \_________________/
+
+___Bug fixed__________________________________________________________perogil__
+
+ Functions
+ ---------
+ GRP_start
+
+ Files
+ ---------
+ grp_stub.c
+
+ Comments
+ ---------
+ Now this function sends only one GRP_START message per target machine.
+
+___Bug fixed__________________________________________________________perogil__
+
+ Functions:
+ upthread_join, upthread_create, upthread_setdetachstate, upthread_attr_init,
+ upthread_getdetachstate
+ 
+ Files:
+ upthread.h, mngm.c
+
+ Comment.: detached/joinable thread features have been enabled. When a joinable
+           thread deads, its resources are not released (like a zombie) until
+           
+
+___Bug fixed__________________________________________________________perogil__
+
+ Function: THR_init, THR_create
+ File....: grp_stub.c
+ Comment.: cambio de codigo de un sitio a otro, porque sino el memset lo machaca a 0
+
+___Bug fixed__________________________________________________________perogil__
+
+El servidor de grupos y portmap tienen ahora la máxima prioridad.
+
+___Bug fixed__________________________________________________________perogil__
+
+En RPC_trans ahora se incrementan y decrementan las prioridades.
+
+___Bug fixed__________________________________________________________perogil__
+
+AZQ_wait en DSP/BIOS está definido a vacío, mientras que en linux no.
+
+
+___Bug fixed__________________________________________________________perogil__
+
+Se establece la jerarquía de ficheros config.h en Azequia.
+
+___Bug fixed__________________________________________________________perogil__
+
+
+Se establece una jerarquía de prioridades, tal y como se muestra en la figura:
+
+  ----------
+ |          |
+ | LNK_TASK |    maxprio
+ |          |
+ +----------+
+ |          |
+ | RESERVED |
+ |          |
+ +----------+ -------
+ |          |        |
+ | OPERATOR |        |
+ |          |        |
+ +----------+        |
+ .          .        |
+ .          .        |  Azequia operators
+ .          .        |
+ +----------+        |
+ |          |        |
+ | OPERATOR |        |
+ |          |        |
+ +----------+ -------
+ |          |
+ | RESERVED |
+ |          |    minprio
+  ----------
+
+
+
+  _________________
+ /                 \
+|  Azequia v.1.2.5  |
+ \_________________/
+
+
+___Bug fixed__________________________________________________________Rico__
+
+EDMA channel source address for device (SDB) to buffer transfers remains fixed. This 
+allow to increase the buffer size
+
+
+- NET and LNK layer design improved. More independents each other. 
+  Erased a field in the header of a message.
+  Kernel modules do not access to variables declared in NET. Included a primitive
+  in the interface (NET_getParams) for doing it. It exists the same situation between
+  NET and LNK (declared LNK_getParams)
+  Sending short messages to a different machine is a little faster in NET (miniSend improved)
+- LNK buffering improved
+- New folder distribution of the code. Utility libraries added (HSL, EXE)
+- New algorithm for numbering processors. It is independent from the physical level (runs upon the LNK level) but has a few requierements, like has a TIM marks as root (only one), and has a time for synchronizing at start (dependent on the architecture)
+- SharedRAM functionality has been put in a sram.c file. 
+
+
+___Bug fixed__________________________________________________________Rico__
+
+
+The priorities scheme has been slightly modified:
+
+  ----------
+ |          |
+ | LNK_TASK |    maxprio
+ |          |
+ +----------+
+ |          |
+ | NET_TASK |    maxprio - 1
+ |          |
+ +----------+
+ |          |
+ | SERVERS  |    maxprio - 2
+ | AZQ_BODY |  
+ |          |
+ +----------+ -------
+ |          |        |
+ | OPERATOR |        |
+ |          |        |
+ +----------+        |
+ .          .        |
+ .          .        |  Azequia operators (from minprio + 1 to servers prio - 1)
+ .          .        |
+ +----------+        |
+ |          |        |
+ | OPERATOR |        |
+ |          |        |
+ +----------+ -------
+ |          |
+ |   IDLE   |
+ |          |    minprio
+  ----------
+
+ Interface function for priority change and get have been modified for carrying out this scheme
+
+
+  _________________
+ /                 \
+|  Azequia v.1.5.0  |
+ \_________________/
+
+Fixed a race condition in asynchronous communication.
+
+
+  _________________
+ /                 \
+|  Azequia v.1.5.1  |
+ \_________________/
+
+User needs to allocate the requests for using the COM module.
+
+
+  _________________
+ /                 \
+|  Azequia v.1.5.1  |
+ \_________________/

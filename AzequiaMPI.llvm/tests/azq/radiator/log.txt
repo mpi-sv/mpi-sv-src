@@ -1,0 +1,61 @@
+main: Radiator application with 9 nodes
+
+
+ ==============================   0. Creando   ============================== 
+Sender(8e251dc). [100, 0]
+		= S [100 0] ============== itr [0] [size: 7608] [cancelled: 0] ...
+Sender(8e25380). [100, 1]
+		= S [100 1] ============== itr [0] [size: 7608] [cancelled: 0] ...
+Sender(8e25524). [100, 2]
+		= S [100 2] ============== itr [0] [size: 7608] [cancelled: 0] ...
+Sender(8e256c8). [100, 3]
+		= S [100 3] ============== itr [0] [size: 7608] [cancelled: 0] ...
+Receiver(8e2586c). [100, 4]
+		= R [100 4] ============== itr [0] [cancelled: 0] [aprobed: 0] ...
+Receiver(8e25a10). [100, 5]
+		= R [100 5] ============== itr [0] [cancelled: 0] [aprobed: 0] ...
+Receiver(8e25bb4). [100, 6]
+		= R [100 6] ============== itr [0] [cancelled: 0] [aprobed: 0] ...
+Receiver(8e25d58). [100, 7]
+		= R [100 7] ============== itr [0] [cancelled: 0] [aprobed: 0] ...
+Radiator(8e25efc). [100, 8]
+		= CR [100 8] ============== itr [0]  
+			time: Mon Jul 13 14:12:04 2009
+ 
+		 - CR - === WAITANY === 
+Sender(8e260a0). [101, 0]
+		= S [101 0] ============== itr [0] [size: 7608] [cancelled: 0] ...
+Sender(8e26244). [101, 1]
+		= S [101 1] ============== itr [0] [size: 7608] [cancelled: 0] ...
+Sender(8e263e8). [101, 2]
+		= S [101 2] ============== itr [0] [size: 7608] [cancelled: 0] ...
+Sender(8e2658c). [101, 3]
+		= S [101 3] ============== itr [0] [size: 17368] [cancelled: 0] ...
+Receiver(8e26730). [101, 4]
+		= R [101 4] ============== itr [0] [cancelled: 0] [aprobed: 0] ...
+Receiver(8e268d4). [101, 5]
+		= R [101 5] ============== itr [0] [cancelled: 0] [aprobed: 0] ...
+Receiver(8e26a78). [101, 6]
+		= R [101 6] ============== itr [0] [cancelled: 0] [aprobed: 0] ...
+		= CR [100 8] ============== itr [1000]  
+			time: Mon Jul 13 14:12:04 2009
+ 
+		 - CR - === WAITALL === 
+Receiver(8e26c1c). [101, 7]
+		= R [101 7] ============== itr [0] [cancelled: 0] [aprobed: 0] ...
+Radiator(8e26dc0). [101, 8]
+		= CR [101 8] ============== itr [0]  
+			time: Mon Jul 13 14:12:04 2009
+ 
+		 - CR - === WAITALL === 
+
+
+ ==============================   0. Esperando   ==============================
+		= CR [101 8] ============== itr [1000]  
+			time: Mon Jul 13 14:12:04 2009
+ 
+		 - CR - === WAITALL === 
+		= CR [100 8] ============== itr [2000]  
+			time: Mon Jul 13 14:12:04 2009
+ 
+		 - CR [100 8] - === WAIT === 

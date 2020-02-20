@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="KF-Ray GUI" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/KF-Ray GUI" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="1" />
+				<Option compiler="gcc" />
+				<Option parameters="-i 4 -d" />
+				<Compiler>
+					<Add option="-g" />
+				</Compiler>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/KF-Ray GUI" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Compiler>
+					<Add option="-O2" />
+				</Compiler>
+				<Linker>
+					<Add option="-s" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="`pkg-config gtk+-2.0 --cflags`" />
+			<Add option="-Wall" />
+		</Compiler>
+		<Linker>
+			<Add option="`pkg-config gtk+-2.0 --libs`" />
+		</Linker>
+		<Unit filename="../src/frontend/callbacks.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/frontend/callbacks.h" />
+		<Unit filename="../src/frontend/functions.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/frontend/functions.h" />
+		<Unit filename="../src/frontend/interface.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/frontend/interface.h" />
+		<Unit filename="../src/frontend/main_gui.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/frontend/main_gui.h" />
+		<Unit filename="../src/frontend/support.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="../src/frontend/support.h" />
+		<Extensions>
+			<code_completion />
+			<debugger />
+			<envvars />
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

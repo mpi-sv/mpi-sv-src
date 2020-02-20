@@ -1,0 +1,69 @@
+[101 , 0]
+Receiver(974c6a8). [101, 0]
+                = R 0 ============== itr [0]  ...
+                = R 0 ============== itr [10000]  ...
+                = R 0 ============== itr [20000]  ...
+                = R 0 ============== itr [30000]  ...
+                = R 0 ============== itr [40000]  ...
+                = R 0 ============== itr [50000]  ...
+                = R 0 ============== itr [60000]  ...
+                = R 0 ============== itr [70000]  ...
+                = R 0 ============== itr [80000]  ...
+                = R 0 ============== itr [90000]  ...
+2. Group: 0  SrcThr: 0
+                        [Node 0]>>> Exception GRP_E_INTERFACE.                           Raised by 0 in getEnd
+deliver  (hdr  b6d940d0)
+HDR ---------
+         from [G 327680 R 48] and tag 0
+         to   [G 0 R 0]
+         Mchn [S 0 D 0]
+         Mode [65]
+         Size [101 / 1]
+         SrcThr, SrcRqst, DstThr [1  63  2]
+                        [Node 0]>>> Exception COM_E_DEADPART.                            Raised by 0 in deliver
+                [Node: 0] >>> Exception INET_E_SYSTEM raised in deliver
+
+
+
+EMISOR
+
+
+[101 , 1]
+Sender(a0216a8). [101, 1]
+                = S 1 ============== itr [0]  ...
+                = S 1 ============== itr [10000]  ...
+                = S 1 ============== itr [20000]  ...
+                = S 1 ============== itr [30000]  ...
+                = S 1 ============== itr [40000]  ...
+                = S 1 ============== itr [50000]  ...
+                = S 1 ============== itr [60000]  ...
+                = S 1 ============== itr [70000]  ...
+                = S 1 ============== itr [80000]  ...
+                = S 1 ============== itr [90000]  ...
+
+milliseconds 0.686506
+Sender(a0216a8). [101, 1].  BYE
+
+
+
+
+
+
+
+
+RQST_feed (rqst  9624d74)  (hdr  b7469448)
+RQST_feed (rqst  9624d74)  (hdr  13880): Receiving buffer not big enough (buffLeft = -48 / hdr->PayloadSize = 99)
+HDR ---------
+         from [G 100 R 1] and tag 99
+         to   [G 100 R 0]
+         Mchn [S 1 D 0]
+         Mode [3]
+         Size [-48 / 48]
+         SrcThr, SrcRqst, DstThr [0  0  0]
+RQST ---------
+         State [8]
+         Type  [5]
+         Owner [9624cf4]
+         DstThr[0]
+         Size  [80000]
+Panic on RQST_feed (thread 0) !!

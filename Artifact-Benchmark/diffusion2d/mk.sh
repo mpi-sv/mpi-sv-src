@@ -1,0 +1,1 @@
+mpisecc.sh *.c

@@ -1,0 +1,43 @@
+Azequia 1.5.1
+ Objetivo principal: Request en espacio de usuario
+
+----------------------------------------------------------------------------------------------------
+
+**********************************************************************
+PARA PROXIMAS VERSIONES:
+
+- Tag como estructura bajo AZQMPI_SUPPORT
+- Interfaz GC. Probar radiator.
+
+**********************************************************************
+
+
+Azequia_v1.5.1_081008_linux_dev_3
+
+Funciones implementadas:
+
+nblk_send()
+nblk_recv()
+tmd_waitany()
+
+
+Azequia_v1.5.1_081008_linux_dev_4
+
+Se sustituyen las funciones originales por las implementadas.
+
+
+Azequia_v1.5.1_081009_linux_dev_0
+
+Se reconstruye la interfaz de algunas funciones. Ver [code.txt]
+Se inicia la implementación sobre COM de "radiator" para pruebas
+
+
+Azequia_v1.5.1_081009_linux_dev_1
+
+Radiator: Da problemas con el wait. Revisar las interfaces y como se usan (asincronas y waits) y corregirlas si es necesario.
+Hay una prueba que hace wait y funciona, pero solamente hace uno de un receive y no esta muy bien.
+
+
+VERSION FINAL:
+
+Se ha modificado com.c para que la interfaz tome punteros a requests en vez de punteros a punteros, porque las request ya estan en espacio de usuario. GC puede construirse como un interfaz simple encima de COM o puede mantener un pool de requests como MPI.

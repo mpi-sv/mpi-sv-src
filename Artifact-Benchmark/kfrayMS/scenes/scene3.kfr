@@ -1,0 +1,58 @@
+/* Fichier de description KFR		 */
+/* par Karin Ait-Si-Amer Florian Dang	*/
+/* Scène simple du rapport avec plan	*/
+
+// Amusez vous à changer les coefficients !
+
+Scene{
+	Width = 640;
+	Height = 480;
+	Materials = 2;
+	Planes = 1;
+	Spheres = 1;
+	Lights = 1;
+	Camera = 0.0, 0.0, -250.0;
+	Distview = 200.0
+}
+
+
+
+Material{
+	Id = 1
+	Type = normal
+	RGB = 255.0, 165.0, 0.0	//Orange
+	Reflection = 0.4
+	Specular = 0.4
+	roughness = 100.0
+	perlin = 1.25
+	bump = 0.0
+}
+
+Material{
+	id = 2
+	type = normal
+	rgb = 128.0, 128.0, 128.0 //Gris
+	reflection = 0.4
+	specular = 0.1
+	roughness = 600.0
+	perlin = 1.25
+	bump = 0.0
+}
+
+Sphere{
+	Center = 320.0, 140.0, 10.0;
+	Radius = 140.0;
+	Material = 1;
+}
+
+Plane{
+	normal = 0.0, -1.0, 0.00
+	distance = 0.0
+	material = 2
+}
+Light{
+	Position = -160.0, 400.0, -600.0; 
+	Intensity = 0.8, 0.8, 0.8;
+}
+
+

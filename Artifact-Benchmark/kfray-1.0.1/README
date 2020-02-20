@@ -1,0 +1,64 @@
+KF-Ray Parallel Raytracer
+Release 1.0.1
+Date 16 May 2009
+
+
+Contact
+-------
+aitsiame@polytech.upmc.fr
+tdang@polytech.upmc.fr
+
+
+Dependencies
+------------
+
+GCC and Make
+
+Display (optional do not use -d) :
+ImageMagick (useful for animation too)
+
+Parser (optionnal see below how to not use it) :
+Lexx/Yacc (work with Flex and Bison)
+
+Frontend GUI :
+GTK+ >= 2.x
+
+Parallel computing (optional) :
+MPI (work with OpenMPI and LAM/MPI)
+(would likely work with MPICH)
+
+
+Instructions
+-------------
+
+sh autogen.sh
+make
+cd src
+./kfray
+
+Description scene files are in scenes/ and output images in scenes/images/
+
+To use MPI :
+./configure CC=mpicc
+in main.h you have to uncomment the line define MY_MPI
+
+To not use MPI (by default) and return to GCC :
+./configure
+in main.h you have to comment the line //define MY_MPI
+
+To not use Lexx & Yacc :
+edit configure.in
+comment the lines : 
+#AC_PROG_LEX
+#AC_PROG_YACC
+
+
+Installation
+------------
+
+See INSTALL
+
+
+You can consult the user guide or wiki for more informations.
+
+Enjoy !

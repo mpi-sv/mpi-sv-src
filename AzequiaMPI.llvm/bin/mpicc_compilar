@@ -1,0 +1,62 @@
+#!/bin/sh
+#############
+
+EN DESARROLLO
+
+#############
+
+BASE="/home/mpiklee/workspace/libmumpi/AzequiaMPI-2.0.3/azqmpi"
+AZQ="$HOME/packages/azq"
+
+CC="gcc"
+CFLAGS="-DAZQ_MPI -D_POSIX_THREADS -D__GNU_SOURCE  -I${AZQ}/include -I${BASE}/include"
+
+LIBTHREADS="-lpthread"
+
+ARGS="-L$BASE/lib -L$AZQ/lib -lazqmpi -lidsp -linet -lpmi $LIBTHREADS" 
+
+echo=true
+ECHO=
+for src in "$@"
+do
+  newarg="$src"
+  ppsrc="`echo "-c $src"`"
+#  if [ $src != $ppsrc ]
+#  then
+#    if [ "`head -1 \"$src\" | grep '^#define THREAD_AWARE'`" = "" ]
+#    then
+#      eval \$echo \$CPP \$BEGIN_ARGS $opts \"$src\" \\\| $G2TSD \\\> $ppsrc
+#      eval \$CPP  \$BEGIN_ARGS $opts \"$src\" | $G2TSD > $ppsrc 2>> $errfile
+      files="$files \"$ppsrc\""
+      newarg="$ppsrc"
+#    fi
+#  fi
+done
+
+src = "`echo "$src" | sed 's/\.c$/\ /'`"
+
+for srcexe in "$@"
+do
+  newargexe="$srcexe"
+  ppsrcexe="`echo "-o $src $srcexe" | sed 's/\.c$/\.o/'`"
+#  if [ $src != $ppsrc ]
+#  then
+#    if [ "`head -1 \"$src\" | grep '^#define THREAD_AWARE'`" = "" ]
+#    then
+#      eval \$echo \$CPP \$BEGIN_ARGS $opts \"$src\" \\\| $G2TSD \\\> $ppsrc
+#      eval \$CPP  \$BEGIN_ARGS $opts \"$src\" | $G2TSD > $ppsrc 2>> $errfile
+      filesexe="$filesexe \"$ppsrcexe\""
+      newargexe="$ppsrcexe"
+#    fi
+#  fi
+done
+
+
+
+$ECHO $CC $CFLAGS $newarg 
+eval \$CC \$CFLAGS $newarg 
+$ECHO ...
+$ECHO $CC $newargexe $ARGS
+#eval \$CC $newargexe \$ARGS 
+
+exit 0

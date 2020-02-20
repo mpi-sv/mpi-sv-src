@@ -1,0 +1,54 @@
+#######################################################################
+##   
+##   Azequia Message Passing Interface (AZQMPI)
+##   
+##   Author: http://gsd.unex.es
+##   Date:   June 25th, 2010
+##
+#######################################################################
+
+# 1. Install dirs for libraries
+
+
+# 2. Libraries and headers
+INCLUDE=-I$(HWLOC_ROOT)/include 
+LIB=-L$(HWLOC_ROOT)/lib 
+LIBS_ARCH=-lhwloc
+
+# 3. Compiler
+CC=gcc
+
+# 4. Options for the compiler
+#OPTIONS=  -O3
+OPTIONS=  -Wall  -g -O0 #-w
+DEFINES= -D__GNU_SOURCE
+
+# 5. Executable
+EXE=azqmpiexec
+COMPILE=$(CC) $(DEFINES) $(OPTIONS)
+
+# 6. Object files
+OBJECTS=azqmpiexec
+
+# 7. Rules
+all: $(EXE)
+
+azqmpiexec: azqmpiexec.o
+	$(CC) -o azqmpiexec azqmpiexec.o $(LIB) $(LIBS_ARCH) 
+
+%.o: %.c
+	$(COMPILE) $(INCLUDE)  -c $? -o $@
+
+cleanall: clean
+clean:
+	rm -f *.o
+	rm -f *~
+	rm -f $(EXE)
+
+	
+AZQ_ROOT=$(HOME)/shared/packages/azq
+AZQMPI_INSTALL_DIR = $(HOME)/shared/packages/azqmpi
+
+install:
+	install -m 755 azqmpiexec $(AZQMPI_INSTALL_DIR)/bin
+

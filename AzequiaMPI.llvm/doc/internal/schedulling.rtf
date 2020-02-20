@@ -1,0 +1,32 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1038\cocoasubrtf110
+{\fonttbl\f0\fnil\fcharset0 Menlo-Regular;}
+{\colortbl;\red255\green255\blue255;\red170\green13\blue145;\red0\green116\blue0;\red196\green26\blue22;
+\red28\green0\blue207;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww14400\viewh14000\viewkind0
+\deftab560
+\pard\tx560\pardeftab560\ql\qnatural\pardirnatural
+
+\f0\fs24 \cf0 \CocoaLigature0 A partir de ahora, es el usuario el que decide la planificaci\'f3n, y no Azequia mediante un par\'e1metro.\
+Se hac\'eda as\'ed:\
+\
+  \cf2 int\cf0                  policy,\
+                      error;\
+  \cf2 struct\cf0  sched_param  schparam;\
+\
+\
+  \cf2 if\cf0  (azqcfg->Realtime) \{\
+    \cf3 /* Set SCHED_FIFO scheduling */\cf0 \
+    \cf2 if\cf0 (pthread_getschedparam(pthread_self(), &policy, &schparam))              \cf2 goto\cf0  exception;\
+    schparam.sched_priority = sched_get_priority_min(SCHED_FIFO);\
+    \cf2 if\cf0 ((error = pthread_setschedparam(pthread_self(), SCHED_FIFO, &schparam)))  \{\
+      \cf2 if\cf0 (EPERM == error) \{\
+        fprintf(stdout, \cf4 "azqBody: Under Linux, setting a scheduling SCHED_FIFO or SCHED_RR policy requires superuser permission\\n"\cf0 );\
+        fprintf(stdout, \cf4 "         The execution will proceed with the default SCHED_OTHER policy\\n"\cf0 );\
+      \}\
+      \cf2 return\cf0 (-\cf5 1\cf0 );\
+    \}\
+    AZQ_realtime = \cf5 1\cf0 ;\
+  \}\
+\
+\
+Y algo parecido desde fuera.}

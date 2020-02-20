@@ -1,0 +1,111 @@
+clang: warning: argument unused during compilation: '-mfpmath=sse'
+clang: warning: argument unused during compilation: '-fprefetch-loop-arrays'
+clang: warning: argument unused during compilation: '-mfpmath=sse'
+clang: warning: argument unused during compilation: '-fprefetch-loop-arrays'
+clang: warning: argument unused during compilation: '-mfpmath=sse'
+clang: warning: argument unused during compilation: '-fprefetch-loop-arrays'
+clang: warning: argument unused during compilation: '-mfpmath=sse'
+clang: warning: argument unused during compilation: '-fprefetch-loop-arrays'
+clang: warning: argument unused during compilation: '-mfpmath=sse'
+clang: warning: argument unused during compilation: '-fprefetch-loop-arrays'
+clang: warning: argument unused during compilation: '-mfpmath=sse'
+clang: warning: argument unused during compilation: '-fprefetch-loop-arrays'
+clang: warning: argument unused during compilation: '-mfpmath=sse'
+clang: warning: argument unused during compilation: '-fprefetch-loop-arrays'
+clang: warning: argument unused during compilation: '-mfpmath=sse'
+clang: warning: argument unused during compilation: '-fprefetch-loop-arrays'
+clang: warning: argument unused during compilation: '-mfpmath=sse'
+clang: warning: argument unused during compilation: '-fprefetch-loop-arrays'
+clang: warning: argument unused during compilation: '-mfpmath=sse'
+clang: warning: argument unused during compilation: '-fprefetch-loop-arrays'
+clang: warning: argument unused during compilation: '-mfpmath=sse'
+clang: warning: argument unused during compilation: '-fprefetch-loop-arrays'
+memHandler.c:119:14: warning: using the result of an assignment as a condition without parentheses [-Wparentheses]
+    if( INIT = 0 )
+        ~~~~~^~~
+memHandler.c:119:14: note: place parentheses around the assignment to silence this warning
+    if( INIT = 0 )
+             ^
+        (       )
+memHandler.c:119:14: note: use '==' to turn this assignment into an equality comparison
+    if( INIT = 0 )
+             ^
+             ==
+1 warning generated.
+clang: warning: argument unused during compilation: '-mfpmath=sse'
+clang: warning: argument unused during compilation: '-fprefetch-loop-arrays'
+clang: warning: argument unused during compilation: '-mfpmath=sse'
+clang: warning: argument unused during compilation: '-fprefetch-loop-arrays'
+clang: warning: argument unused during compilation: '-mfpmath=sse'
+clang: warning: argument unused during compilation: '-fprefetch-loop-arrays'
+clang: warning: argument unused during compilation: '-mfpmath=sse'
+clang: warning: argument unused during compilation: '-fprefetch-loop-arrays'
+clang: warning: argument unused during compilation: '-mfpmath=sse'
+clang: warning: argument unused during compilation: '-fprefetch-loop-arrays'
+clang: warning: -lm: 'linker' input unused when '-c' is present
+clang: warning: assembly-mpi.o: 'linker' input unused when '-c' is present
+clang: warning: depolarization.o: 'linker' input unused when '-c' is present
+clang: warning: depSolver-mpi.o: 'linker' input unused when '-c' is present
+clang: warning: errorHandler.o: 'linker' input unused when '-c' is present
+clang: warning: field.o: 'linker' input unused when '-c' is present
+clang: warning: force.o: 'linker' input unused when '-c' is present
+clang: warning: forceIntegrals.o: 'linker' input unused when '-c' is present
+clang: warning: globalToLocal.o: 'linker' input unused when '-c' is present
+clang: warning: gmres-mpi.o: 'linker' input unused when '-c' is present
+clang: warning: kernelIntegrals.o: 'linker' input unused when '-c' is present
+clang: warning: memHandler.o: 'linker' input unused when '-c' is present
+clang: warning: normals.o: 'linker' input unused when '-c' is present
+clang: warning: postProcess.o: 'linker' input unused when '-c' is present
+clang: warning: potential.o: 'linker' input unused when '-c' is present
+clang: warning: preProcess.o: 'linker' input unused when '-c' is present
+clang: warning: shapeFunctions.o: 'linker' input unused when '-c' is present
+clang: warning: argument unused during compilation: '-g'
+clang: warning: argument unused during compilation: '-emit-llvm'
+clang: warning: argument unused during compilation: '-I /home/zbchen/mpise/src/third_party/AzequiaMPI.llvm/pmi'
+clang: warning: argument unused during compilation: '-I /home/zbchen/mpise/src/third_party/AzequiaMPI.llvm/pmi/simple'
+clang: warning: argument unused during compilation: '-I /home/zbchen/mpise/src/third_party/AzequiaMPI.llvm/arch/include'
+clang: warning: argument unused during compilation: '-I /home/zbchen/mpise/src/third_party/AzequiaMPI.llvm/idsp/blk/impl'
+clang: warning: argument unused during compilation: '-I /home/zbchen/mpise/src/third_party/AzequiaMPI.llvm/idsp/blk/spec'
+clang: warning: argument unused during compilation: '-I /home/zbchen/mpise/src/third_party/AzequiaMPI.llvm/inet'
+clang: warning: argument unused during compilation: '-I /home/zbchen/mpise/src/third_party/AzequiaMPI.llvm/inet/none/spec'
+clang: warning: argument unused during compilation: '-I /home/zbchen/mpise/src/third_party/AzequiaMPI.llvm/inet/none/impl'
+clang: warning: argument unused during compilation: '-I /usr/local/include'
+clang: warning: argument unused during compilation: '-I /home/zbchen/mpise/src/third_party/AzequiaMPI.llvm/azqmpi/include'
+clang: warning: argument unused during compilation: '-I /home/zbchen/mpise/src/third_party/AzequiaMPI.llvm/config'
+clang: warning: argument unused during compilation: '-I /home/zbchen/mpise/src/MPISE/include'
+clang: warning: argument unused during compilation: '-include hook.h'
+clang: warning: argument unused during compilation: '-msse2'
+clang: warning: argument unused during compilation: '-mfpmath=sse'
+clang: warning: argument unused during compilation: '-funroll-loops'
+clang: warning: argument unused during compilation: '-fprefetch-loop-arrays'
+clang: warning: argument unused during compilation: '-O3'
+mv: cannot stat `./depSolver-mpi': No such file or directory
+make: *** [install] Error 1
+doubleMatrix.c:39:10: warning: implicit declaration of function 'errorHandler' is invalid in C99 [-Wimplicit-function-declaration]
+                errorHandler("Error - In doubleMatrix(): Can't allocate memory");
+                ^
+1 warning generated.
+fieldPost.c:81:35: warning: format specifies type 'char *' but the argument has type 'char (*)[32]' [-Wformat]
+for(i =0; i < 9; i++) fscanf(fp,"%s",&cBuffer);
+                                 ~^  ~~~~~~~~
+1 warning generated.
+forcePost.c: In function ‘main’:
+forcePost.c:90:1: warning: format ‘%s’ expects argument of type ‘char *’, but argument 3 has type ‘char (*)[32]’ [-Wformat]
+forcePost.c:90:29: warning: ignoring return value of ‘fscanf’, declared with attribute warn_unused_result [-Wunused-result]
+forcePost.c:91:33: warning: ignoring return value of ‘fscanf’, declared with attribute warn_unused_result [-Wunused-result]
+gplotForm.c: In function ‘main’:
+gplotForm.c:65:38: warning: ignoring return value of ‘fscanf’, declared with attribute warn_unused_result [-Wunused-result]
+gplotForm.c:71:13: warning: ignoring return value of ‘fscanf’, declared with attribute warn_unused_result [-Wunused-result]
+p2b.c: In function ‘main’:
+p2b.c:164:15: warning: ignoring return value of ‘fscanf’, declared with attribute warn_unused_result [-Wunused-result]
+p2b.c:165:15: warning: ignoring return value of ‘fscanf’, declared with attribute warn_unused_result [-Wunused-result]
+p2b.c:168:15: warning: ignoring return value of ‘fscanf’, declared with attribute warn_unused_result [-Wunused-result]
+p2b.c:169:50: warning: ignoring return value of ‘fscanf’, declared with attribute warn_unused_result [-Wunused-result]
+p2b.c:253:15: warning: ignoring return value of ‘fscanf’, declared with attribute warn_unused_result [-Wunused-result]
+p2b.c:254:35: warning: ignoring return value of ‘fscanf’, declared with attribute warn_unused_result [-Wunused-result]
+p2b.c:255:20: warning: ignoring return value of ‘fscanf’, declared with attribute warn_unused_result [-Wunused-result]
+potPost.c: In function ‘main’:
+potPost.c:80:5: warning: format ‘%s’ expects argument of type ‘char *’, but argument 3 has type ‘char (*)[32]’ [-Wformat]
+potPost.c:80:33: warning: ignoring return value of ‘fscanf’, declared with attribute warn_unused_result [-Wunused-result]
+potPost.c:82:15: warning: ignoring return value of ‘fscanf’, declared with attribute warn_unused_result [-Wunused-result]
+potPost.c:83:15: warning: ignoring return value of ‘fscanf’, declared with attribute warn_unused_result [-Wunused-result]

@@ -1,0 +1,226 @@
+Azequia_v1.5.0_080929_linux_dev_0
+
+nblk_recv y tmd_wait funcionando con 16 hilos. 15 emiten y uno recibe asincronamente y hace wait. Hay un error que se presenta solo algunas veces en RQST_ready (esta función se copio en com.c desde rqst.h porque no funcionaba bien).
+
+
+Azequia_v1.5.0_080929_linux_dev_1
+
+- Se pone bien RQST_ready. Falta revisarla porque se puede mejorar
+
+
+Azequia_v1.5.0_080929_linux_dev_2
+
+- Parece que ya no salta RQST_ready con el error. Mirar out_fallo.txt para ver el fallo que daba, que ya no da. El cambio ha sido solamente un IF.
+
+
+Azequia_v1.5.0_080930_linux_dev_0
+
+- WaitAnyRqstVector en el descriptor del hilo se ha puesto solo como puntero y no como **. Todo parece ir bien
+
+
+Azequia_v1.5.0_080930_linux_dev_1
+
+- A wait se le pasa un vector de punteros a request, y nop el propio vector. Es para que pueda soportar MPI. De esta forma se transforma la interfaz:
+
+extern int    tmd_wait   (Rqst *rqst, int count, int *index, Status *status, unsigned timeout);
+
+extern int    tmd_wait   (Rqst_t *rqst, int count, int *index, Status *status, unsigned timeout);
+
+WaitAnyRqstVector en el descriptor del hilo se vuelve a poner en su estado original como **.
+
+El usuario ahora debe crear un array de punteros a requests y despues las requests, ambos estatica o dinamicamente.
+
+
+Azequia_v1.5.0_080930_linux_dev_2
+
+- asend.
+
+Azequia_v1.5.0_081001_linux_dev_0
+
+- Prueba para asend con solo dos procesos
+
+Azequia_v1.5.0_081001_linux_dev_1
+
+- Mas pruebas asend. Fallan para asend
+
+Azequia_v1.5.0_081001_linux_dev_2
+
+- Se trata de encontrar los fallos en asend. 
+Lo primero es poner RQST_ready como funcion, que es donde falla, y a ver si desapilando la ejecución me da mas pistas.
+
+
+Azequia_v1.5.0_081002_linux_dev_0
+
+- El error se produce en RQST_ready llamado desde recv(), y a veces simplemente se para sin mensaje de error. Falla tanto con las primitivas nuevas como con las de JC. Se ha probado en "Vera", "esclavo1" y "hurdes". En el único que no falla es en el ultimo.
+
+
+Azequia_v1.5.0_081002_linux_dev_1
+
+Nada nuevo
+
+
+Azequia_v1.5.0_081002_linux_dev_2
+
+
+Azequia_v1.5.0_081003_linux_dev_0
+
+- Prueba con pthread_mutexattr_settype(PTHREAD_MUTEX_ERRORCHECK) para comprobar que los mutex los abre y los cierra el propietario. Hay que establecer -D_GNU_SOURCE entre las macros de compilación porque si no da error, y en [thr.c] se ha modificado el init de los mutex.
+Sigue pasando lo mismo, ningun error en cuanto a los mutex.
+
+
+Encuentro una condicion de carrera que provoca el error en RQST_ready. He cambiado parte del código de tmd_recv por esto pero se produce un interbloqueo rapidamente.
+/**************************************/
+          UNLOCK(me);
+          LOCK(srcThr);
+
+          signl = FALSE;
+
+          if(((srcThr->State & WAITANY) && ((srcRqst)->State & RQST_MAKES_WAITING))) {
+
+            switching = TRUE;
+#ifdef _DEBUG_MODE
+            printf("tmd_recv(%x): SWITCHED\n", (int)me);
+#endif
+
+            if(hdr->Mode & MODE_ASYNC) {
+              if(srcRqst->State & RQST_ALLOCATED) {
+                srcRqst->State |= RQST_SATISFIED;
+              }
+              if (0 > RQST_ready(srcThr, srcRqst, &signl)) {printf("RQST_ready ERROR. tmd_recv(0x%x): Rqst 0x%x dstThr 0x%x\n", (int)me, (int)srcRqst, (int)srcThr);
+                                                            UNLOCK(me);
+                                                            return -1;}
+            }
+            //else
+            //  signl = TRUE;
+          }
+
+          UNLOCK(srcThr);
+          LOCK(me);
+/**************************************/
+
+
+El hecho de poner un atributo a los mutex con:
+
+
+int THR_init() {
+  ...
+  pthread_mutexattr_t  mtxattr;
+
+  pthread_mutexattr_init(&mtxattr);
+  pthread_mutexattr_settype(&mtxattr, PTHREAD_MUTEX_ERRORCHECK);
+
+  ...
+    if(pthread_mutex_init(&table.Thr[i].Lock, &mtxattr))                        goto exception_1;
+    if(pthread_cond_init (&table.Thr[i].Ready, NULL))                           goto exception_1;
+    if(pthread_mutex_init(&table.Thr[i].RpcLock, &mtxattr))                     goto exception_1;
+    if(pthread_cond_init (&table.Thr[i].RpcReady, NULL))                        goto exception_1;
+    if(pthread_attr_init (&table.Thr[i].Attr))                                  goto exception_1;
+  ...
+
+  pthread_mutexattr_destroy(&mtxattr);
+  ...
+}
+
+
+No provoca ningun error. Lo quito del código de [thr.c].
+Para usarlo había que establecer -D_GNU_SOURCE en las macros al compilar.
+
+
+Azequia_v1.5.0_081004_linux_dev_0
+
+- Intento de solución de la condición de carrera
+
+Se ha modificado timed_recv() en una funcion renombrada como tmd_recv() y parece que va bien en portatil y Duo del cluster. También se ha hecho la misma modificación en arecv() que se ha renombrado como async_recv(). ESTAS FUNCIONES FUNCIONAN COMO LAS DE AZEQUIA ORIGINAL, EL USUARIO NO CREA LAS REQUESTS. Parece que todas las pruebas funcioan OK, pero hay que probarlo en el PC de sobremesa. Las pruebas pasadas son:
+
+1) [latency_asend_2.c]
+
+P0 haciendo:
+for 0 to 15
+  asend()
+for 0 to 15
+  waitany
+
+P1-P15 haciendo:
+tmd_recv()
+
+2) [latency_asend_1.c]
+
+P1-P15 haciendo:
+asend()
+waitany();
+
+P0 haciendo:
+for 0 to 15
+  tmd_recv();
+
+3) [latency_send_1.c]
+P0 haciendo
+send()
+
+P1 haciendo:
+tmd_recv()
+
+Varias parejas.
+
+4) [?]
+Por parejas:
+
+P0 haciendo:
+for 0 to 5
+  asend()
+for 0 to 5
+  waitany()
+
+P1 haciendo:
+for 0 to 5
+  tmd_recv();
+
+5) [latency_arecv_3.c]
+P0 haciendo:
+for 0 to 15
+  send()
+
+P1-P15 haciendo:
+async_recv()
+waitany()
+
+6) [latency_arecv_2]
+
+P0 haciendo:
+for 0 to 15 
+  async_recv()
+for 0 to 15
+  waitany()
+
+P1-P15 haciendo:
+send()
+
+7) [latency_arecv_4.c]
+
+Por parejas:
+
+P0 haciendo:
+asend()
+waitany()
+
+P1 haciendo:
+arecv()
+waitany()
+
+**********  tmd_recv() es la función modificada para evitar la condicion de carrera de timed_recv()
+**********  async_recv() es la función modificada para evitar la condicion de carrera de arecv()
+
+
+Azequia_v1.5.0_081008_linux_dev_0
+
+Probarlo en el PC de sobremesa.
+Ni un error RQST_ready, ni tampoco se para ni una vez.
+
+
+Azequia_v1.5.0_081008_linux_dev_1
+
+Probada en el PC de Juan Luis, que es un Core 2 quad (total 8 procesadores). Todo OK.
+
+
+Se libera la version: Azequia_v1.5.0
+

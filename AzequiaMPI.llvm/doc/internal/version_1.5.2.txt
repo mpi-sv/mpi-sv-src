@@ -1,0 +1,25 @@
+Azequia 1.5.2
+ Objetivo principal: Estructura tag_t en vez de un entero para soporte de MPI
+
+----------------------------------------------------------------------------------------------------
+
+**********************************************************************
+PARA PROXIMAS VERSIONES:
+
+- Interfaz GC. ¿Request de usuario o internas?. Probar radiator.
+- Probar el resto de facilidades de COM: RRV, SLM, Test*, Probe, cancel, free.
+- RQST_PERSISTENT: ¿eliminar?. 
+- Desindexacion en macros de rqst.h (?)
+
+**********************************************************************
+
+
+Azequia_v1.5.2_081011_linux_dev_0
+
+Sustituido int por Tag_t
+
+
+Azequia_v1.5.2_081011_linux_dev_1
+
+Se ha comprobado que una estructura no es "elegante" y que serían mejor 2 campos por ejemplo. Por ahora se aparca para próximas versiones.
+

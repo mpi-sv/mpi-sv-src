@@ -1,0 +1,126 @@
+#!/bin/sh
+# Runs the C preprocessor and the (global -> thread-specific data) preprocessor
+# on .c files.  Then runs the C compiler.
+# Does nothing special for files that have a first line of #define THREAD_AWARE
+#
+# Recognized options (can have double-dash):
+#   -profile: link in the profililing version of TOMPI, libpmpi.a
+#   -keep.i: keeps the preprocessed C in the corresponding .i file
+#   -echo: echo the commands that get executed
+#   -verbose: show all non-compiler output from mpicc
+
+# Set the following to the base TOMPI directory.
+AZQMPI_ROOT=~/workspace/libmumpi/AzequiaMPI-2.0.3/azqmpi
+HWLOC_ROOT=/usr/local
+LIBS="-lazqmpi -lpthread -lhwloc -lrt"
+config_ROOT=~/workspace/libmumpi/AzequiaMPI-2.0.3/config
+############################# Don't change below stuff.
+
+# The following are grabbed from Makefile.am.
+CC="gcc"
+CFLAGS="-I${config_ROOT} -I${AZQMPI_ROOT}/include  -I${AZQMPI_ROOT}/../pmi -I${AZQMPI_ROOT}/../pmi/simple -I${AZQMPI_ROOT}/../arch/include -I${AZQMPI_ROOT}/../idsp/lfq/impl -I${AZQMPI_ROOT}/../idsp/lfq/spec -I${AZQMPI_ROOT}/../inet -I${AZQMPI_ROOT}/../inet/none/spec -I${AZQMPI_ROOT}/../inet/none/impl -I/usr/local/include -I./azqmpi/include -DAZQ_MPI"
+CPP="gcc -E"
+
+# Set this if you want to set an include directory (e.g., -I...).
+# It is also added to the preprocessor's $(CPP) arguments.
+BEGIN_ARGS="$CFLAGS"
+
+# Set this if you want to link in special libraries (e.g., -L... -lmpi).
+# Not included if the -c option is present (i.e., not linking).
+# If you change this, you probably want to change the -profile version below.
+END_ARGS="-L${AZQMPI_ROOT}/../lib/ -L${HWLOC_ROOT}/lib ${LIBS}"
+
+# The rm command (change to "true" if you want to keep the preprocessor
+# output for debugging purposes).  This is done if you specify the
+# -keep.i or --keep.i options.
+RM="rm"
+
+newargs=""
+files=""
+opts=""
+
+# File for store errors or warnings
+errfile="/dev/null"
+
+# Collect options to given to the preprocessor (all -'s before --, except
+# -o, -keep.i, and --keep.i).
+opts_section=1
+linking=1
+echo=true
+skip_next=0
+report=true
+for opt in "$@"
+do
+  if [ $skip_next -eq 0 ]
+  then
+    if [ $opts_section -ne 0 ]
+    then
+      case $opt in
+        --)
+          opts_section=0
+          ;;
+        -o)
+          skip_next=1
+          ;;
+        -l*)
+          ;;
+        -c)
+          linking=0
+          ;;
+        -profile|--profile)
+          END_ARGS="-L${AZQMPI_ROOT}/src ${LIBS}"
+          ;;
+        -keep.i|--keep.i)
+          RM=true
+          ;;
+        -echo|--echo)
+          echo=echo
+          ;;
+        -verbose|--verbose)
+          report=echo
+          errfile="mpicc.err"
+          eval date > $errfile
+          echo -e "\nmpicc $* \n\n" >> $errfile
+          ;;
+        -*)
+          opts="$opts \"$opt\""
+          ;;
+      esac
+    fi
+  else
+    skip_next=0
+  fi
+done
+
+for src in "$@"
+do
+  case $src in
+    -echo|--echo)
+      ;;
+    *)
+      newargs="$newargs \"$src\""
+  esac
+done
+
+exit_code=0
+
+$report Compiling... >> $errfile
+if [ $linking -ne 0 ]
+then
+  eval \$echo \$CC \$BEGIN_ARGS $newargs \$END_ARGS 
+  eval \$CC \$BEGIN_ARGS $newargs \$END_ARGS 
+  exit_code="$?"
+else
+  eval \$echo \$CC \$BEGIN_ARGS $newargs
+  eval \$CC \$BEGIN_ARGS $newargs
+  exit_code="$?"
+fi
+
+# Remove preprocessed files.
+if [ "$files" != "" ]
+then
+  eval \$echo \$RM $files
+  eval \$RM $files
+fi
+
+exit $exit_code
